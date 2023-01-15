@@ -1,13 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import globalStyles from '../../globalStyles';
 
 const Index = () => {
+  const { width, height } = Dimensions.get('window');
+  console.log('width: ', width, 'height: ', height);
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.text}>_______ Screen</Text>
     </View>
-  )
+  );
 };
 
 export default Index;

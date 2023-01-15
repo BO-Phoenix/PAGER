@@ -7,17 +7,32 @@ import HomePage from './screens/HomePage/Index.js';
 import AllGoups from './screens/AllGroups/Index.js';
 import IndividualGroups from './screens/IndividualGroups/Index.js';
 
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
-        <Stack.Screen options={{ headerShown: false }} name="HomePage" component={HomePage} />
-        <Stack.Screen options={{ headerShown: false }} name="AllGoups" component={AllGoups} />
-        <Stack.Screen options={{ headerShown: false }} name="IndividualGroups" component={IndividualGroups} />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="IndividualGroups"
+          component={IndividualGroups}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="HomePage"
+          component={HomePage}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="AllGoups"
+          component={AllGoups}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
