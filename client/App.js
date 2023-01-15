@@ -1,3 +1,6 @@
+import { useSelector, useDispatch } from 'react-redux';
+// import { } from './reducers'; // state from reducer(updates state) file
+import { getAllEvents, getUserGroups } from './actions'; // actions(tells reducer what to do with the state) that are being dispatched
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
