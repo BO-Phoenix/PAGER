@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/Login/Index.js';
 import HomePage from './screens/HomePage/Index.js';
-import AllGoups from './screens/AllGroups/Index.js';
+import AllGroups from './screens/AllGroups/Index.js';
 import IndividualGroups from './screens/IndividualGroups/Index.js';
 
 const Stack = createNativeStackNavigator();
@@ -30,8 +30,8 @@ export default function App() {
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="AllGoups"
-          component={AllGoups}
+          name="AllGroups"
+          component={AllGroups}
         />
       </Stack.Navigator>
     </NavigationContainer>
