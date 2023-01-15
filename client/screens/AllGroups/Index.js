@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import globalStyles from '../../globalStyles';
 
 const Index = () => {
   return (
-    <View>
-      <Text>_______ Screen</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.text}>_______ Screen</Text>
     </View>
   )
 };
