@@ -1,16 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StyleSheet, Text, View } from 'react-native';
 import globalStyles from '../../globalStyles';
+import { Overview, Schedule, AddSchedule, Chat } from './individualgroups';
 
 const Index = () => {
-  // const { width, height } = Dimensions.get('window');
-  // console.log('width: ', width, 'height: ', height);
+  const Stack = createNativeStackNavigator();
+
   return (
-    <>
-      <View style={globalStyles.container}>
-        <Text style={globalStyles.text}>Individual group screen</Text>
-      </View>
-    </>
+    <Stack.Navigator initialRouteName="Attended">
+      <Stack.Screen name="Overview" component={Overview} />
+      <Stack.Screen name="Schedule" component={Schedule} />
+      <Stack.Screen name="AddSchedule" component={AddSchedule} />
+      <Stack.Screen name="Chat" component={Chat} />
+    </Stack.Navigator>
   );
 };
 
