@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Arial',
     fontWeight: 'medium',
-    fontSize: '24px',
+    fontSize: 24,
   },
   formInput: {
     flex: 1,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   btnTextStyle: {
     fontFamily: 'Arial',
     fontWeight: 'light',
-    fontSize: '18px',
+    fontSize: 18,
   }
 });
 

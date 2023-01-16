@@ -40,10 +40,10 @@ const styles = StyleSheet.create({
   appHeader: {
     fontFamily: 'Arial',
     fontWeight: 'Semi Bold',
-    fontSize: '28px',
+    fontSize: 28,
     color: 'white',
     backgroundColor: 'black',
-    margin: '0.5em',
+    margin: 12,
   },
   container: {
     flex: 1,
