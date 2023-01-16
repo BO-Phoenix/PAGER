@@ -7,7 +7,7 @@ import LoginScreen from './screens/Login/Index.js';
 import HomePage from './screens/HomePage/Index.js';
 import AllGoups from './screens/AllGroups/Index.js';
 import IndividualGroups from './screens/IndividualGroups/Index.js';
-import { getEvents } from './db/event';
+import { getAllEvents, getOneEvent, addGroupToEvent } from './db/event';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
@@ -17,9 +17,11 @@ export default function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getEvents();
+      const response = await getAllEvents();
       setEvents(response);
     }
+    addGroupToEvent('2lIbJPzhpMTowLdZLsY7', 'this is an another new group id ');
+    getOneEvent('2lIbJPzhpMTowLdZLsY7');
     fetchData();
   }, []);
 
