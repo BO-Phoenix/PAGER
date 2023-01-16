@@ -1,17 +1,16 @@
-// import { useSelector, useDispatch } from 'react-redux';
-// // import { } from './reducers'; // state from reducer(updates state) file
-// import { getAllEvents, getUserGroups } from './actions'; // actions(tells reducer what to do with the state) that are being dispatched
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { useEffect, useState } from 'react';
+import {
+  FlatList, StyleSheet, Text, View,
+} from 'react-native';
+import { React, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import LoginScreen from './screens/Login/Index.js';
 import HomePage from './screens/HomePage/Index.js';
 import AllGroups from './screens/AllGroups/Index.js';
 import IndividualGroups from './screens/IndividualGroups/Index.js';
 import { getEvents } from './db/event';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
