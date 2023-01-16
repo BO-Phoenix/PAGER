@@ -7,14 +7,8 @@ const Index = () => {
   // console.log('width: ', width, 'height: ', height);
   return (
     <>
-      <View style={globalStyles.header}>
-        <Text style={globalStyles.headerText}> PAGER </Text>
-      </View>
       <View style={globalStyles.container}>
         <Text style={globalStyles.text}>Individual group screen</Text>
-      </View>
-      <View style={globalStyles.footer}>
-        <Text style={globalStyles.footerText}> FOOTER BAR </Text>
       </View>
     </>
   );
