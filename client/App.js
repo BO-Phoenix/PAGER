@@ -30,6 +30,21 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'black',
+  },
+  appHeader: {
+    fontFamily: 'Arial',
+    fontWeight: 'Semi Bold',
+    fontSize: '28px',
+    color: 'white',
+    backgroundColor: 'black',
+    margin: '0.5em',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

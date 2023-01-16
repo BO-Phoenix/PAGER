@@ -23,17 +23,17 @@ const Index = () => {
         <Stack.Screen
           name="Upcoming"
           component={Upcoming}
-          options={{title: 'PAGER'}}
+          // options={{title: 'PAGER'}}
         />
         <Stack.Screen
           name="Attended"
           component={Attended}
-          options={{title: 'PAGER'}}
+          // options={{title: 'PAGER'}}
         />
         <Stack.Screen
           name="Create"
           component={Create}
-          options={{title: 'PAGER'}}
+          // options={{title: 'PAGER'}}
         />
       </Stack.Navigator>
 
