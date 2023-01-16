@@ -12,14 +12,22 @@ const styles = StyleSheet.create({
 });
 
 const Attended = ({ navigation }) => {
+
   return (
     <View style={styles.container}>
       <Text>I Am Attended</Text>
-      {/* <TouchableOpacity
+      <TouchableOpacity
       title="Upcoming"
       onPress={() =>
         navigation.navigate('Upcoming', {name: 'Upcoming'})
-      } ><Text>Upcoming</Text></TouchableOpacity> */}
+      } ><Text>Upcoming</Text></TouchableOpacity>
+
+      <TouchableOpacity
+      title="Create"
+      onPress={() =>
+        navigation.navigate('Create', {name: 'Create'})
+      } ><Text>Create</Text></TouchableOpacity>
+
       {/* <Button
       title="Upcoming"
       onPress={() =>

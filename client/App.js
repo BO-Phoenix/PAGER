@@ -16,6 +16,9 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
+      <View id="header-container" style={styles.headerContainer}>
+        <Text id="app-header" style={styles.appHeader}>PAGER</Text>
+      </View>
       <Stack.Navigator initialRouteName="AllGroups" >
         <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
         <Stack.Screen options={{ headerShown: false }} name="HomePage" component={HomePage} />
