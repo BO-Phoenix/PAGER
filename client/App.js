@@ -7,7 +7,12 @@ import LoginScreen from './screens/Login/Index.js';
 import HomePage from './screens/HomePage/Index.js';
 import AllGoups from './screens/AllGroups/Index.js';
 import IndividualGroups from './screens/IndividualGroups/Index.js';
-import { getAllEvents, getOneEvent, addGroupToEvent } from './db/event';
+import {
+  getAllEvents,
+  getOneEvent,
+  addGroupToEvent,
+  removeGroupFromEvent,
+} from './db/event';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
@@ -20,8 +25,9 @@ export default function App() {
       const response = await getAllEvents();
       setEvents(response);
     }
-    addGroupToEvent('2lIbJPzhpMTowLdZLsY7', 'this is an another new group id ');
-    getOneEvent('2lIbJPzhpMTowLdZLsY7');
+    // addGroupToEvent('2lIbJPzhpMTowLdZLsY7', 'this is an another new group id ');
+    // getOneEvent('2lIbJPzhpMTowLdZLsY7');
+    // removeGroupFromEvent('2lIbJPzhpMTowLdZLsY7', 'rt7rtkrt732jfi45jf344');
     fetchData();
   }, []);
 

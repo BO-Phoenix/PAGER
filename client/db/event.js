@@ -7,6 +7,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  arrayRemove,
 } from 'firebase/firestore';
 // import { FieldValue } from 'firebase-admin/firestore';
 import firebase from 'firebase/app';
@@ -51,7 +52,7 @@ async function getOneEvent(eventId) {
     if (!eventSnap.exists()) {
       console.log('Event with this event id does not exists');
     }
-    console.log('one event: ', eventSnap.data());
+    // console.log('one event: ', eventSnap.data());
     return eventSnap.data();
   } catch (err) {
     console.log(err);
@@ -61,13 +62,18 @@ async function getOneEvent(eventId) {
 // add a group to an event
 async function addGroupToEvent(eventId, groupId) {
   const eventRef = doc(db, 'events', eventId);
-  const eventSnap = await getDoc(eventRef);
-  const groupIds = eventSnap.data().group_ids;
+  try {
+    const eventSnap = await getDoc(eventRef);
+    const groupIds = eventSnap.data().group_ids;
+    await updateDoc(eventRef, {
+      group_ids: [...groupIds, groupId],
+    });
+    console.log('The group id was added to the event');
+  } catch (err) {
+    console.log(err);
+  }
   // console.log('event from get(): ', groupIds);
 
-  updateDoc(eventRef, {
-    group_ids: [...groupIds, groupId],
-  });
   // const unionRes = await eventRef
   //   .update({
   //     groups_ids: [...groupIds, groupId],
@@ -80,4 +86,23 @@ async function addGroupToEvent(eventId, groupId) {
   //   });
 }
 
-export { getAllEvents, getOneEvent, addGroupToEvent };
+async function removeGroupFromEvent(eventId, groupId) {
+  const eventRef = doc(db, 'events', eventId);
+  try {
+    const eventSnap = await getDoc(eventRef);
+    if (!eventSnap.exists()) {
+      console.log('Event with this event id does not exists');
+    }
+    const groupIds = eventSnap.data().group_ids;
+    await updateDoc(eventRef, {
+      group_ids: arrayRemove(groupId),
+    });
+    console.log(
+      `The group_id ${groupId} was successfully removed from the group_ids array within event ${eventId}`,
+    );
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export { getAllEvents, getOneEvent, addGroupToEvent, removeGroupFromEvent };
