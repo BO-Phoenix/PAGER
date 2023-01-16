@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import {
+  StyleSheet, Text, View, SafeAreaView,
+} from 'react-native';
 import globalStyles from '../../globalStyles';
-import Upcoming from './Upcoming.jsx';
-import Attended from './Attended.jsx';
-import Create from './Create.jsx';
+import Upcoming from './Upcoming.js';
+import Attended from './Attended.js';
+import Create from './Create.js';
 
 const Index = () => {
   const Stack = createNativeStackNavigator();
