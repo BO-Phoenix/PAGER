@@ -76,7 +76,6 @@ const Index = () => {
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.headerText}>SELECT EVENT</Text>
       <View style={styles.filterContainer}>
         <View style={styles.filterOptionContainer}>

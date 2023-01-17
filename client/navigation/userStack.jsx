@@ -8,6 +8,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button } from 'react-native-elements';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useFonts } from 'expo-font';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Loading from '../screens/Loading/Index.js';
 import LoginScreen from '../screens/Login/Index.js';
 import HomePage from '../screens/HomePage/Index.js';
