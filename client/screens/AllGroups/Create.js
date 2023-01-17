@@ -41,6 +41,10 @@ const Create = () => {
   const [size, setSize] = useState('');
   const [vibe, setVibe] = useState('');
 
+  // const submitFormData = () => {
+
+  // }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <Text>I Am Create</Text> */}
@@ -109,10 +113,17 @@ export default Create;
 // createGroup(formdata)
 // Create a new group with all the infos
 
+// addChatMsg(formdata) - JEFF
+// Add chat message for a specific group
+
+// addPlan(group_id, form_data) -- JEFF
+// Add a new plan to the schedule for a specific group
+
 // event_date
 // event_id
 // group_image
 // group_name
+// group_description
 // member_list : user's user_id
 // organizer_name : ?? redux state??
 // size: string

@@ -31,24 +31,24 @@ const styles = StyleSheet.create({
 });
 
 const Attended = ({ navigation }) => {
-  const [userGroups, setUserGroups] = useState([]);
+  const [attendedUserGroups, setAttendedUserGroups] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       // console.log('here in the effect');
 
-      const response = await getGroupsPerUser('DMuiKcBDEA0q95QHzbJq');
+      const response = await getGroupsAttendedPerUser('DMuiKcBDEA0q95QHzbJq');
       // await addPlan(); -- POST, PUT, DELETE
-      setUserGroups(response); // -- GET
+      setAttendedUserGroups(response); // -- GET
     }
     fetchData();
   }, []);
-  console.log('does this work?', userGroups);
+  console.log('does this work?', attendedUserGroups);
 
   return (
     <View style={styles.container}>
       <Text>Attended</Text>
-      {userGroups.map(group => {
+      {attendedUserGroups.map(group => {
         return <Text key={group.id}>{group.group_name}</Text>;
       })}
       {/* <TouchableOpacity
