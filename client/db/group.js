@@ -21,7 +21,6 @@ import {
   getDownloadURL,
 } from 'firebase/storage';
 import firebase from 'firebase/app';
-import { result } from 'lodash';
 import { db, storage } from '../firebase-config';
 
 const groupRef = collection(db, 'groups');
@@ -45,21 +44,38 @@ export async function getGroupPlans(group_id) {
   return plans;
 }
 
+export async function getPendeingRequestPerGroup(group_id) {
+  console.log('get pending request');
+  const request_with_user_info = [];
+  const docRef = doc(db, 'groups', group_id);
+  const docSnap = await getDoc(docRef);
+  const pending_requests = docSnap.data().pending_request;
+  for (let i = 0; i < pending_requests.length; i++) {
+    const userRef = doc(db, 'users', pending_requests[i]);
+    const userSnap = await getDoc(userRef);
+    request_with_user_info.push({
+      ...{ id: userSnap.id },
+      ...userSnap.data(),
+      ...{ group_id: group_id },
+    });
+  }
+  console.log('group pending request detailed info : ', request_with_user_info);
+  return request_with_user_info;
+}
+
 export async function getGroupsPerEvent(event_id) {
   console.log('get group per event');
   const groups = [];
   const groups_with_plans = [];
   const q = query(groupRef, where('event_id', '==', event_id));
   const querySnapshot = await getDocs(q);
-  console.log('query snapshot is : ', querySnapshot);
-
   querySnapshot.forEach((doc) => {
     console.log(doc.id, ' => ', doc.data());
     groups.push({ ...{ id: doc.id }, ...doc.data() });
   });
 
   for (let i = 0; i < groups.length; i++) {
-    const plans = await getGroupPlans();
+    const plans = await getGroupPlans(groups[i].id);
     groups_with_plans.push({ ...groups[i], ...{ plans } });
   }
   console.log('group with plans : ', groups_with_plans);
@@ -106,11 +122,12 @@ export async function getGroupsAttendedPerUser(user_id) {
   const groups = await getGroupsPerUser(user_id);
   const result = [];
   for (let i = 0; i < groups.length; i++) {
+    //console.log('date and time is ', groups[i].event_date.toDate(), new Date());
     if (groups[i].event_date.toDate() < new Date()) {
       result.push(groups[i]);
     }
   }
-
+  console.log('attended groups are : ', result);
   return result;
 }
 
@@ -123,6 +140,7 @@ export async function getGroupsUpcommingPerUser(user_id) {
       result.push(groups[i]);
     }
   }
+  console.log('upcomming groups are : ', result);
   return result;
 }
 
@@ -140,7 +158,7 @@ export async function getChatMsgsPerGroup(group_id) {
 }
 
 // post request
-export async function createGroup(form_data) {
+export async function createGroup(form_data, organizer_id) {
   console.log('create group');
   const image = form_data.group_image;
   const imageRef = ref(storage, `image/${image.name}`);
@@ -152,29 +170,25 @@ export async function createGroup(form_data) {
     .then((url) => {
       form_data.group_image = url;
       addDoc(collection(db, 'groups'), {
-        event_date: Date.now(),
+        event_date: form_data.event_date,
         event_id: form_data.event_id,
         group_image: url,
         group_name: form_data.group_name,
-        member_list: [],
+        member_list: [organizer_id],
         organizer_name: form_data.organizer_name,
         pending_request: [],
         size: form_data.size,
         vibe: form_data.vibe,
+        organizer_id: form_data.organizer_id,
+        group_description: form_data.group_description,
       }).then(() => console.log('added info'));
     });
 }
 
 export async function sendRequestToGroup(user_id, group_id) {
-  // update group table
-  // update user table
-  await setDoc(
-    doc(db, 'groups', group_id),
-    {
-      pending_request: [user_id],
-    },
-    { merge: true },
-  ).then(() => console.log('request received'));
+  await updateDoc(doc(db, 'groups', group_id), {
+    pending_request: arrayUnion(user_id),
+  }).then(() => console.log('request approved group side'));
 }
 
 export async function acceptInGroup(user_id, group_id) {
@@ -185,13 +199,9 @@ export async function acceptInGroup(user_id, group_id) {
     member_list: arrayUnion(user_id),
   }).then(() => console.log('request approved group side'));
 
-  await setDoc(
-    doc(db, 'users', user_id),
-    {
-      group_list: [group_id],
-    },
-    { merge: true },
-  ).then(() => console.log('request approved user side'));
+  await updateDoc(doc(db, 'users', user_id), {
+    group_list: arrayUnion(group_id),
+  }).then(() => console.log('request approved user side'));
 }
 
 export async function rejectGroup() {
@@ -200,26 +210,20 @@ export async function rejectGroup() {
 }
 
 export async function invitePeopleToGroup(user_id, group_id) {
-  // update group table
-  // update user table
   await updateDoc(doc(db, 'groups', group_id), {
     member_list: arrayUnion(user_id),
   }).then(() => console.log('add people to group'));
 
-  await setDoc(
-    doc(db, 'users', user_id),
-    {
-      group_list: [group_id],
-    },
-    { merge: true },
-  ).then(() => console.log('people get added user side'));
+  await updateDoc(doc(db, 'users', user_id), {
+    group_list: arrayUnion(group_id),
+  }).then(() => console.log('request approved user side'));
 }
 
-export async function addPlan(group_id) {
+export async function addPlan(group_id, form_data) {
   console.log('add plan for a group');
   await addDoc(collection(db, `groups/${group_id}/schedule`), {
-    time: Date.now(),
-    description: 'The last stage',
+    time: form_data.time,
+    description: form_data.description,
   }).then(() => console.log('plan added'));
 }
 
@@ -240,7 +244,7 @@ export async function addChatMsg(form_data) {
   // update user table
   console.log('add chat message');
   await addDoc(collection(db, 'chat'), {
-    created_on: Date.now(),
+    created_on: form_data.created_on,
     group_id: form_data.group_id,
     message_body: form_data.msg,
     reaction: false,
