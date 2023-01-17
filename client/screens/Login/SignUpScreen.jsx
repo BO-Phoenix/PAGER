@@ -9,7 +9,7 @@ import { addUser } from '../../db/user.js';
 const auth = getAuth();
 
 const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
-  //const [id, setId] = useState('');
+  const [userDocId, setUserDocId] = useState('');
   const [value, setValue] = React.useState({
     email: '',
     password: '',
@@ -49,7 +49,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         description: '',
         profile_pic: '',
       });
-      console.log('id inside of addUser', id);
+      setUserDocId(id);
     } catch (error) {
       console.log(error);
     }
