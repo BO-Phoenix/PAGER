@@ -1,15 +1,32 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
 import globalStyles from '../../globalStyles';
 
 const Overview = ({ navigation }) => {
   // I am most likely going to have to pick another navigation method in order to make this look like the wireframe we have drawn on figma
   //bold specific words
-  const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
-
+  const B = (props) => <Text style={{fontWeight: '900'}}>{props.children}</Text>
+  const Schedule = (props) => (
+    <View
+      style={styles.schedules}
+    >
+      <B>12:00 PM</B>
+      <Text>SCHEDULE PLANS LOGGED AND SHARED HERE.</Text>
+    </View>
+  )
+  const Member = (props) => (
+    <View style={styles.members}>
+      <Image
+      style={styles.member}
+      source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
+      />
+      <Text>NAME HERE</Text>
+    </View>
+  )
   return (
-    <View style={styles.container}>
+    <ScrollView >
+      <View style={styles.container}>
       <Image
       style={styles.main}
       source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
@@ -37,19 +54,31 @@ const Overview = ({ navigation }) => {
         <StatusBar style="auto" />
       </View>
       <View style={styles.separation}/>
-      <View style={styles.schedules}>
+
+      <View style={styles.schedule}>
         <Text> <B>SCHEDULE</B> </Text>
-        <Text style={{alignSelf: 'end'}}> SEE ALL </Text>
+        <Text style={{textDecorationLine: 'underline' }}> SEE ALL </Text>
+      </View>
 
-        <B>12:00 PM</B>
-        <Text>SCHEDULE PLANS LOGGED AND SHARED HERE.</Text>
-        <B>12:00 PM</B>
-        <Text>SCHEDULE PLANS LOGGED AND SHARED HERE.</Text>
-        <B>12:00 PM</B>
-        <Text>SCHEDULE PLANS LOGGED AND SHARED HERE.</Text>
+      <Schedule />
+      <Schedule />
+      <Schedule />
+      <Schedule />
 
+      <View style={styles.separation}/>
+
+      <View style={styles.schedule}>
+        <Text> <B>GROUP MEMBERS</B> </Text>
+        <Text style={{textDecorationLine: 'underline' }}> SEE ALL </Text>
+      </View>
+
+      <View style={{flexDirection: 'row', justifyContent: 'space-evenly', borderWidth: 1, width: '100%'}}>
+        <Member />
+        <Member />
+        <Member />
       </View>
     </View>
+    </ScrollView>
   );
 };
 
@@ -63,7 +92,8 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     borderColor: 'black',
     borderWidth: 1,
-    padding: 10
+    padding: 10,
+    overflowY: 'scroll'
   },
   main: {
     height: '27%',
@@ -101,10 +131,24 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 2,
   },
-  schedules: {
+  schedule: {
+    marginTop: 5,
+    marginBottom: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     borderColor: 'green',
     borderWidth: 1,
-    alignSelf: 'end',
     width: '100%'
+  },
+  schedules: {
+    marginTop: 45,
+    alignSelf: 'start'
+  },
+  members: {
+    // flexDirection: 'row'
+  },
+  member: {
+    height: 50,
+    width: 50
   }
 });
