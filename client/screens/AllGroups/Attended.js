@@ -43,7 +43,7 @@ const Attended = ({ navigation }) => {
     }
     fetchData();
   }, []);
-  console.log('does this work?', attendedUserGroups);
+  // console.log('does this work?', attendedUserGroups);
 
   return (
     <View style={styles.container}>

@@ -1,9 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet, Text, View, SafeAreaView,
 } from 'react-native';
 import { Form, FormItem, Picker } from 'react-native-form-component';
+import {
+  getGroupsPerEvent,
+  getGroupsPerUser,
+  getGroupsAttendedPerUser,
+  getGroupsUpcommingPerUser,
+  getChatMsgsPerGroup,
+  createGroup,
+  sendRequestToGroup,
+  rejectGroup,
+  invitePeopleToGroup,
+  addChatMsg,
+  getGroupMembers,
+  acceptInGroup,
+  getGroupPlans,
+  addPlan,
+  deletePlan,
+} from '../../db/group';
+import { getAllEvents } from '../../db/event';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,12 +56,65 @@ const styles = StyleSheet.create({
 });
 
 const Create = () => {
+  const [groupName, setGroupName] = useState('');
+  const [groupDescription, setGroupDescription] = useState('');
+  const [groupImg, setGroupImg] = useState('');
   const [size, setSize] = useState('');
   const [vibe, setVibe] = useState('');
+  const [event, setEvent] = useState('');
 
-  // const submitFormData = () => {
+  const [allEvents, setAllEvents] = useState([]);
 
-  // }
+  // event_date
+  // event_id
+  // group_image -- DONE
+  // group_name -- DONE
+  // group_description -- DONE
+  // member_list : user's user_id
+  // organizer_name : user's full name
+  // size: string -- DONE
+  // vibe: string -- DONE
+
+  const groupNameInput = useRef();
+  const groupDescriptionInput = useRef();
+  const groupImgInput = useRef();
+
+  // getAllEvents()
+  // Get all events
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getAllEvents();
+      // setAllEvents(response);
+      console.log('THIS IS RESPONSE', response);
+    }
+    fetchData();
+  }, []);
+
+  // console.log('this is all events', allEvents);
+
+  const submitFormData = () => {
+    console.log(
+      'name:: ',
+      groupName,
+      'description:: ',
+      groupDescription,
+      'size:: ',
+      size,
+      'vibe:: ',
+      vibe,
+      'img:: ',
+      groupImg,
+    );
+    // async function fetchData() {
+    //   // console.log('here in the effect');
+
+    //   const response = await createGroup();
+    //   // await addPlan(); -- POST, PUT, DELETE
+    //   // setItems(response); -- GET
+    // }
+    // fetchData();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,7 +124,7 @@ const Create = () => {
         CREATE GROUP
       </Text>
       <Form
-        onButtonPress={() => console.warn('do something')}
+        onButtonPress={() => { submitFormData(); }}
         buttonText="CREATE GROUP"
         buttonStyle={styles.btnStyle}
         buttonTextStyle={styles.btnTextStyle}
@@ -63,12 +134,18 @@ const Create = () => {
           id="group-name"
           placeholder="GROUP NAME"
           isRequired
+          value={groupName}
+          onChangeText={(groupName) => setGroupName(groupName)}
+          ref={groupNameInput}
         />
         <FormItem
           style={styles.formInput}
           id="group-description"
           placeholder="GROUP DESCRIPTION"
           isRequired
+          value={groupDescription}
+          onChangeText={(groupDescription) => setGroupDescription(groupDescription)}
+          ref={groupDescriptionInput}
         />
         <Picker
           style={styles.formInput}
@@ -96,11 +173,27 @@ const Create = () => {
           selectedValue={vibe}
           onSelection={(item) => setVibe(item.value)}
         />
+        {/* <Picker
+          style={styles.formInput}
+          id="select-event"
+          placeholder="SELECT EVENT"
+          items={[
+            { label: 'Low', value: 'low' },
+            { label: 'Medium', value: 'medium' },
+            { label: 'High', value: 'high' },
+          ]}
+          label="Pick a number"
+          selectedValue={event}
+          onSelection={(item) => setEvent(item.value)}
+        /> */}
         <FormItem
           style={styles.formInput}
           id="upload-img"
           placeholder="UPLOAD IMAGE"
           isRequired
+          value={groupImg}
+          onChangeText={(groupImg) => setGroupImg(groupImg)}
+          ref={groupImgInput}
         />
       </Form>
     </SafeAreaView>
