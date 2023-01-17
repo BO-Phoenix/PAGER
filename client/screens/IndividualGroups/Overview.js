@@ -43,8 +43,10 @@ const Overview = ({ navigation }) => {
 
         <B>12:00 PM</B>
         <Text>SCHEDULE PLANS LOGGED AND SHARED HERE.</Text>
-        <Text></Text>
-        <Text></Text>
+        <B>12:00 PM</B>
+        <Text>SCHEDULE PLANS LOGGED AND SHARED HERE.</Text>
+        <B>12:00 PM</B>
+        <Text>SCHEDULE PLANS LOGGED AND SHARED HERE.</Text>
 
       </View>
     </View>
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     borderColor: 'black',
     borderWidth: 1,
-    margin: 10
+    padding: 10
   },
   main: {
     height: '27%',
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
   schedules: {
     borderColor: 'green',
     borderWidth: 1,
-    alignSelf: 'start',
+    alignSelf: 'end',
     width: '100%'
   }
 });
