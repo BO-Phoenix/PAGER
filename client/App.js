@@ -11,6 +11,30 @@ import IndividualGroups from './screens/IndividualGroups/Index.js';
 
 const Stack = createNativeStackNavigator();
 
+const styles = StyleSheet.create({
+  headerContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'black',
+  },
+  appHeader: {
+    fontFamily: 'Arial',
+    fontWeight: 'Semi Bold',
+    fontSize: 28,
+    color: 'white',
+    backgroundColor: 'black',
+    margin: 12,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -44,27 +68,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'black',
-  },
-  appHeader: {
-    fontFamily: 'Arial',
-    fontWeight: 'Semi Bold',
-    fontSize: 28,
-    color: 'white',
-    backgroundColor: 'black',
-    margin: 12,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

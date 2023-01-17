@@ -14,9 +14,9 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] },
-    ],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     indent: [2, 2],
+    'object-curly-newline': 0,
     'no-console': 0,
     'eol-last': 0,
     'no-multiple-empty-lines': 0,
@@ -31,5 +31,8 @@ module.exports = {
     'no-unused-vars': 0,
     'react-hooks/exhaustive-deps': 0,
     'no-param-reassign': 0,
+    'no-shadow': 0,
+    camelcase: 0,
+    'no-plusplus': 0,
   },
 };

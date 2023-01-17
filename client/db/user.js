@@ -1,4 +1,3 @@
-import { db } from '../firebase-config';
 import {
   collection,
   getDocs,
@@ -13,15 +12,14 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import firebase from 'firebase/app';
-import { storage } from '../firebase-config.js';
 import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
-import { v4 } from 'uuid';
+import { storage, db } from '../firebase-config.js';
 
 const usersRef = collection(db, 'users');
 const getFS = getFirestore();
 
 export async function getUsers() {
-  let users = [];
+  const users = [];
   const querySnapshot = await getDocs(usersRef);
   querySnapshot.forEach((doc) => {
     // console.log('doc is :', doc.id, doc.data());
@@ -33,7 +31,7 @@ export async function getUsers() {
 }
 
 export async function getUser(id) {
-  let user = [];
+  const user = [];
   const userRef = doc(getFS, 'users', id);
   const querySnapshot = await getDoc(userRef);
 
@@ -54,7 +52,7 @@ export async function addUser(doc) {
 
 export async function setUserInfo(id, data) {
   const image = data.profile_pic;
-  const imageRef = ref(storage, `images/${image.name + v4()}`);
+  const imageRef = ref(storage, `images/${image.name}`);
   uploadBytes(imageRef, image)
     .then((result) => {
       console.log('document has been uploaded!: ');
