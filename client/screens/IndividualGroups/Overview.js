@@ -4,9 +4,11 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, Image, ScrollView } f
 import globalStyles from '../../globalStyles';
 
 const Overview = ({ navigation }) => {
-  // I am most likely going to have to pick another navigation method in order to make this look like the wireframe we have drawn on figma
-  //bold specific words
+  // bold specific words
+
   const B = (props) => <Text style={{fontWeight: '900'}}>{props.children}</Text>
+
+  // One Schedule with time and plans
   const Schedule = (props) => (
     <View
       style={styles.schedules}
@@ -15,6 +17,8 @@ const Overview = ({ navigation }) => {
       <Text>SCHEDULE PLANS LOGGED AND SHARED HERE.</Text>
     </View>
   )
+
+  // One group member's picture and name
   const Member = (props) => (
     <View style={styles.members}>
       <Image
@@ -24,60 +28,61 @@ const Overview = ({ navigation }) => {
       <Text>NAME HERE</Text>
     </View>
   )
+
   return (
     <ScrollView >
       <View style={styles.container}>
-      <Image
-      style={styles.main}
-      source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
-      />
-      <Text style={styles.name}>Group Name</Text>
-      <Text style={styles.desc}> <B>ORGANIZER</B>: Name Here</Text>
-      <Text style={styles.desc}> {'\n'} Brief description goes here. Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries. {'\n'} </Text>
+        <Image
+        style={styles.main}
+        source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
+        />
+        <Text style={styles.name}>Group Name</Text>
+        <Text style={styles.desc}> <B>ORGANIZER</B>: Name Here</Text>
+        <Text style={styles.desc}> {'\n'} Brief description goes here. Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries. {'\n'} </Text>
 
-      <View style={styles.tabs}>
-        <Text style={styles.selected}>OVERVIEW </Text>
-        <TouchableOpacity
-          title="Schedule"
-          onPress={() => navigation.navigate('Schedule', { name: 'Schedule' })}
-        >
-          <Text style={styles.nav}>SCHEDULE</Text>
-        </TouchableOpacity>
+        <View style={styles.tabs}>
+          <Text style={styles.selected}>OVERVIEW </Text>
+          <TouchableOpacity
+            title="Schedule"
+            onPress={() => navigation.navigate('Schedule', { name: 'Schedule' })}
+          >
+            <Text style={styles.nav}>SCHEDULE</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          title="Chat"
-          onPress={() => navigation.navigate('Chat', { name: 'Chat' })}
-        >
-          <Text style={styles.nav}>CHAT</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            title="Chat"
+            onPress={() => navigation.navigate('Chat', { name: 'Chat' })}
+          >
+            <Text style={styles.nav}>CHAT</Text>
+          </TouchableOpacity>
 
-        <StatusBar style="auto" />
+          <StatusBar style="auto" />
+        </View>
+        <View style={styles.separation}/>
+
+        <View style={styles.schedule}>
+          <Text> <B>SCHEDULE</B> </Text>
+          <Text style={{textDecorationLine: 'underline' }}> SEE ALL </Text>
+        </View>
+
+        <Schedule />
+        <Schedule />
+        <Schedule />
+        <Schedule />
+
+        <View style={styles.separation}/>
+
+        <View style={styles.schedule}>
+          <Text> <B>GROUP MEMBERS</B> </Text>
+          <Text style={{textDecorationLine: 'underline' }}> SEE ALL </Text>
+        </View>
+
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly', borderWidth: 1, width: '100%'}}>
+          <Member />
+          <Member />
+          <Member />
+        </View>
       </View>
-      <View style={styles.separation}/>
-
-      <View style={styles.schedule}>
-        <Text> <B>SCHEDULE</B> </Text>
-        <Text style={{textDecorationLine: 'underline' }}> SEE ALL </Text>
-      </View>
-
-      <Schedule />
-      <Schedule />
-      <Schedule />
-      <Schedule />
-
-      <View style={styles.separation}/>
-
-      <View style={styles.schedule}>
-        <Text> <B>GROUP MEMBERS</B> </Text>
-        <Text style={{textDecorationLine: 'underline' }}> SEE ALL </Text>
-      </View>
-
-      <View style={{flexDirection: 'row', justifyContent: 'space-evenly', borderWidth: 1, width: '100%'}}>
-        <Member />
-        <Member />
-        <Member />
-      </View>
-    </View>
     </ScrollView>
   );
 };
