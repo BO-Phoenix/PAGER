@@ -1,4 +1,3 @@
-import { db, storage } from '../firebase-config';
 import {
   collection,
   getDocs,
@@ -12,6 +11,7 @@ import {
   updateDoc,
   arrayUnion,
   deleteDoc,
+  Timestamp,
 } from 'firebase/firestore';
 import {
   getStorage,
@@ -21,39 +21,18 @@ import {
   getDownloadURL,
 } from 'firebase/storage';
 import firebase from 'firebase/app';
-import { Timestamp } from 'firebase/firestore';
 import { result } from 'lodash';
+import { db, storage } from '../firebase-config';
 
 const groupRef = collection(db, 'groups');
 const userRef = collection(db, 'users');
 const chatRef = collection(db, 'chat');
 
 // get request
-export async function getGroupsPerEvent(event_id) {
-  console.log('get group per event');
-  let groups = [];
-  let groups_with_plans = [];
-  const q = query(groupRef, where('event_id', '==', event_id));
-  const querySnapshot = await getDocs(q);
-  console.log('query snapshot is : ', querySnapshot);
-
-  querySnapshot.forEach((doc) => {
-    console.log(doc.id, ' => ', doc.data());
-    groups.push({ ...{ id: doc.id }, ...doc.data() });
-  });
-
-  for (let i = 0; i < groups.length; i++) {
-    let plans = await getGroupPlans();
-    groups_with_plans.push({ ...groups[i], ...{ plans: plans } });
-  }
-  console.log('group with plans : ', groups_with_plans);
-
-  return groups_with_plans;
-}
 
 export async function getGroupPlans(group_id) {
   console.log('get group schedules');
-  let plans = [];
+  const plans = [];
   const groupScheduleRef = collection(db, `groups/${group_id}/schedule`);
   const q = query(groupScheduleRef);
   const querySnapshot = await getDocs(q);
@@ -66,9 +45,31 @@ export async function getGroupPlans(group_id) {
   return plans;
 }
 
+export async function getGroupsPerEvent(event_id) {
+  console.log('get group per event');
+  const groups = [];
+  const groups_with_plans = [];
+  const q = query(groupRef, where('event_id', '==', event_id));
+  const querySnapshot = await getDocs(q);
+  console.log('query snapshot is : ', querySnapshot);
+
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, ' => ', doc.data());
+    groups.push({ ...{ id: doc.id }, ...doc.data() });
+  });
+
+  for (let i = 0; i < groups.length; i++) {
+    const plans = await getGroupPlans();
+    groups_with_plans.push({ ...groups[i], ...{ plans } });
+  }
+  console.log('group with plans : ', groups_with_plans);
+
+  return groups_with_plans;
+}
+
 export async function getGroupMembers(group_id) {
   console.log('get group members');
-  let members = [];
+  const members = [];
   const docRef = doc(db, 'groups', group_id);
   const docSnap = await getDoc(docRef);
   const members_list = docSnap.data().member_list;
@@ -85,7 +86,7 @@ export async function getGroupMembers(group_id) {
 
 export async function getGroupsPerUser(user_id) {
   console.log('get group per user');
-  let groups = [];
+  const groups = [];
   const docRef = doc(db, 'users', user_id);
   const docSnap = await getDoc(docRef);
   // console.log('test getdoc : ', docSnap.data().group_list);
@@ -102,8 +103,8 @@ export async function getGroupsPerUser(user_id) {
 
 export async function getGroupsAttendedPerUser(user_id) {
   console.log('get attended group');
-  let groups = await getGroupsPerUser(user_id);
-  let result = [];
+  const groups = await getGroupsPerUser(user_id);
+  const result = [];
   for (let i = 0; i < groups.length; i++) {
     if (groups[i].event_date.toDate() < new Date()) {
       result.push(groups[i]);
@@ -115,8 +116,8 @@ export async function getGroupsAttendedPerUser(user_id) {
 
 export async function getGroupsUpcommingPerUser(user_id) {
   console.log('get upcoming group');
-  let groups = await getGroupsPerUser(user_id);
-  let result = [];
+  const groups = await getGroupsPerUser(user_id);
+  const result = [];
   for (let i = 0; i < groups.length; i++) {
     if (groups[i].event_date.toDate() > new Date()) {
       result.push(groups[i]);
@@ -127,7 +128,7 @@ export async function getGroupsUpcommingPerUser(user_id) {
 
 export async function getChatMsgsPerGroup(group_id) {
   console.log('get chat message for specific group');
-  let result = [];
+  const result = [];
   const q = query(chatRef, where('group_id', '==', group_id));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
