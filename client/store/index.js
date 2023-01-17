@@ -1,10 +1,10 @@
-// import { configureStore } from '@reduxjs/toolkit';
-// import reducers from './reducers';
+import { configureStore } from '@reduxjs/toolkit';
+import pagerData from '../reducers/index.js';
 
-// const store = configureStore({
-//   reducer: {
-//     data: reducers,
-//   },
-// });
+const store = configureStore({
+  reducer: {
+    pagerData,
+  },
+});
 
-// export default store;
+export default store;

@@ -5,10 +5,18 @@ import { Input, Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { addUser } from '../../db/user.js';
+// -- redux import statements
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserId } from '../../reducers/index.js';
 
 const auth = getAuth();
 
 const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
+
+  // -- redux import statements
+  const { userId } = useSelector((state) => state.pagerData);
+  const dispatch = useDispatch();
+
   const [userDocId, setUserDocId] = useState('');
   const [value, setValue] = React.useState({
     email: '',
@@ -49,6 +57,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         description: '',
         profile_pic: '',
       });
+      dispatch(updateUserId(id));
       setUserDocId(id);
     } catch (error) {
       console.log(error);

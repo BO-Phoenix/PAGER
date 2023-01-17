@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet, Text, View, Button, TouchableOpacity,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import {
   getGroupsPerUser,
   getGroupsAttendedPerUser,
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
 
 const Attended = ({ navigation }) => {
   const [attendedUserGroups, setAttendedUserGroups] = useState([]);
+  const { userId } = useSelector((state) => state.pagerData);
 
   useEffect(() => {
     async function fetchData() {
