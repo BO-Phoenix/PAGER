@@ -8,7 +8,6 @@ import { getStorage } from 'firebase/storage';
 // Your web app's Firebase configuration
 const firebaseConfig = {
   /// put your firebase config here
-  apiKey: 'AIzaSyDvpdu7_BUKuojar2iIkWMTgGZoiPeZ7d4',
   authDomain: 'project-pager-ac1f6.firebaseapp.com',
   projectId: 'project-pager-ac1f6',
   storageBucket: 'project-pager-ac1f6.appspot.com',
