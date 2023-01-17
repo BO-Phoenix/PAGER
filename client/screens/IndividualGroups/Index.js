@@ -6,6 +6,7 @@ import globalStyles from '../../globalStyles';
 import { Overview, Schedule, AddSchedule, Chat } from './individualgroups';
 
 const Index = () => {
+
   const Stack = createNativeStackNavigator();
 
   return (
