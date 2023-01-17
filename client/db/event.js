@@ -27,18 +27,32 @@ const eventsRef = collection(db, 'events');
 
 // get all events
 async function getAllEvents() {
-  getDocs(eventsRef)
-    .then((snapshot) => {
-      const events = [];
-      snapshot.docs.forEach((doc) => {
-        events.push({ ...doc.data(), id: doc.id });
-      });
-      console.log('events: ', events);
-      return events;
+  // getDocs(eventsRef)
+  //   .then((snapshot) => {
+  //     const events = [];
+  //     snapshot.docs.forEach((doc) => {
+  //       events.push({ ...doc.data(), id: doc.id });
+  //     });
+  //     console.log('events: ', events);
+  //     return events;
+  //   })
+  //   .catch((err) => {
+  //     console.log(err.message);
+  //   });
+  //
+  const eventsRef = collection(db, 'events');
+  try {
+    let events = [];
+    const querySnapshot = await getDocs(eventsRef)
+    querySnapshot.forEach((doc) => {
+      events.push(doc.data());
     })
-    .catch((err) => {
-      console.log(err.message);
-    });
+    console.log('data is : ', events);
+    return events;
+  }
+  catch(err) {
+    console.log(err)
+  }
 }
 
 // get one event
