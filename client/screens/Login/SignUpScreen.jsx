@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { addUser } from '../../db/user.js';
 
 const auth = getAuth();
 
 const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
+  const [userDocId, setUserDocId] = useState('');
   const [value, setValue] = React.useState({
     email: '',
     password: '',
+    firstName: '',
+    lastName: '',
     error: ''
   })
 
@@ -31,6 +35,23 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         ...value,
         error: error.message,
       })
+    }
+    try {
+      const id = await addUser({
+        email: value.email,
+        password: value.password,
+        first_name: value.firstName,
+        last_name: value.lastName,
+        birthday: '',
+        music_tastes: [],
+        group_list: [],
+        friends_list: [],
+        description: '',
+        profile_pic: '',
+      });
+      setUserDocId(id);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -59,6 +80,26 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           secureTextEntry={true}
           leftIcon={<Icon
             name='key'
+            size={16}
+          />}
+        />
+        <Input
+          placeholder='First Name'
+          containerStyle={styles.control}
+          value={value.firstName}
+          onChangeText={(text) => setValue({ ...value, firstName: text })}
+          leftIcon={<Icon
+            name='user'
+            size={16}
+          />}
+        />
+        <Input
+          placeholder='Last Name'
+          containerStyle={styles.control}
+          value={value.lastName}
+          onChangeText={(text) => setValue({ ...value, lastName: text })}
+          leftIcon={<Icon
+            name='user'
             size={16}
           />}
         />

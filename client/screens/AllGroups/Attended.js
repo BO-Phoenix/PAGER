@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet, Text, View, Button, TouchableOpacity,
 } from 'react-native';
+import {
+  getGroupsPerUser,
+  getGroupsAttendedPerUser,
+  getGroupsUpcommingPerUser,
+  createGroup,
+} from '../../db/group';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,10 +20,24 @@ const styles = StyleSheet.create({
 });
 
 const Attended = ({ navigation }) => {
+  const [attendedUserGroups, setAttendedUserGroups] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getGroupsAttendedPerUser('DMuiKcBDEA0q95QHzbJq');
+      setAttendedUserGroups(response); // -- GET
+    }
+    fetchData();
+  }, []);
+  // console.log('does this work?', attendedUserGroups);
+
   return (
     <View style={styles.container}>
-      <Text>I Am Attended</Text>
-      <TouchableOpacity
+      <Text>Attended</Text>
+      {attendedUserGroups.map(group => {
+        return <Text key={group.id}>{group.group_name}</Text>;
+      })}
+      {/* <TouchableOpacity
         title="Upcoming"
         onPress={() => navigation.navigate('Upcoming', { name: 'Upcoming' })}
       >
@@ -29,7 +49,7 @@ const Attended = ({ navigation }) => {
         onPress={() => navigation.navigate('Create', { name: 'Create' })}
       >
         <Text>Create</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* <Button
       title="Upcoming"

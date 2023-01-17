@@ -41,13 +41,13 @@ export async function getUser(id) {
 }
 
 export async function addUser(doc) {
-  addDoc(usersRef, doc)
-    .then((docRef) => {
-      console.log('document has been added: ', docRef.id);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+  try {
+    const docRef = await addDoc(usersRef, doc);
+    console.log('document has been added: ', docRef.id, docRef);
+    return docRef.id;
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export async function setUserInfo(id, data) {

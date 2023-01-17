@@ -27,18 +27,18 @@ const eventsRef = collection(db, 'events');
 
 // get all events
 async function getAllEvents() {
-  getDocs(eventsRef)
+  const events = [];
+  await getDocs(eventsRef)
     .then((snapshot) => {
-      const events = [];
       snapshot.docs.forEach((doc) => {
         events.push({ ...doc.data(), id: doc.id });
       });
       console.log('events: ', events);
-      return events;
     })
     .catch((err) => {
       console.log(err.message);
     });
+  return events;
 }
 
 // get one event
