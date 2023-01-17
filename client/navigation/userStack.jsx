@@ -82,7 +82,7 @@ export default function App() {
           PAGER
         </Text>
       </SafeAreaView>
-      <Stack.Navigator initialRouteName="AllGroups">
+      <Stack.Navigator initialRouteName="IndividualGroups">
         <Stack.Screen
           options={{ headerShown: false }}
           name="HomePage"
@@ -99,19 +99,35 @@ export default function App() {
           component={IndividualGroups}
         />
       </Stack.Navigator>
-      <Button title="Sign Out" style={globalStyles.button} onPress={() => auth.signOut()} />
+      <Button
+        title="Sign Out"
+        style={globalStyles.button}
+        onPress={() => auth.signOut()}
+      />
       <SafeAreaView id="header-container" style={styles.navContainer}>
         <View style={styles.navItem}>
-          <Text id="app-header" style={styles.navIcon}>ICON</Text>
-          <Text id="app-header" style={styles.navText}>PROFILE</Text>
+          <Text id="app-header" style={styles.navIcon}>
+            ICON
+          </Text>
+          <Text id="app-header" style={styles.navText}>
+            PROFILE
+          </Text>
         </View>
         <View style={styles.navItem}>
-          <Text id="app-header" style={styles.navIcon}>ICON</Text>
-          <Text id="app-header" style={styles.navText}>HOME</Text>
+          <Text id="app-header" style={styles.navIcon}>
+            ICON
+          </Text>
+          <Text id="app-header" style={styles.navText}>
+            HOME
+          </Text>
         </View>
         <View style={styles.navItem}>
-          <Text id="app-header" style={styles.navIcon}>ICON</Text>
-          <Text id="app-header" style={styles.navText}>GROUPS</Text>
+          <Text id="app-header" style={styles.navIcon}>
+            ICON
+          </Text>
+          <Text id="app-header" style={styles.navText}>
+            GROUPS
+          </Text>
         </View>
       </SafeAreaView>
     </NavigationContainer>

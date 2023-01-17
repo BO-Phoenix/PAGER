@@ -7,25 +7,36 @@ import globalStyles from '../../globalStyles';
 import { Overview, Schedule, AddSchedule, Chat } from './individualgroups';
 
 const Index = () => {
-
   const Stack = createNativeStackNavigator();
   const Tab = createMaterialTopTabNavigator();
 
   return (
-    <Tab.Navigator initialRouteName="Attended" screenOptions={{tabBarLabelStyle: {fontSize: 12}}}>
-      <Tab.Screen name="Overview" component={Overview}
+    <Tab.Navigator
+      initialRouteName="Attended"
+      screenOptions={{ tabBarLabelStyle: { fontSize: 12 } }}
+    >
+      <Tab.Screen
+        name="Overview"
+        component={Overview}
         options={{
           tabBarIndicatorStyle: { backgroundColor: '#B5179E' },
-        }}/>
-      <Tab.Screen name="Schedule" component={Schedule}
+        }}
+      />
+      <Tab.Screen
+        name="Schedule"
+        component={Schedule}
         options={{
           tabBarIndicatorStyle: { backgroundColor: '#7209B7' },
-        }}/>
+        }}
+      />
       {/* <Tab.Screen name="AddSchedule" component={AddSchedule} /> */}
-      <Tab.Screen name="Chat" component={Chat}
+      <Tab.Screen
+        name="Chat"
+        component={Chat}
         options={{
           tabBarIndicatorStyle: { backgroundColor: '#4895EF' },
-        }}/>
+        }}
+      />
     </Tab.Navigator>
   );
 };

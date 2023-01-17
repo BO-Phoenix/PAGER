@@ -6,11 +6,9 @@ const AddSchedule = () => {
   // const { width, height } = Dimensions.get('window');
   // console.log('width: ', width, 'height: ', height);
   return (
-    <>
-      <View style={styles.container}>
-        <Text style={globalStyles.text}>Individual group screen</Text>
-      </View>
-    </>
+    <View style={styles.container}>
+      <Text style={globalStyles.text}>Individual group screen</Text>
+    </View>
   );
 };
 
