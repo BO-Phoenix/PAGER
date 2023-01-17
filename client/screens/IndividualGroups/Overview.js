@@ -97,32 +97,10 @@ const Overview = ({ navigation }) => {
   });
 
   // bold specific words
-
   // eslint-disable-next-line react/no-unstable-nested-components
   const B = ({ children }) => (
     <Text style={{ fontWeight: '900' }}>{children}</Text>
   );
-
-  // One Schedule with time and plans
-  // const Schedule = ({ desc, time }) => {
-  //   // const date = new TimeStamp(time.seconds, time.nanoseconds).toDate();
-  //   return (
-  //     <View style={styles.schedules}>
-  //       <B>time: {time.seconds}</B>
-  //       <Text>{desc}</Text>
-  //     </View>
-  //   );
-  // };
-
-  // One group member's picture and name
-  // const Member = ({ first, last, pfp }) => (
-  //   <View style={styles.members}>
-  //     <Image style={styles.member} source={{ uri: pfp }} />
-  //     <Text>
-  //       {first} {last}
-  //     </Text>
-  //   </View>
-  // );
 
   const [events, setEvents] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
