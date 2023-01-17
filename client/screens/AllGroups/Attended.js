@@ -4,21 +4,10 @@ import {
   StyleSheet, Text, View, Button, TouchableOpacity,
 } from 'react-native';
 import {
-  getGroupsPerEvent,
   getGroupsPerUser,
   getGroupsAttendedPerUser,
   getGroupsUpcommingPerUser,
-  getChatMsgsPerGroup,
   createGroup,
-  sendRequestToGroup,
-  rejectGroup,
-  invitePeopleToGroup,
-  addChatMsg,
-  getGroupMembers,
-  acceptInGroup,
-  getGroupPlans,
-  addPlan,
-  deletePlan,
 } from '../../db/group';
 
 const styles = StyleSheet.create({
@@ -35,10 +24,7 @@ const Attended = ({ navigation }) => {
 
   useEffect(() => {
     async function fetchData() {
-      // console.log('here in the effect');
-
       const response = await getGroupsAttendedPerUser('DMuiKcBDEA0q95QHzbJq');
-      // await addPlan(); -- POST, PUT, DELETE
       setAttendedUserGroups(response); // -- GET
     }
     fetchData();

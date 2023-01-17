@@ -5,21 +5,10 @@ import {
 } from 'react-native';
 import { Form, FormItem, Picker } from 'react-native-form-component';
 import {
-  getGroupsPerEvent,
   getGroupsPerUser,
   getGroupsAttendedPerUser,
   getGroupsUpcommingPerUser,
-  getChatMsgsPerGroup,
   createGroup,
-  sendRequestToGroup,
-  rejectGroup,
-  invitePeopleToGroup,
-  addChatMsg,
-  getGroupMembers,
-  acceptInGroup,
-  getGroupPlans,
-  addPlan,
-  deletePlan,
 } from '../../db/group';
 import { getAllEvents } from '../../db/event';
 
@@ -65,28 +54,23 @@ const Create = () => {
 
   const [allEvents, setAllEvents] = useState([]);
 
-  // event_date
-  // event_id
-  // group_image -- DONE
-  // group_name -- DONE
-  // group_description -- DONE
-  // member_list : user's user_id
-  // organizer_name : user's full name
-  // size: string -- DONE
-  // vibe: string -- DONE
-
   const groupNameInput = useRef();
   const groupDescriptionInput = useRef();
   const groupImgInput = useRef();
-
-  // getAllEvents()
-  // Get all events
 
   useEffect(() => {
     async function fetchData() {
       const response = await getAllEvents();
       // setAllEvents(response);
-      console.log('THIS IS RESPONSE', response);
+      const reformatEvents = await response.reduce((acc, eventObj) => {
+        const newEvent = {
+          label: eventObj.event_name,
+          value: eventObj,
+        };
+        acc.push(newEvent);
+        return acc;
+      }, []);
+      setAllEvents(reformatEvents);
     }
     fetchData();
   }, []);
@@ -105,6 +89,8 @@ const Create = () => {
       vibe,
       'img:: ',
       groupImg,
+      'event:: ',
+      event,
     );
     // async function fetchData() {
     //   // console.log('here in the effect');
@@ -156,7 +142,6 @@ const Create = () => {
             { label: 'Medium (6-10)', value: 'medium' },
             { label: 'Large (11-20)', value: 'large' },
           ]}
-          // label="Pick a number"
           selectedValue={size}
           onSelection={(item) => setSize(item.value)}
         />
@@ -169,23 +154,17 @@ const Create = () => {
             { label: 'Medium', value: 'medium' },
             { label: 'High', value: 'high' },
           ]}
-          // label="Pick a number"
           selectedValue={vibe}
           onSelection={(item) => setVibe(item.value)}
         />
-        {/* <Picker
+        <Picker
           style={styles.formInput}
           id="select-event"
           placeholder="SELECT EVENT"
-          items={[
-            { label: 'Low', value: 'low' },
-            { label: 'Medium', value: 'medium' },
-            { label: 'High', value: 'high' },
-          ]}
-          label="Pick a number"
+          items={allEvents}
           selectedValue={event}
           onSelection={(item) => setEvent(item.value)}
-        /> */}
+        />
         <FormItem
           style={styles.formInput}
           id="upload-img"
@@ -212,15 +191,16 @@ export default Create;
 // addPlan(group_id, form_data) -- JEFF
 // Add a new plan to the schedule for a specific group
 
-// event_date
-// event_id
-// group_image
-// group_name
-// group_description
+// event_date -- DONE
+// event_id -- DONE
+// group_image -- DONE
+// group_name -- DONE
+// group_description -- DONE
 // member_list : user's user_id
-// organizer_name : ?? redux state??
-// size: string
-// vibe: string
+// organizer_name : user's full name
+// size: string -- DONE
+// vibe: string -- DONE
 
-// top priority: andrew's user thing setup
-// need to be able to grab user_id
+
+// top priority: andrew's user id setup
+// need to be able to grab user_id and name

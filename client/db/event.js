@@ -33,7 +33,7 @@ async function getAllEvents() {
       snapshot.docs.forEach((doc) => {
         events.push({ ...doc.data(), id: doc.id });
       });
-      console.log('events: ', events);
+      // console.log('events: ', events);
     })
     .catch((err) => {
       console.log(err.message);
