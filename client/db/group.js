@@ -180,6 +180,7 @@ export async function createGroup(form_data, organizer_id) {
         size: form_data.size,
         vibe: form_data.vibe,
         organizer_id: form_data.organizer_id,
+        group_description: form_data.group_description,
       }).then(() => console.log('added info'));
     });
 }
