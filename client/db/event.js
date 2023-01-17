@@ -1,4 +1,3 @@
-import { db } from '../firebase-config';
 import {
   collection,
   getDocs,
@@ -9,10 +8,8 @@ import {
   setDoc,
   arrayRemove,
 } from 'firebase/firestore';
-// import { FieldValue } from 'firebase-admin/firestore';
 import firebase from 'firebase/app';
-
-// import { initializeApp } from 'firebase-admin/app';
+import { db } from '../firebase-config';
 
 const eventsRef = collection(db, 'events');
 
@@ -32,7 +29,7 @@ const eventsRef = collection(db, 'events');
 async function getAllEvents() {
   getDocs(eventsRef)
     .then((snapshot) => {
-      let events = [];
+      const events = [];
       snapshot.docs.forEach((doc) => {
         events.push({ ...doc.data(), id: doc.id });
       });
