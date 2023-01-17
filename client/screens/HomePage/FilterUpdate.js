@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: 10,
     overflow: 'scroll',
+    backgroundColor: 'white',
   },
   headerText: {
     fontSize: 25,

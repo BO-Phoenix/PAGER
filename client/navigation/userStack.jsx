@@ -82,7 +82,7 @@ export default function App() {
           PAGER
         </Text>
       </SafeAreaView>
-      <Stack.Navigator initialRouteName="HomePage">
+      <Stack.Navigator initialRouteName="AllGroups">
         <Stack.Screen
           options={{ headerShown: false }}
           name="HomePage"
