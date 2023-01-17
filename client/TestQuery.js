@@ -26,8 +26,8 @@ export default function TestQuery() {
       // console.log('here in the effect');
 
       const response = await getGroupsPerEvent();
-      // await addPlan();
-      // setItems(response);
+      // await addPlan(); -- POST, PUT, DELETE
+      // setItems(response); -- GET
     }
     fetchData();
   }, []);
