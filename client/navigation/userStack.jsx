@@ -10,6 +10,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useFonts } from 'expo-font';
 import Loading from '../screens/Loading/Index.js';
 import LoginScreen from '../screens/Login/Index.js';
+import Profile from '../screens/Profile/Index.js';
 import HomePage from '../screens/HomePage/Index.js';
 import AllGroups from '../screens/AllGroups/Index.js';
 import IndividualGroups from '../screens/IndividualGroups/Index.js';
