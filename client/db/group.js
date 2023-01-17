@@ -56,7 +56,7 @@ export async function getPendeingRequestPerGroup(group_id) {
     request_with_user_info.push({
       ...{ id: userSnap.id },
       ...userSnap.data(),
-      ...{ group_id: group_id },
+      ...{ group_id },
     });
   }
   console.log('group pending request detailed info : ', request_with_user_info);
@@ -122,7 +122,7 @@ export async function getGroupsAttendedPerUser(user_id) {
   const groups = await getGroupsPerUser(user_id);
   const result = [];
   for (let i = 0; i < groups.length; i++) {
-    //console.log('date and time is ', groups[i].event_date.toDate(), new Date());
+    // console.log('date and time is ', groups[i].event_date.toDate(), new Date());
     if (groups[i].event_date.toDate() < new Date()) {
       result.push(groups[i]);
     }
@@ -228,15 +228,11 @@ export async function addPlan(group_id, form_data) {
 }
 
 export async function deletePlan(group_id, plan_id) {
-  await deleteDoc(doc(db, `groups/${group_id}/schedule`, plan_id)).then(() =>
-    console.log('plan deleted'),
-  );
+  await deleteDoc(doc(db, `groups/${group_id}/schedule`, plan_id)).then(() => console.log('plan deleted'));
 }
 
 export async function deleteGroup(group_id) {
-  await deleteDoc(doc(db, 'groups', group_id)).then(() =>
-    console.log('group deleted'),
-  );
+  await deleteDoc(doc(db, 'groups', group_id)).then(() => console.log('group deleted'));
 }
 
 export async function addChatMsg(form_data) {
