@@ -1,8 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet, Text, View, Button, TouchableOpacity,
 } from 'react-native';
+import {
+  getGroupsPerEvent,
+  getGroupsPerUser,
+  getGroupsAttendedPerUser,
+  getGroupsUpcommingPerUser,
+  getChatMsgsPerGroup,
+  createGroup,
+  sendRequestToGroup,
+  rejectGroup,
+  invitePeopleToGroup,
+  addChatMsg,
+  getGroupMembers,
+  acceptInGroup,
+  getGroupPlans,
+  addPlan,
+  deletePlan,
+} from '../../db/group';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,10 +31,27 @@ const styles = StyleSheet.create({
 });
 
 const Attended = ({ navigation }) => {
+  const [userGroups, setUserGroups] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      // console.log('here in the effect');
+
+      const response = await getGroupsPerUser('DMuiKcBDEA0q95QHzbJq');
+      // await addPlan(); -- POST, PUT, DELETE
+      setUserGroups(response); // -- GET
+    }
+    fetchData();
+  }, []);
+  console.log('does this work?', userGroups);
+
   return (
     <View style={styles.container}>
-      <Text>I Am Attended</Text>
-      <TouchableOpacity
+      <Text>Attended</Text>
+      {userGroups.map(group => {
+        return <Text key={group.id}>{group.group_name}</Text>;
+      })}
+      {/* <TouchableOpacity
         title="Upcoming"
         onPress={() => navigation.navigate('Upcoming', { name: 'Upcoming' })}
       >
@@ -29,7 +63,7 @@ const Attended = ({ navigation }) => {
         onPress={() => navigation.navigate('Create', { name: 'Create' })}
       >
         <Text>Create</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* <Button
       title="Upcoming"

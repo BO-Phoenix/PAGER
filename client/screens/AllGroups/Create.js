@@ -104,3 +104,19 @@ const Create = () => {
 };
 
 export default Create;
+
+// ADD -- SELECT EVENT
+// createGroup(formdata)
+// Create a new group with all the infos
+
+// event_date
+// event_id
+// group_image
+// group_name
+// member_list : user's user_id
+// organizer_name : ?? redux state??
+// size: string
+// vibe: string
+
+// top priority: andrew's user thing setup
+// need to be able to grab user_id

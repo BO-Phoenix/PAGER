@@ -7,7 +7,7 @@ const Index = () => {
     <View style={globalStyles.container}>
       <Text style={StyleSheet.compose(styles.text, globalStyles.text)}>Login Screen</Text>
     </View>
-  )
+  );
 };
 
 export default Index;
