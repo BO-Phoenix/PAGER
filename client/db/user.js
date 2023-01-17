@@ -43,7 +43,7 @@ export async function getUser(id) {
 export async function addUser(doc) {
   addDoc(usersRef, doc)
     .then((docRef) => {
-      console.log('document has been added!: ', docRef.id);
+      console.log('document has been added: ', docRef.id);
     })
     .catch((err) => {
       console.error(err);
@@ -55,7 +55,7 @@ export async function setUserInfo(id, data) {
   const imageRef = ref(storage, `images/${image.name}`);
   uploadBytes(imageRef, image)
     .then((result) => {
-      console.log('document has been uploaded!: ');
+      console.log('document has been uploaded: ');
       return getDownloadURL(result.ref);
     })
     .then((url) => {
@@ -63,7 +63,7 @@ export async function setUserInfo(id, data) {
       const userInfoRef = doc(getFS, 'users', id);
       setDoc(userInfoRef, data, { merge: true })
         .then((docRef) => {
-          console.log('document has been updated!: ');
+          console.log('document has been updated: ');
         })
         .catch((err) => {
           console.error(err);
