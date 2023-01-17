@@ -13,63 +13,84 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingBottom: 10,
     overflow: 'scroll',
-  },
-  headerText: {
-    fontSize: 25,
-    fontFamily: 'PoppinsBold',
-    margin: 10,
-  },
-  filterContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    margin: 10,
-    paddingBottom: 200,
-  },
-  filterOptionContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '50%',
+    backgroundColor: 'white',
     // borderWidth: 1,
     // borderColor: 'black',
-    marginBottom: 15,
   },
-  filterImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 10,
+  headerImage: {
+    width: 200,
+    height: 200,
+    marginTop: 15,
   },
-  filterName: {
+  headerName: {
+    fontSize: 30,
     fontFamily: 'PoppinsBold',
-    fontSize: 15,
   },
-  filterOptions: {
-    fontFamily: 'Poppins',
-    fontSize: 15,
+  bodyContainerCenter: {
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    marginVertical: 5,
+    marginHorizontal: 15,
+    // borderWidth: 1,
+    // borderColor: 'black',
   },
-  button: {
+  bodyContainerLeft: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    backgroundColor: 'white',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+  },
+  bodyContainerSection: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginBottom: 5,
+  },
+  bodyContainerSchedule: {
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    backgroundColor: 'white',
+    // paddingVertical: 0,
+    // paddingHorizontal: 15,
+  },
+  bodyContainerMember: {
+    flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    backgroundColor: '#F72585',
+    // backgroundColor: 'white',
+    // paddingVertical: 0,
+    // paddingHorizontal: 15,
+  },
+  textTitle: {
+    fontSize: 20,
     fontFamily: 'PoppinsBold',
-    color: 'white',
-    margin: 10,
+  },
+  textDetailBold: {
+    fontSize: 15,
+    fontFamily: 'PoppinsBold',
+  },
+  textDetail: {
+    fontSize: 15,
+    fontFamily: 'Poppins',
+  },
+  memberImage: {
+    width: 75,
+    height: 75,
   },
 });
 
 const Index = () => {
-  const [sizeSmall, setSizeSmall] = useState(false);
-  const [sizeMed, setSizeMed] = useState(false);
-  const [sizeLarge, setSizeLarge] = useState(false);
-  const [vibeLow, setVibeLow] = useState(false);
-  const [vibeMed, setVibeMed] = useState(false);
-  const [vibeHigh, setVibeHigh] = useState(false);
-
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -82,26 +103,66 @@ const Index = () => {
 
   return (
     <View style={styles.container}>
+      <Image style={styles.headerImage} source={require('../../assets/box.png')} />
+      <View style={styles.bodyContainerCenter}>
+        <Text style={styles.headerName}>Group Name</Text>
+      </View>
+      <View style={styles.bodyContainerLeft}>
+        <Text style={styles.textDetailBold}>Organizer Name: </Text>
+        <Text style={styles.textDetail}>Name Here</Text>
+      </View>
+      <View style={styles.bodyContainerLeft}>
+        <Text style={styles.textDetail}>
+          Group description goes here. Blah blah blah blah. Blabh blabh.
+        </Text>
+      </View>
 
-      <Text style={styles.headerText}>SELECT EVENT</Text>
-      <View style={styles.filterContainer}>
-        <View style={styles.filterOptionContainer}>
-          <Image style={styles.filterImage} source={require('../../assets/box.png')} />
-          <Text style={styles.filterName}>EVENT NAME</Text>
-          <Text style={styles.filterOptions}>Location</Text>
-          <Text style={styles.filterOptions}>Date</Text>
+      <View style={styles.bodyContainerSection}>
+        <Text style={styles.textTitle}>
+          SCHEDULE
+        </Text>
+        <Text style={styles.textDetail}>
+          SEE ALL
+        </Text>
+      </View>
+      <View style={styles.bodyContainerSection}>
+        <View style={styles.bodyContainerSchedule}>
+          <Text style={styles.textDetailBold}>TIME</Text>
+          <Text style={styles.textDetail}>Detail</Text>
         </View>
-        <View style={styles.filterOptionContainer}>
-          <Image style={styles.filterImage} source={require('../../assets/box.png')} />
-          <Text style={styles.filterName}>EVENT NAME</Text>
-          <Text style={styles.filterOptions}>Location</Text>
-          <Text style={styles.filterOptions}>Date</Text>
+      </View>
+      <View style={styles.bodyContainerSection}>
+        <View style={styles.bodyContainerSchedule}>
+          <Text style={styles.textDetailBold}>TIME</Text>
+          <Text style={styles.textDetail}>Detail</Text>
         </View>
-        <View style={styles.filterOptionContainer}>
-          <Image style={styles.filterImage} source={require('../../assets/box.png')} />
-          <Text style={styles.filterName}>EVENT NAME</Text>
-          <Text style={styles.filterOptions}>Location</Text>
-          <Text style={styles.filterOptions}>Date</Text>
+      </View>
+      <View style={styles.bodyContainerSection}>
+        <View style={styles.bodyContainerSchedule}>
+          <Text style={styles.textDetailBold}>TIME</Text>
+          <Text style={styles.textDetail}>Detail</Text>
+        </View>
+      </View>
+      <View style={styles.bodyContainerSection}>
+        <Text style={styles.textTitle}>
+          MEMBERS
+        </Text>
+        <Text style={styles.textDetail}>
+          SEE ALL
+        </Text>
+      </View>
+      <View style={styles.bodyContainerSection}>
+        <View style={styles.bodyContainerMember}>
+          <Image style={styles.memberImage} source={require('../../assets/box.png')} />
+          <Text style={styles.textDetail}>Name Here</Text>
+        </View>
+        <View style={styles.bodyContainerMember}>
+          <Image style={styles.memberImage} source={require('../../assets/box.png')} />
+          <Text style={styles.textDetail}>Name Here</Text>
+        </View>
+        <View style={styles.bodyContainerMember}>
+          <Image style={styles.memberImage} source={require('../../assets/box.png')} />
+          <Text style={styles.textDetail}>Name Here</Text>
         </View>
       </View>
     </View>
