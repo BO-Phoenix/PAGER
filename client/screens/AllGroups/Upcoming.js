@@ -27,7 +27,7 @@ const Upcoming = () => {
     }
     fetchData();
   }, []);
-  console.log('does this work?', upcomingUserGroups);
+  // console.log('does this work?', upcomingUserGroups);
 
   return (
     <View style={styles.container}>
