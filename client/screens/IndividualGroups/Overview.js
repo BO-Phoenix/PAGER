@@ -98,20 +98,21 @@ const Overview = ({ navigation }) => {
 
   // bold specific words
 
-  const B = (props) => (
-    <Text style={{ fontWeight: '900' }}>{props.children}</Text>
+  // eslint-disable-next-line react/no-unstable-nested-components
+  const B = ({ children }) => (
+    <Text style={{ fontWeight: '900' }}>{children}</Text>
   );
 
   // One Schedule with time and plans
-  const Schedule = ({ desc, time }) => {
-    // const date = new TimeStamp(time.seconds, time.nanoseconds).toDate();
-    return (
-      <View style={styles.schedules}>
-        <B>time: {time.seconds}</B>
-        <Text>{desc}</Text>
-      </View>
-    );
-  };
+  // const Schedule = ({ desc, time }) => {
+  //   // const date = new TimeStamp(time.seconds, time.nanoseconds).toDate();
+  //   return (
+  //     <View style={styles.schedules}>
+  //       <B>time: {time.seconds}</B>
+  //       <Text>{desc}</Text>
+  //     </View>
+  //   );
+  // };
 
   // One group member's picture and name
   // const Member = ({ first, last, pfp }) => (
@@ -148,7 +149,9 @@ const Overview = ({ navigation }) => {
         />
         <Text style={styles.name}>Group Name</Text>
         <Text style={styles.desc}>
-          <B>ORGANIZER</B>: Name Here
+          <B>ORGANIZER</B>
+          {/* really long comment so prettier won't do weird things lalalala */}
+          : Name Here
         </Text>
 
         <Text style={styles.desc}>
@@ -197,7 +200,14 @@ const Overview = ({ navigation }) => {
           }}
         >
           {plans.slice(0, 3).map((plan) => (
-            <Schedule key={plan.id} desc={plan.description} time={plan.time} />
+            // <Schedule key={plan.id} desc={plan.description} time={plan.time} />
+            <View style={styles.schedules}>
+              <B>
+                time:
+                {plan.time.seconds}
+              </B>
+              <Text>{plan.description}</Text>
+            </View>
           ))}
         </View>
 
@@ -234,7 +244,8 @@ const Overview = ({ navigation }) => {
                 source={{ uri: member.profile_pic }}
               />
               <Text>
-                {member.first_name} {member.last_name}
+                {member.first_name}
+                {member.last_name}
               </Text>
             </View>
           ))}

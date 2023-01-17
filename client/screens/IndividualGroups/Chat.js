@@ -4,6 +4,14 @@ import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import globalStyles from '../../globalStyles';
 
 const Chat = ({ navigation }) => {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -28,12 +36,3 @@ const Chat = ({ navigation }) => {
 };
 
 export default Chat;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
