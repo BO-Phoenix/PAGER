@@ -1,7 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import {
-  FlatList, StyleSheet, Text, View,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { React, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -10,21 +8,10 @@ import LoginScreen from './screens/Login/Index.js';
 import HomePage from './screens/HomePage/Index.js';
 import AllGroups from './screens/AllGroups/Index.js';
 import IndividualGroups from './screens/IndividualGroups/Index.js';
-import { getEvents } from './db/event';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const response = await getEvents();
-      setEvents(response);
-    }
-    fetchData();
-  }, []);
-
   return (
     <NavigationContainer>
       <View id="header-container" style={styles.headerContainer}>
