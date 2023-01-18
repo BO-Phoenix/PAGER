@@ -10,6 +10,8 @@ import {
   arrayUnion,
   arrayRemove,
   updateDoc,
+  query,
+  where,
 } from 'firebase/firestore';
 import firebase from 'firebase/app';
 import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
@@ -47,6 +49,21 @@ export async function addUser(doc) {
     return docRef.id;
   } catch (err) {
     console.error(err);
+  }
+}
+
+export async function getUserByEmail(email) {
+  try {
+    const userRef = collection(getFS, 'users');
+    const query1 = await query(userRef, where('email', '==', email));
+    const querySnapshot = await getDocs(query1);
+    let userDocId = '';
+    querySnapshot.forEach((data) => {
+      userDocId = data.id;
+    });
+    return userDocId;
+  } catch (err) {
+    console.log(err);
   }
 }
 
