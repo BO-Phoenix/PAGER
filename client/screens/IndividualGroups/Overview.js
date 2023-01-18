@@ -1,3 +1,6 @@
+/* eslint-disable global-require */
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable implicit-arrow-linebreak */
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -9,7 +12,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-// import { firestore } from 'firebase-admin';
+import { useFonts } from 'expo-font';
 import globalStyles from '../../globalStyles';
 import {
   getAllEvents,
@@ -18,6 +21,7 @@ import {
   removeGroupFromEvent,
 } from '../../db/event.js';
 import { getGroupMembers, getGroupPlans } from '../../db/group.js';
+import Loading from '../Loading/Index';
 
 const Overview = ({ navigation }) => {
   // styles
@@ -31,19 +35,29 @@ const Overview = ({ navigation }) => {
       // borderWidth: 10,
       padding: 10,
       overflowY: 'scroll',
-      height: '200%',
+      fontFamily: 'Poppins',
     },
     main: {
       height: 200,
       width: 200,
     },
     name: {
-      fontSize: 45,
+      fontSize: 30,
+      fontFamily: 'PoppinsBold',
+    },
+    rowName: {
+      flexDirection: 'row',
+      width: '100%',
+    },
+    boldDesc: {
+      alignSelf: 'start',
+      fontFamily: 'PoppinsBold',
+      fontSize: 14,
     },
     desc: {
       alignSelf: 'start',
       // borderWidth: 1,
-      width: '100%',
+      fontFamily: 'Poppins',
       fontSize: 14,
     },
     tabs: {
@@ -51,14 +65,6 @@ const Overview = ({ navigation }) => {
       justifyContent: 'space-evenly',
       // borderWidth: 1,
       width: '100%',
-    },
-    nav: {
-      padding: 5,
-      // borderWidth: 1,
-      backgroundColor: 'black',
-      color: 'white',
-      width: 85,
-      justifySelf: 'center',
     },
     selected: {
       backgroundColor: '#B5179E',
@@ -96,33 +102,6 @@ const Overview = ({ navigation }) => {
     },
   });
 
-  // bold specific words
-
-  const B = (props) => (
-    <Text style={{ fontWeight: '900' }}>{props.children}</Text>
-  );
-
-  // One Schedule with time and plans
-  const Schedule = ({ desc, time }) => {
-    // const date = new TimeStamp(time.seconds, time.nanoseconds).toDate();
-    return (
-      <View style={styles.schedules}>
-        <B>time: {time.seconds}</B>
-        <Text>{desc}</Text>
-      </View>
-    );
-  };
-
-  // One group member's picture and name
-  // const Member = ({ first, last, pfp }) => (
-  //   <View style={styles.members}>
-  //     <Image style={styles.member} source={{ uri: pfp }} />
-  //     <Text>
-  //       {first} {last}
-  //     </Text>
-  //   </View>
-  // );
-
   const [events, setEvents] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
   const [plans, setPlans] = useState([]);
@@ -139,6 +118,27 @@ const Overview = ({ navigation }) => {
     fetchData();
   }, []);
 
+  const [fontLoaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
+  });
+
+  if (!fontLoaded) {
+    return <Loading />;
+  }
+  // format time
+  function spliceSlice(str, index, count, add) {
+    if (index < 0) {
+      index = str.length + index;
+      if (index < 0) {
+        index = 0;
+      }
+    }
+
+    return str.slice(0, index) + (add || '') + str.slice(index + count);
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -147,9 +147,12 @@ const Overview = ({ navigation }) => {
           source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
         />
         <Text style={styles.name}>Group Name</Text>
-        <Text style={styles.desc}>
-          <B>ORGANIZER</B>: Name Here
-        </Text>
+
+        <View style={styles.rowName}>
+          <Text style={styles.boldDesc}>ORGANIZER</Text>
+          <Text style={styles.desc}>: Name Here</Text>
+        </View>
+        {/* include conditionally rendered add member button which goes to different screen */}
 
         <Text style={styles.desc}>
           {'\n'}
@@ -158,34 +161,36 @@ const Overview = ({ navigation }) => {
           {'\n'}
         </Text>
 
-        {/* <View style={styles.tabs}>
-          <Text style={styles.selected}>OVERVIEW </Text>
-          <TouchableOpacity
-            title="Schedule"
-            onPress={() => navigation.navigate('Schedule', { name: 'Schedule' })}
-          >
-            <Text style={styles.nav}>SCHEDULE</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            title="Chat"
-            onPress={() => navigation.navigate('Chat', { name: 'Chat' })}
-          >
-            <Text style={styles.nav}>CHAT</Text>
-          </TouchableOpacity>
-
-          <StatusBar style="auto" />
-        </View> */}
-
         <View style={styles.separation} />
 
         <View style={styles.schedule}>
           <Text style={{ fontSize: 20 }}>
-            <B>SCHEDULE</B>
+            <Text
+              style={{
+                alignSelf: 'start',
+                fontFamily: 'PoppinsBold',
+                fontSize: 20,
+              }}
+            >
+              SCHEDULE
+            </Text>
           </Text>
-          <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
-            SEE ALL
-          </Text>
+          <TouchableOpacity
+            title="Schedule"
+            onPress={() =>
+              navigation.navigate('Schedule', { name: 'Schedule' })
+            }
+          >
+            <Text
+              style={{
+                textDecorationLine: 'underline',
+                fontSize: 20,
+                fontFamily: 'Poppins',
+              }}
+            >
+              SEE ALL
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View
@@ -196,20 +201,54 @@ const Overview = ({ navigation }) => {
             width: '100%',
           }}
         >
-          {plans.slice(0, 3).map((plan) => (
-            <Schedule key={plan.id} desc={plan.description} time={plan.time} />
-          ))}
+          {plans
+            .sort((a, b) => a.time.seconds - b.time.seconds)
+            .slice(0, 3)
+            .map((plan) => {
+              let date = new Date(plan.time.seconds);
+              // let date = 'Tue Jan 20 1970 13:01:242424';
+              date += 'string';
+              date = date.slice(16, 21);
+              const num = date.slice(0, 2);
+              if (num > 12) {
+                date = spliceSlice(date, 0, 2, num - 12);
+                date += ' PM';
+              } else {
+                date += ' AM';
+              }
+              return (
+                <View style={styles.schedules} key={plan.id}>
+                  <Text style={styles.boldDesc}>
+                    {plan.time.seconds ? date : plan.time.seconds}
+                  </Text>
+                  <Text>{plan.description}</Text>
+                </View>
+              );
+            })}
         </View>
 
         <View style={styles.separation} />
 
         <View style={styles.schedule}>
           <Text style={{ fontSize: 20 }}>
-            <B>GROUP MEMBERS</B>
+            <Text
+              style={{
+                alignSelf: 'start',
+                fontFamily: 'PoppinsBold',
+                fontSize: 20,
+              }}
+            >
+              GROUP MEMBERS
+            </Text>
           </Text>
-          <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
-            SEE ALL
-          </Text>
+          {/* <TouchableOpacity
+            title="Members"
+            onPress={() => navigation.navigate('Members', { name: 'Members' })}
+          >
+            <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
+              SEE ALL
+            </Text>
+          </TouchableOpacity> */}
         </View>
 
         <View
@@ -221,20 +260,14 @@ const Overview = ({ navigation }) => {
           }}
         >
           {groupMembers.map((member) => (
-            // <Member
-            //   key={member.id}
-            //   first={member.first_name}
-            //   last={member.last_name}
-            //   pfp={member.profile_pic}
-            // />
-
-            <View style={styles.members}>
+            <View style={styles.members} key={member.id}>
               <Image
                 style={styles.member}
                 source={{ uri: member.profile_pic }}
               />
               <Text>
-                {member.first_name} {member.last_name}
+                {member.first_name}
+                {member.last_name}
               </Text>
             </View>
           ))}
