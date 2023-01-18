@@ -32,7 +32,6 @@ const Overview = ({ navigation }) => {
       // borderWidth: 10,
       padding: 10,
       overflowY: 'scroll',
-      height: '200%',
     },
     main: {
       height: 200,
@@ -52,14 +51,6 @@ const Overview = ({ navigation }) => {
       justifyContent: 'space-evenly',
       // borderWidth: 1,
       width: '100%',
-    },
-    nav: {
-      padding: 5,
-      // borderWidth: 1,
-      backgroundColor: 'black',
-      color: 'white',
-      width: 85,
-      justifySelf: 'center',
     },
     selected: {
       backgroundColor: '#B5179E',
@@ -121,7 +112,6 @@ const Overview = ({ navigation }) => {
 
   // format time
   function spliceSlice(str, index, count, add) {
-    // We cannot pass negative indexes directly to the 2nd slicing operation.
     if (index < 0) {
       index = str.length + index;
       if (index < 0) {
