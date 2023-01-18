@@ -35,8 +35,7 @@ const Chat = ({ navigation }) => {
 
 export default Chat;
 
-{
-  /* <View style={styles.container}>
+/* <View style={styles.container}>
       <TouchableOpacity
         title="Overview"
         onPress={() => navigation.navigate('Overview', { name: 'Overview' })}
@@ -55,4 +54,3 @@ export default Chat;
 
       <StatusBar style="auto" />
     </View> */
-}
