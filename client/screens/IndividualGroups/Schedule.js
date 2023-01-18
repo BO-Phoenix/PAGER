@@ -9,6 +9,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Modal,
+  Pressable,
 } from 'react-native';
 import globalStyles from '../../globalStyles';
 import { getGroupPlans } from '../../db/group.js';
@@ -22,9 +24,18 @@ const Chat = ({ navigation }) => {
       justifyContent: 'center',
       padding: 10,
       overflowY: 'scroll',
+      height: '100%',
+    },
+    group: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
     },
     main: { height: 50, width: 50 },
-    name: { fontSize: 45 },
+    name: {
+      fontSize: 30,
+      margin: 'auto',
+      marginLeft: 10,
+    },
     separation: {
       width: '90%',
       padding: 10,
@@ -46,6 +57,27 @@ const Chat = ({ navigation }) => {
       padding: 5,
       // borderWidth: 2},
     },
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 35,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
   });
 
   // bold specific words
@@ -54,6 +86,7 @@ const Chat = ({ navigation }) => {
     <Text style={{ fontWeight: '900' }}>{children}</Text>
   );
 
+  const [modalVisible, setModalVisible] = useState(false);
   const [plans, setPlans] = useState([]);
 
   useEffect(() => {
@@ -79,11 +112,28 @@ const Chat = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Image
-          style={styles.main}
-          source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-        />
-        <Text style={styles.name}>GroupName</Text>
+        <Modal
+          animationType="slide"
+          transparent
+          visible={modalVisible}
+          onRequestClose={() => {
+            // Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Add plan to schedule modal</Text>
+            </View>
+          </View>
+        </Modal>
+        <View style={styles.group}>
+          <Image
+            style={styles.main}
+            source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+          />
+          <Text style={styles.name}>Group Name</Text>
+        </View>
 
         <View style={styles.separation} />
         <View style={styles.schedule}>
@@ -92,38 +142,37 @@ const Chat = ({ navigation }) => {
           </Text>
           <TouchableOpacity
             title="AddPlan"
-            onPress={() => console.log('create modal to add plans')}
+            onPress={() => setModalVisible(!modalVisible)}
           >
             <Text style={{ fontSize: 20 }}>+</Text>
-
-            <View
-              style={{
-                alignSelf: 'start',
-                flexDirection: 'column',
-                // borderWidth: 2,
-                width: '100%',
-              }}
-            >
-              {plans.slice(0, 3).map((plan) => {
-                let date = new Date(plan.time.seconds);
-                date += 'string';
-                date = date.slice(0, 24);
-                const num = date.slice(16, 18);
-                if (num > 12) {
-                  date = spliceSlice(date, 16, 2, num - 12);
-                  date += ' PM';
-                } else {
-                  date += ' AM';
-                }
-                return (
-                  <View style={styles.schedules} key={plan.id}>
-                    <B>{plan.time.seconds ? date : plan.time.seconds}</B>
-                    <Text>{plan.description}</Text>
-                  </View>
-                );
-              })}
-            </View>
           </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            alignSelf: 'start',
+            flexDirection: 'column',
+            // borderWidth: 2,
+            width: '100%',
+          }}
+        >
+          {plans.map((plan) => {
+            let date = new Date(plan.time.seconds);
+            date += 'string';
+            date = date.slice(0, 24);
+            const num = date.slice(16, 18);
+            if (num > 12) {
+              date = spliceSlice(date, 16, 2, num - 12);
+              date += ' PM';
+            } else {
+              date += ' AM';
+            }
+            return (
+              <View style={styles.schedules} key={plan.id}>
+                <B>{plan.time.seconds ? date : plan.time.seconds}</B>
+                <Text>{plan.description}</Text>
+              </View>
+            );
+          })}
         </View>
       </View>
     </ScrollView>
