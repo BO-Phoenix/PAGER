@@ -15,26 +15,37 @@ import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 
 const styles = StyleSheet.create({
-  bodyContainerMember: {
-    // flex: 1,
-    // flexDirection: 'column',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: 'white',
-    // paddingVertical: 0,
-    // paddingHorizontal: 15,
+  // bodyContainerMember: {
+  // flex: 1,
+  // flexDirection: 'column',
+  // alignItems: 'center',
+  // justifyContent: 'center',
+  // backgroundColor: 'white',
+  // paddingVertical: 0,
+  // paddingHorizontal: 15,
+  // },
+  square: {
+    display: 'flex',
+    width: 200,
+    height: 60,
+    backgroundColor: 'grey',
+    justifyContent: 'space-between',
+    margin: 15,
   },
-  textDetail: {
-    fontSize: 15,
-    fontFamily: 'Poppins',
+  text: {
+    margin: 'auto',
   },
+  // textDetail: {
+  //   fontSize: 15,
+  //   fontFamily: 'Poppins',
+  // },
   memberImage: {
     width: 75,
     height: 75,
   },
 });
 
-const Card = ({ musicTaste, friend }) => {
+const TasteCard = ({ musicTaste, friend }) => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -46,14 +57,10 @@ const Card = ({ musicTaste, friend }) => {
   }
 
   return (
-    <View>
-      <Image
-        style={styles.memberImage}
-        source={require('../../assets/box.png')}
-      />
-      <Text style={styles.textDetail}>{musicTaste.toUpperCase()}</Text>
+    <View style={styles.square}>
+      <Text style={styles.text}>{musicTaste.toUpperCase()}</Text>
     </View>
   );
 };
 
-export default Card;
+export default TasteCard;
