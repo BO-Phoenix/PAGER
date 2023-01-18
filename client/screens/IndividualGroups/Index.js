@@ -44,12 +44,12 @@ const Index = () => {
         }}
       />
       {/* CAN'T FIGURE OUT HOW TO HIDE THE TAB RN */}
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Members"
         component={Members}
         navigationOptions={{ tabBarVisible: false }}
         options={{ tabBarVisible: false }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };

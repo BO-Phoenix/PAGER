@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable implicit-arrow-linebreak */
 import React, { useState, useEffect } from 'react';
@@ -11,6 +12,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
+import { useFonts } from 'expo-font';
 import globalStyles from '../../globalStyles';
 import {
   getAllEvents,
@@ -19,6 +21,7 @@ import {
   removeGroupFromEvent,
 } from '../../db/event.js';
 import { getGroupMembers, getGroupPlans } from '../../db/group.js';
+import Loading from '../Loading/Index';
 
 const Overview = ({ navigation }) => {
   // styles
@@ -32,18 +35,29 @@ const Overview = ({ navigation }) => {
       // borderWidth: 10,
       padding: 10,
       overflowY: 'scroll',
+      fontFamily: 'Poppins',
     },
     main: {
       height: 200,
       width: 200,
     },
     name: {
-      fontSize: 45,
+      fontSize: 30,
+      fontFamily: 'PoppinsBold',
+    },
+    rowName: {
+      flexDirection: 'row',
+      width: '100%',
+    },
+    boldDesc: {
+      alignSelf: 'start',
+      fontFamily: 'PoppinsBold',
+      fontSize: 14,
     },
     desc: {
       alignSelf: 'start',
       // borderWidth: 1,
-      width: '100%',
+      fontFamily: 'Poppins',
       fontSize: 14,
     },
     tabs: {
@@ -88,12 +102,6 @@ const Overview = ({ navigation }) => {
     },
   });
 
-  // bold specific words
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const B = ({ children }) => (
-    <Text style={{ fontWeight: '900' }}>{children}</Text>
-  );
-
   const [events, setEvents] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
   const [plans, setPlans] = useState([]);
@@ -110,6 +118,15 @@ const Overview = ({ navigation }) => {
     fetchData();
   }, []);
 
+  const [fontLoaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
+  });
+
+  if (!fontLoaded) {
+    return <Loading />;
+  }
   // format time
   function spliceSlice(str, index, count, add) {
     if (index < 0) {
@@ -130,11 +147,12 @@ const Overview = ({ navigation }) => {
           source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
         />
         <Text style={styles.name}>Group Name</Text>
-        <Text style={styles.desc}>
-          <B>ORGANIZER</B>
-          {/* really long comment so prettier won't do weird things lalalala */}
-          : Name Here
-        </Text>
+
+        <View style={styles.rowName}>
+          <Text style={styles.boldDesc}>ORGANIZER</Text>
+          <Text style={styles.desc}>: Name Here</Text>
+        </View>
+        {/* include conditionally rendered add member button which goes to different screen */}
 
         <Text style={styles.desc}>
           {'\n'}
@@ -147,7 +165,15 @@ const Overview = ({ navigation }) => {
 
         <View style={styles.schedule}>
           <Text style={{ fontSize: 20 }}>
-            <B>SCHEDULE</B>
+            <Text
+              style={{
+                alignSelf: 'start',
+                fontFamily: 'PoppinsBold',
+                fontSize: 20,
+              }}
+            >
+              SCHEDULE
+            </Text>
           </Text>
           <TouchableOpacity
             title="Schedule"
@@ -155,7 +181,13 @@ const Overview = ({ navigation }) => {
               navigation.navigate('Schedule', { name: 'Schedule' })
             }
           >
-            <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
+            <Text
+              style={{
+                textDecorationLine: 'underline',
+                fontSize: 20,
+                fontFamily: 'Poppins',
+              }}
+            >
               SEE ALL
             </Text>
           </TouchableOpacity>
@@ -171,18 +203,21 @@ const Overview = ({ navigation }) => {
         >
           {plans.slice(0, 3).map((plan) => {
             let date = new Date(plan.time.seconds);
+            // let date = 'Tue Jan 20 1970 13:01:242424';
             date += 'string';
-            date = date.slice(0, 24);
-            const num = date.slice(16, 18);
+            date = date.slice(16, 21);
+            const num = date.slice(0, 2);
             if (num > 12) {
-              date = spliceSlice(date, 16, 2, num - 12);
+              date = spliceSlice(date, 0, 2, num - 12);
               date += ' PM';
             } else {
               date += ' AM';
             }
             return (
               <View style={styles.schedules} key={plan.id}>
-                <B>{plan.time.seconds ? date : plan.time.seconds}</B>
+                <Text style={styles.boldDesc}>
+                  {plan.time.seconds ? date : plan.time.seconds}
+                </Text>
                 <Text>{plan.description}</Text>
               </View>
             );
@@ -193,16 +228,24 @@ const Overview = ({ navigation }) => {
 
         <View style={styles.schedule}>
           <Text style={{ fontSize: 20 }}>
-            <B>GROUP MEMBERS</B>
+            <Text
+              style={{
+                alignSelf: 'start',
+                fontFamily: 'PoppinsBold',
+                fontSize: 20,
+              }}
+            >
+              GROUP MEMBERS
+            </Text>
           </Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             title="Members"
             onPress={() => navigation.navigate('Members', { name: 'Members' })}
           >
             <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
               SEE ALL
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <View
