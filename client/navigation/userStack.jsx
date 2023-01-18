@@ -14,7 +14,7 @@ import Profile from '../screens/Profile/Index.js';
 import HomePage from '../screens/HomePage/Index.js';
 import AllGroups from '../screens/AllGroups/Index.js';
 import IndividualGroups from '../screens/IndividualGroups/Index.js';
-import { getEvents } from '../db/event';
+import { getAllEvents } from '../db/event';
 import globalStyles from '../globalStyles';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
 
@@ -83,7 +83,7 @@ export default function App() {
           PAGER
         </Text>
       </SafeAreaView>
-      <Stack.Navigator initialRouteName="Profile">
+      <Stack.Navigator initialRouteName="IndividualGroups">
         <Stack.Screen
           options={{ headerShown: false }}
           name="Profile"

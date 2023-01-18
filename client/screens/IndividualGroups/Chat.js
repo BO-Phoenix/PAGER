@@ -1,11 +1,42 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { GiftedChat } from 'react-native-gifted-chat';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import globalStyles from '../../globalStyles';
 
-const Chat = ({ navigation }) => {
+const Stack = createStackNavigator();
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+const GChat = () => {
+  return <GiftedChat />;
+};
+
+const ChatStack = () => {
   return (
-    <View style={styles.container}>
+    <Stack.Navigator>
+      <Stack.Screen name="Chat" component={GChat} />
+    </Stack.Navigator>
+  );
+};
+
+const Chat = ({ navigation }) => {
+  return <ChatStack />;
+};
+
+export default Chat;
+
+{
+  /* <View style={styles.container}>
       <TouchableOpacity
         title="Overview"
         onPress={() => navigation.navigate('Overview', { name: 'Overview' })}
@@ -23,17 +54,5 @@ const Chat = ({ navigation }) => {
       <Text>Chat</Text>
 
       <StatusBar style="auto" />
-    </View>
-  );
-};
-
-export default Chat;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    </View> */
+}
