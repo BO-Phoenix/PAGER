@@ -103,8 +103,6 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Signup screen</Text>
-
       {value.error && <View style={styles.error}><Text>{value.error}</Text></View>}
 
       <View style={styles.controls}>
@@ -159,96 +157,97 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             size={16}
           />}
         />
-        <View style={styles.checkboxContainer}>
+        <View style={{justifyContent: 'center', alignSelf: 'center'}}>
           <Text>I confirm that I'm 18+</Text>
           <CheckBox
             value={isOverEighteen}
             onValueChange={setIsOverEighteen}
             style={styles.checkbox}
-          />
+            />
         </View>
         <Text style={styles.label}>FAVORITE GENRES</Text>
-        <View style={styles.checkboxContainer}>
-          <Text>Techno</Text>
-          <CheckBox
-            value={likesTechno}
-            onValueChange={setLikesTechno}
-            style={styles.checkbox}
-          />
+        <View style={styles.allCheckboxContainer}>
+          <View style={styles.checkboxContainer}>
+            <Text>Techno</Text>
+            <CheckBox
+              value={likesTechno}
+              onValueChange={setLikesTechno}
+              style={styles.checkbox}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Text>House</Text>
+            <CheckBox
+              value={likesHouse}
+              onValueChange={setLikesHouse}
+              style={styles.checkbox}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Text>Trance</Text>
+            <CheckBox
+              value={likesTrance}
+              onValueChange={setLikesTrance}
+              style={styles.checkbox}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Text>Dubstep</Text>
+            <CheckBox
+              value={likesDubstep}
+              onValueChange={setLikesDubstep}
+              style={styles.checkbox}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Text>Bass</Text>
+            <CheckBox
+              value={likesBass}
+              onValueChange={setLikesBass}
+              style={styles.checkbox}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Text>Grime</Text>
+            <CheckBox
+              value={likesGrime}
+              onValueChange={setLikesGrime}
+              style={styles.checkbox}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Text>Garage</Text>
+            <CheckBox
+              value={likesGarage}
+              onValueChange={setLikesGarage}
+              style={styles.checkbox}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Text>Trap</Text>
+            <CheckBox
+              value={likesTrap}
+              onValueChange={setLikesTrap}
+              style={styles.checkbox}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Text>Disco</Text>
+            <CheckBox
+              value={likesDisco}
+              onValueChange={setLikesDisco}
+              style={styles.checkbox}
+            />
+          </View>
+          <View style={styles.checkboxContainer}>
+            <Text>Other</Text>
+            <CheckBox
+              value={likesOther}
+              onValueChange={setLikesOther}
+              style={styles.checkbox}
+            />
+          </View>
         </View>
-        <View style={styles.checkboxContainer}>
-          <Text>House</Text>
-          <CheckBox
-            value={likesHouse}
-            onValueChange={setLikesHouse}
-            style={styles.checkbox}
-          />
-        </View>
-        <View style={styles.checkboxContainer}>
-          <Text>Trance</Text>
-          <CheckBox
-            value={likesTrance}
-            onValueChange={setLikesTrance}
-            style={styles.checkbox}
-          />
-        </View>
-        <View style={styles.checkboxContainer}>
-          <Text>Dubstep</Text>
-          <CheckBox
-            value={likesDubstep}
-            onValueChange={setLikesDubstep}
-            style={styles.checkbox}
-          />
-        </View>
-        <View style={styles.checkboxContainer}>
-          <Text>Bass</Text>
-          <CheckBox
-            value={likesBass}
-            onValueChange={setLikesBass}
-            style={styles.checkbox}
-          />
-        </View>
-        <View style={styles.checkboxContainer}>
-          <Text>Grime</Text>
-          <CheckBox
-            value={likesGrime}
-            onValueChange={setLikesGrime}
-            style={styles.checkbox}
-          />
-        </View>
-        <View style={styles.checkboxContainer}>
-          <Text>Garage</Text>
-          <CheckBox
-            value={likesGarage}
-            onValueChange={setLikesGarage}
-            style={styles.checkbox}
-          />
-        </View>
-        <View style={styles.checkboxContainer}>
-          <Text>Trap</Text>
-          <CheckBox
-            value={likesTrap}
-            onValueChange={setLikesTrap}
-            style={styles.checkbox}
-          />
-        </View>
-        <View style={styles.checkboxContainer}>
-          <Text>Disco</Text>
-          <CheckBox
-            value={likesDisco}
-            onValueChange={setLikesDisco}
-            style={styles.checkbox}
-          />
-        </View>
-        <View style={styles.checkboxContainer}>
-          <Text>Other</Text>
-          <CheckBox
-            value={likesOther}
-            onValueChange={setLikesOther}
-            style={styles.checkbox}
-          />
-        </View>
-
         <Button title="Sign up" buttonStyle={styles.control} onPress={signUp} />
       </View>
     </View>
@@ -265,6 +264,23 @@ const styles = StyleSheet.create({
 
   controls: {
     flex: 1,
+  },
+
+  allCheckboxContainer: {
+    flex: 1,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    marginBotom: 20,
+  },
+
+  checkboxContainer: {
+    flexBasis: '50%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+
+  checkbox: {
+    alignSelf: 'center',
   },
 
   control: {
