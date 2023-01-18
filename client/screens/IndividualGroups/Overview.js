@@ -9,7 +9,6 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-// import { firestore } from 'firebase-admin';
 import globalStyles from '../../globalStyles';
 import {
   getAllEvents,
@@ -118,6 +117,19 @@ const Overview = ({ navigation }) => {
     fetchData();
   }, []);
 
+  // format time
+  function spliceSlice(str, index, count, add) {
+    // We cannot pass negative indexes directly to the 2nd slicing operation.
+    if (index < 0) {
+      index = str.length + index;
+      if (index < 0) {
+        index = 0;
+      }
+    }
+
+    return str.slice(0, index) + (add || '') + str.slice(index + count);
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -139,34 +151,22 @@ const Overview = ({ navigation }) => {
           {'\n'}
         </Text>
 
-        {/* <View style={styles.tabs}>
-          <Text style={styles.selected}>OVERVIEW </Text>
-          <TouchableOpacity
-            title="Schedule"
-            onPress={() => navigation.navigate('Schedule', { name: 'Schedule' })}
-          >
-            <Text style={styles.nav}>SCHEDULE</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            title="Chat"
-            onPress={() => navigation.navigate('Chat', { name: 'Chat' })}
-          >
-            <Text style={styles.nav}>CHAT</Text>
-          </TouchableOpacity>
-
-          <StatusBar style="auto" />
-        </View> */}
-
         <View style={styles.separation} />
 
         <View style={styles.schedule}>
           <Text style={{ fontSize: 20 }}>
             <B>SCHEDULE</B>
           </Text>
-          <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
-            SEE ALL
-          </Text>
+          <TouchableOpacity
+            title="Schedule"
+            onPress={() =>
+              navigation.navigate('Schedule', { name: 'Schedule' })
+            }
+          >
+            <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
+              SEE ALL
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View
@@ -177,16 +177,24 @@ const Overview = ({ navigation }) => {
             width: '100%',
           }}
         >
-          {plans.slice(0, 3).map((plan) => (
-            // <Schedule key={plan.id} desc={plan.description} time={plan.time} />
-            <View style={styles.schedules}>
-              <B>
-                time:
-                {plan.time.seconds}
-              </B>
-              <Text>{plan.description}</Text>
-            </View>
-          ))}
+          {plans.slice(0, 3).map((plan) => {
+            let date = new Date(plan.time.seconds);
+            date += 'string';
+            date = date.slice(0, 24);
+            const num = date.slice(16, 18);
+            if (num > 12) {
+              date = spliceSlice(date, 16, 2, num - 12);
+              date += ' PM';
+            } else {
+              date += ' AM';
+            }
+            return (
+              <View style={styles.schedules}>
+                <B>{plan.time.seconds ? date : plan.time.seconds}</B>
+                <Text>{plan.description}</Text>
+              </View>
+            );
+          })}
         </View>
 
         <View style={styles.separation} />
@@ -195,9 +203,14 @@ const Overview = ({ navigation }) => {
           <Text style={{ fontSize: 20 }}>
             <B>GROUP MEMBERS</B>
           </Text>
-          <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
-            SEE ALL
-          </Text>
+          <TouchableOpacity
+            title="Members"
+            onPress={() => navigation.navigate('Members', { name: 'Members' })}
+          >
+            <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
+              SEE ALL
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View

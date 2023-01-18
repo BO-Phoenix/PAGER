@@ -4,7 +4,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { StyleSheet, Text, View } from 'react-native';
 import globalStyles from '../../globalStyles';
-import { Overview, Schedule, AddSchedule, Chat } from './individualgroups';
+import {
+  Overview,
+  Schedule,
+  AddSchedule,
+  Chat,
+  Members,
+} from './individualgroups';
 
 const Index = () => {
   const Stack = createNativeStackNavigator();
@@ -12,7 +18,7 @@ const Index = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Attended"
+      initialRouteName="Overview"
       screenOptions={{ tabBarLabelStyle: { fontSize: 12 } }}
     >
       <Tab.Screen
@@ -36,6 +42,13 @@ const Index = () => {
         options={{
           tabBarIndicatorStyle: { backgroundColor: '#4895EF' },
         }}
+      />
+      {/* CAN'T FIGURE OUT HOW TO HIDE THE TAB RN */}
+      <Tab.Screen
+        name="Members"
+        component={Members}
+        navigationOptions={{ tabBarVisible: false }}
+        options={{ tabBarVisible: false }}
       />
     </Tab.Navigator>
   );
