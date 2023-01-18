@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable react/style-prop-object */
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
@@ -12,10 +13,14 @@ import {
   Modal,
   Pressable,
 } from 'react-native';
+import { Input } from 'react-native-elements';
+import { useFonts } from 'expo-font';
+import DatePicker from 'react-native-date-picker';
 import globalStyles from '../../globalStyles';
 import { getGroupPlans } from '../../db/group.js';
+import Loading from '../Loading/Index';
 
-const Chat = ({ navigation }) => {
+const Schedule = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -35,6 +40,7 @@ const Chat = ({ navigation }) => {
       fontSize: 30,
       margin: 'auto',
       marginLeft: 10,
+      fontFamily: 'PoppinsBold',
     },
     separation: {
       width: '90%',
@@ -78,6 +84,10 @@ const Chat = ({ navigation }) => {
       shadowRadius: 4,
       elevation: 5,
     },
+    modalInput: {
+      alignItems: 'center',
+      width: '100%',
+    },
   });
 
   // bold specific words
@@ -86,9 +96,16 @@ const Chat = ({ navigation }) => {
     <Text style={{ fontWeight: '900' }}>{children}</Text>
   );
 
+  // use states
   const [modalVisible, setModalVisible] = useState(false);
   const [plans, setPlans] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [value, setValue] = useState({
+    description: '',
+    error: '',
+  });
 
+  // load data
   useEffect(() => {
     async function fetchData() {
       const resPlans = await getGroupPlans('IrIfBilvP6HSrCHzty9d');
@@ -96,6 +113,17 @@ const Chat = ({ navigation }) => {
     }
     fetchData();
   }, []);
+
+  // load font
+  const [fontLoaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
+  });
+
+  if (!fontLoaded) {
+    return <Loading />;
+  }
 
   // format time
   function spliceSlice(str, index, count, add) {
@@ -107,6 +135,20 @@ const Chat = ({ navigation }) => {
     }
 
     return str.slice(0, index) + (add || '') + str.slice(index + count);
+  }
+
+  // add schedule handler
+  async function addSchedule() {
+    if (value.time === '' || value.description === '') {
+      setValue({ ...value, error: 'Please input time AND description!' });
+      return;
+    }
+
+    try {
+      // function to add time and description to database
+    } catch (err) {
+      setValue({ ...value, error: err.message });
+    }
   }
 
   return (
@@ -123,7 +165,41 @@ const Chat = ({ navigation }) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Add plan to schedule modal</Text>
+              {/* modal container */}
+              <Text style={styles.modalText}>
+                Add plan to schedule modal
+                {/* <Input
+                  placeholder="Time"
+                  containerStyle={styles.modalInput}
+                  value={value.time}
+                  onChangeText={(text) => setValue({ ...value, time: text })}
+                /> */}
+                {/* WANT TO INCORPORATE DAT EPICKER */}
+                {/* <DatePicker date={date} onDateChange={setDate} /> */}
+                <Input
+                  placeholder="Description"
+                  containerStyle={styles.modalInput}
+                  value={value.description}
+                  onChangeText={(text) =>
+                    setValue({ ...value, description: text })
+                  }
+                />
+              </Text>
+              <TouchableOpacity
+                title="AddPlan"
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontFamily: 'PoppinsBold',
+                    marginTop: 0,
+                    marginRight: 5,
+                  }}
+                >
+                  X
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -137,14 +213,30 @@ const Chat = ({ navigation }) => {
 
         <View style={styles.separation} />
         <View style={styles.schedule}>
-          <Text style={{ fontSize: 20 }}>
-            <B>SCHEDULE</B>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: 'PoppinsBold',
+              margin: 'auto',
+              height: 20,
+            }}
+          >
+            SCHEDULE
           </Text>
           <TouchableOpacity
             title="AddPlan"
             onPress={() => setModalVisible(!modalVisible)}
           >
-            <Text style={{ fontSize: 20 }}>+</Text>
+            <Text
+              style={{
+                fontSize: 20,
+                fontFamily: 'PoppinsBold',
+                marginTop: 0,
+                marginRight: 5,
+              }}
+            >
+              +
+            </Text>
           </TouchableOpacity>
         </View>
         <View
@@ -182,4 +274,4 @@ const Chat = ({ navigation }) => {
   );
 };
 
-export default Chat;
+export default Schedule;

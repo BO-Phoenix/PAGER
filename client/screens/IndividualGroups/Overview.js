@@ -102,10 +102,12 @@ const Overview = ({ navigation }) => {
     },
   });
 
+  // set states
   const [events, setEvents] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
   const [plans, setPlans] = useState([]);
 
+  // get data
   useEffect(() => {
     async function fetchData() {
       const resEvents = await getAllEvents();
@@ -118,6 +120,7 @@ const Overview = ({ navigation }) => {
     fetchData();
   }, []);
 
+  // load font
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -127,6 +130,7 @@ const Overview = ({ navigation }) => {
   if (!fontLoaded) {
     return <Loading />;
   }
+
   // format time
   function spliceSlice(str, index, count, add) {
     if (index < 0) {
