@@ -7,6 +7,8 @@ import {
   Image,
   Pressable,
   CheckBox,
+  FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
@@ -83,6 +85,8 @@ const styles = StyleSheet.create({
     // backgroundColor: 'white',
     // paddingVertical: 0,
     // paddingHorizontal: 15,
+    // borderColor: 'red',
+    // borderWidth: 3,
   },
   textTitle: {
     fontSize: 20,
@@ -99,6 +103,8 @@ const styles = StyleSheet.create({
   memberImage: {
     width: 75,
     height: 75,
+    // borderColor: 'green',
+    // borderWidth: 1,
   },
 });
 
@@ -124,10 +130,10 @@ const Expanded = ({ group_info }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.headerImage}
-        source={require('../../assets/box.png')}
-      />
+      {!!group && (
+        <Image style={styles.headerImage} source={{ uri: group.group_image }} />
+      )}
+
       <View style={styles.bodyContainerCenter}>
         <Text style={styles.headerName}>{!!group && group.group_name}</Text>
       </View>
@@ -141,7 +147,9 @@ const Expanded = ({ group_info }) => {
 
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>SCHEDULE</Text>
-        <Text style={styles.textDetail}>SEE ALL</Text>
+        <TouchableWithoutFeedback>
+          <Text style={styles.textDetail}>SEE ALL</Text>
+        </TouchableWithoutFeedback>
       </View>
       <View style={styles.bodyContainerSection}>
         <View style={styles.bodyContainerSchedule}>
@@ -149,44 +157,51 @@ const Expanded = ({ group_info }) => {
           <Text style={styles.textDetail}>Detail</Text>
         </View>
       </View>
-      <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View>
+      {!!group && (
+        <FlatList
+          data={group.plans.length > 3 ? group.plans.slice(0, 3) : group.plans}
+          keyExtractor={(plan) => plan.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.bodyContainerSection}>
+              <View style={styles.bodyContainerSchedule}>
+                <Text style={styles.textDetailBold}>
+                  {!!group && new Date(item.time.seconds * 1000).toDateString()}
+                </Text>
+                <Text style={styles.textDetail}>{item.description}</Text>
+              </View>
+            </View>
+          )}
+        />
+      )}
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>MEMBERS</Text>
-        <Text style={styles.textDetail}>SEE ALL</Text>
+        <TouchableWithoutFeedback>
+          <Text style={styles.textDetail}>SEE ALL</Text>
+        </TouchableWithoutFeedback>
       </View>
       <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
+        {!!group && (
+          <FlatList
+            data={
+              group.members.length > 3
+                ? group.members.slice(0, 3)
+                : group.members
+            }
+            // keyExtractor={(member) => member.id.toString()}
+            numColumns={3}
+            renderItem={({ item }) => {
+              return (
+                <View style={styles.bodyContainerMember}>
+                  <Image
+                    style={styles.memberImage}
+                    source={{ uri: item.profile_pic }}
+                  />
+                  <Text style={styles.textDetail}>{item.first_name}</Text>
+                </View>
+              );
+            }}
           />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
+        )}
       </View>
     </View>
   );

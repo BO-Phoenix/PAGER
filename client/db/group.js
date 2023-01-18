@@ -76,9 +76,10 @@ export async function getGroupsPerEvent(event_id) {
 
   for (let i = 0; i < groups.length; i++) {
     const plans = await getGroupPlans(groups[i].id);
-    groups_with_plans.push({ ...groups[i], ...{ plans } });
+    const members = await getGroupMembers(groups[i].id);
+    groups_with_plans.push({ ...groups[i], ...{ plans }, ...{ members } });
   }
-  console.log('group with plans : ', groups_with_plans);
+  console.log('group with plans and members : ', groups_with_plans);
 
   return groups_with_plans;
 }
@@ -99,10 +100,11 @@ export async function getGroupsPerUser(user_id) {
   }
   for (let i = 0; i < groups.length; i++) {
     const plans = await getGroupPlans(groups[i].id);
-    groups_with_plans.push({ ...groups[i], ...{ plans } });
+    const members = await getGroupMembers(groups[i].id);
+    groups_with_plans.push({ ...groups[i], ...{ plans }, ...{ members } });
   }
 
-  console.log('groups with plans : ', groups_with_plans);
+  console.log('groups with plans and members : ', groups_with_plans);
   return groups_with_plans;
 }
 
@@ -128,7 +130,8 @@ export async function getGroup(group_id) {
   const docSnap = await getDoc(docRef);
   const group = { ...{ id: docSnap.id }, ...docSnap.data() };
   const plans = await getGroupPlans(group_id);
-  const group_with_plan = { ...group, ...{ plans } };
+  const members = await getGroupMembers(group_id);
+  const group_with_plan = { ...group, ...{ plans }, ...{ members } };
   console.log('data for one group with plan is : ', group_with_plan);
   return group_with_plan;
 }
