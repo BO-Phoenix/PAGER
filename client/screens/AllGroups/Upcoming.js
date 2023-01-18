@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, Loading } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-ionicons';
 import { useFonts } from 'expo-font';
+import Loading from '../Loading/Index.js';
 import {
   getGroupsPerUser,
   getGroupsAttendedPerUser,
@@ -17,18 +18,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    overflowY: 'scroll',
+    // overflowY: 'scroll',
   },
   textHeader: {
-    fontSize: 28,
+    fontSize: 24,
     paddingTop: 15,
+    fontFamily: 'Poppins',
+  },
+  separation: {
+    width: '90%',
+    padding: 8,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
   },
   featureHeader: {
-    fontSize: 22,
+    fontSize: 20,
     paddingTop: 15,
+    fontFamily: 'Poppins',
   },
   groupName: {
     fontSize: 22,
+    fontFamily: 'Poppins',
   },
   groupImg: {
     height: 100,
@@ -66,11 +76,6 @@ const styles = StyleSheet.create({
 const Upcoming = () => {
   const [upcomingUserGroups, setUpcomingUserGroups] = useState([]);
   const { userId } = useSelector((state) => state.pagerData);
-  // const [fontLoaded] = useFonts({
-  //   Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
-  //   PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-  //   Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
-  // });
 
   useEffect(() => {
     async function fetchData() {
@@ -81,14 +86,23 @@ const Upcoming = () => {
   }, []);
   // console.log('does this work?', upcomingUserGroups);
 
-  // if (!fontLoaded) {
-  //   return <Loading />;
-  // }
+  const [fontLoaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
+  });
+
+  if (!fontLoaded) {
+    return <Loading />;
+  }
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.textHeader}>GROUPS</Text>
-      <Text style={styles.featureHeader}>UPCOMING</Text>
+      <View style={styles.separation} />
+      <View style={{ alignSelf: 'flex-start', width: '90%', paddingLeft: 18 }}>
+        <Text style={styles.featureHeader}>UPCOMING</Text>
+      </View>
       <View style={styles.renderGroupContainer}>
         {upcomingUserGroups.map(group => {
           return (
@@ -101,7 +115,7 @@ const Upcoming = () => {
         })}
       </View>
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 };
 
