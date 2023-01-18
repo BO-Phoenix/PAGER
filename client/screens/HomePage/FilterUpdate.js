@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Index = () => {
+const FilterUpdate = () => {
   const [sizeSmall, setSizeSmall] = useState(false);
   const [sizeMed, setSizeMed] = useState(false);
   const [sizeLarge, setSizeLarge] = useState(false);
@@ -156,4 +156,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default FilterUpdate;
