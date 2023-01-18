@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
-import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, Animated, PanResponder } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, Dimensions, Animated, PanResponder, useRef } from 'react-native';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
 import SwipeCard from './SwipeCard.js';
@@ -25,14 +25,13 @@ const Swipe = () => {
   ];
 
   const swipe = useRef(new Animated.ValueXY()).current;
-
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (_, gesture) => {
       console.log(gesture);
     },
     onPanResponderRelease: (_, gestrue) => {
-      console.log('the end');
+      console.log('end');
     },
   });
 
@@ -44,7 +43,6 @@ const Swipe = () => {
   if (!fontLoaded) {
     return <Loading />;
   }
-
 
   return (
     <View style={styles.container}>
