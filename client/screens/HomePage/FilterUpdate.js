@@ -72,6 +72,10 @@ const styles = StyleSheet.create({
     color: 'white',
     margin: 10,
   },
+  buttonText: {
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+  },
 });
 
 const FilterUpdate = () => {
@@ -151,7 +155,9 @@ const FilterUpdate = () => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.button}>SEARCH</Pressable>
+      <Pressable style={styles.button}>
+        <Text style={styles.buttonText}>SEARCH</Text>
+      </Pressable>
     </View>
   );
 };

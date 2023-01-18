@@ -1,10 +1,20 @@
 /* eslint-disable global-require */
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, CheckBox } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  CheckBox,
+  FlatList,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
+import { getAllEvents } from '../../db/event.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,88 +24,77 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     overflow: 'scroll',
     backgroundColor: 'white',
-    // borderWidth: 1,
-    // borderColor: 'black',
+    // borderWidth: 3,
+    // borderColor: 'red',
   },
-  headerImage: {
-    width: 200,
-    height: 200,
-    marginTop: 15,
-  },
-  headerName: {
-    fontSize: 30,
+  headerText: {
+    fontSize: 25,
     fontFamily: 'PoppinsBold',
+    margin: 10,
   },
-  bodyContainerCenter: {
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    marginVertical: 5,
-    marginHorizontal: 15,
-    // borderWidth: 1,
-    // borderColor: 'black',
-  },
-  bodyContainerLeft: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-  },
-  bodyContainerSection: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    marginBottom: 5,
-  },
-  bodyContainerSchedule: {
-    width: '100%',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white',
-    // paddingVertical: 0,
-    // paddingHorizontal: 15,
-  },
-  bodyContainerMember: {
+  filterContainer: {
     flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    margin: 10,
+    paddingBottom: 200,
+  },
+  filterOptionContainer: {
     flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '50%',
+    // borderWidth: 1,
+    // borderColor: 'black',
+    paddingHorizontal: 5,
+    marginBottom: 15,
+  },
+  filterImage: {
+    width: '90%',
+    height: 150,
+    borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: 'black',
+  },
+  filterName: {
+    fontFamily: 'PoppinsBold',
+    fontSize: 15,
+  },
+  filterOptions: {
+    fontFamily: 'Poppins',
+    fontSize: 15,
+  },
+  button: {
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'white',
-    // paddingVertical: 0,
-    // paddingHorizontal: 15,
-  },
-  textTitle: {
-    fontSize: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    backgroundColor: '#F72585',
     fontFamily: 'PoppinsBold',
-  },
-  textDetailBold: {
-    fontSize: 15,
-    fontFamily: 'PoppinsBold',
-  },
-  textDetail: {
-    fontSize: 15,
-    fontFamily: 'Poppins',
-  },
-  memberImage: {
-    width: 75,
-    height: 75,
+    color: 'white',
+    margin: 10,
   },
 });
 
-const Index = () => {
+const Index = ({ navigation }) => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
     Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const events_list = await getAllEvents();
+      setEvents(events_list);
+    }
+    fetchData();
+  }, []);
 
   if (!fontLoaded) {
     return <Loading />;
@@ -103,67 +102,31 @@ const Index = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.headerImage} source={require('../../assets/box.png')} />
-      <View style={styles.bodyContainerCenter}>
-        <Text style={styles.headerName}>Group Name</Text>
-      </View>
-      <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetailBold}>Organizer Name: </Text>
-        <Text style={styles.textDetail}>Name Here</Text>
-      </View>
-      <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetail}>
-          Group description goes here. Blah blah blah blah. Blabh blabh.
-        </Text>
-      </View>
-
-      <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>
-          SCHEDULE
-        </Text>
-        <Text style={styles.textDetail}>
-          SEE ALL
-        </Text>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>
-          MEMBERS
-        </Text>
-        <Text style={styles.textDetail}>
-          SEE ALL
-        </Text>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerMember}>
-          <Image style={styles.memberImage} source={require('../../assets/box.png')} />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image style={styles.memberImage} source={require('../../assets/box.png')} />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image style={styles.memberImage} source={require('../../assets/box.png')} />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
+      <Text style={styles.headerText}>SELECT EVENT</Text>
+      <View style={styles.filterContainer}>
+        <FlatList
+          data={events}
+          keyExtractor={(events) => events.id.toString()}
+          numColumns={2}
+          renderItem={({ item }) => (
+            // console.log('date is :',item.event_date)
+            <View style={styles.filterOptionContainer}>
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('SwipeCard', item)}
+              >
+                <Image
+                  style={styles.filterImage}
+                  source={{ uri: item.event_image }}
+                />
+              </TouchableWithoutFeedback>
+              <Text style={styles.filterName}>{item.event_name}</Text>
+              <Text style={styles.filterOptions}>{item.event_location}</Text>
+              <Text style={styles.filterOptions}>
+                {new Date(item.event_date.seconds * 1000).toDateString()}
+              </Text>
+            </View>
+          )}
+        />
       </View>
     </View>
   );
