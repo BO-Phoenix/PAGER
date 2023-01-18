@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, Image, Dimensions, Animated, PanResponder } fro
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
 import SwipeCard from './SwipeCard.js';
-import SwipeFooter from './SwipeFooter.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 
