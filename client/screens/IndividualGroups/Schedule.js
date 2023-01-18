@@ -16,22 +16,6 @@ const Chat = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        title="Overview"
-        onPress={() => navigation.navigate('Overview', { name: 'Overview' })}
-      >
-        <Text>Overview </Text>
-      </TouchableOpacity>
-
-      <Text>Schedule</Text>
-
-      <TouchableOpacity
-        title="Chat"
-        onPress={() => navigation.navigate('Chat', { name: 'Chat' })}
-      >
-        <Text>Chat</Text>
-      </TouchableOpacity>
-
       <StatusBar style="auto" />
     </View>
   );

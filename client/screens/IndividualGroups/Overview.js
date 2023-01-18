@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable implicit-arrow-linebreak */
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -189,7 +191,7 @@ const Overview = ({ navigation }) => {
               date += ' AM';
             }
             return (
-              <View style={styles.schedules}>
+              <View style={styles.schedules} key={plan.id}>
                 <B>{plan.time.seconds ? date : plan.time.seconds}</B>
                 <Text>{plan.description}</Text>
               </View>
@@ -222,14 +224,7 @@ const Overview = ({ navigation }) => {
           }}
         >
           {groupMembers.map((member) => (
-            // <Member
-            //   key={member.id}
-            //   first={member.first_name}
-            //   last={member.last_name}
-            //   pfp={member.profile_pic}
-            // />
-
-            <View style={styles.members}>
+            <View style={styles.members} key={member.id}>
               <Image
                 style={styles.member}
                 source={{ uri: member.profile_pic }}
