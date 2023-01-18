@@ -17,6 +17,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const { userId } = useSelector((state) => state.pagerData);
   const dispatch = useDispatch();
 
+  const [isOverEighteen, setIsOverEighteen] = useState(false);
   const [likesTechno, setLikesTechno] = useState(false);
   const [likesHouse, setLikesHouse] = useState(false);
   const [likesTrance, setLikesTrance] = useState(false);
@@ -57,6 +58,14 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       setValue({
         ...value,
         error: 'Email and password are mandatory.'
+      })
+      return;
+    }
+
+    if (!isOverEighteen) {
+      setValue({
+        ...value,
+        error: 'You must be 18+ to make an account.'
       })
       return;
     }
@@ -150,6 +159,14 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             size={16}
           />}
         />
+        <View style={styles.checkboxContainer}>
+          <Text>I confirm that I'm 18+</Text>
+          <CheckBox
+            value={isOverEighteen}
+            onValueChange={setIsOverEighteen}
+            style={styles.checkbox}
+          />
+        </View>
         <Text style={styles.label}>FAVORITE GENRES</Text>
         <View style={styles.checkboxContainer}>
           <Text>Techno</Text>
