@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Index = () => {
+const Expanded = () => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -169,4 +169,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Expanded;
