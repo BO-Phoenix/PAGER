@@ -1,5 +1,6 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable global-require */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,9 +10,11 @@ import {
   CheckBox,
 } from 'react-native';
 import { useFonts } from 'expo-font';
+import { getUser } from '../../db/user.js';
 import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
+import Card from './Card';
 
 const styles = StyleSheet.create({
   container: {
@@ -79,6 +82,20 @@ const styles = StyleSheet.create({
     // paddingVertical: 0,
     // paddingHorizontal: 15,
   },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    backgroundColor: '#F72585',
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+    margin: 10,
+  },
+  buttonText: {
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+  },
   textTitle: {
     fontSize: 20,
     fontFamily: 'PoppinsBold',
@@ -98,11 +115,24 @@ const styles = StyleSheet.create({
 });
 
 const Profile = () => {
+  const [user, setUser] = useState([]);
+  const [musicTastes, setMusicTastes] = useState([]);
+  const [friends, setFriends] = useState([]);
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
     Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getUser('I4nwq9hMAQin0BjCEe1U');
+      setUser(res[0]);
+      setMusicTastes([...res[0].music_tastes]);
+      setFriends([...res[0].friends_list]);
+    }
+    fetchData();
+  }, []);
 
   if (!fontLoaded) {
     return <Loading />;
@@ -115,93 +145,35 @@ const Profile = () => {
         source={require('../../assets/box.png')}
       />
       <View style={styles.bodyContainerCenter}>
-        <Text style={styles.headerName}>User Name</Text>
-      </View>
-      {/* <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetailBold}>Organizer Name: </Text>
-        <Text style={styles.textDetail}>Name Here</Text>
-      </View> */}
-      <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetail}>
-          User description goes here. Blah blah blah blah. Blabh blabh.
+        <Text style={styles.headerName}>
+          {`${user.first_name} ${user.last_name}`}
         </Text>
       </View>
-
-      {/* <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>SCHEDULE</Text>
-        <Text style={styles.textDetail}>SEE ALL</Text>
-      </View> */}
-      {/* <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View> */}
-      {/* <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View> */}
-      {/* <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View> */}
+      <Pressable style={styles.button}>
+        <Text style={styles.buttonText}>EDIT</Text>
+      </Pressable>
+      <View style={styles.bodyContainerLeft}>
+        <Text style={styles.textDetail}>{`${user.description}`}</Text>
+      </View>
       <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>Music Taste</Text>
+        <Text style={styles.textTitle}>MUSIC TASTES</Text>
         <Text style={styles.textDetail}>SEE ALL</Text>
       </View>
       <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
+        {musicTastes &&
+          musicTastes
+            .slice(0, 3)
+            .map((taste) => <Card musicTaste={taste} key={taste} />)}
       </View>
       <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>Friends List</Text>
+        <Text style={styles.textTitle}>FRIENDS</Text>
         <Text style={styles.textDetail}>SEE ALL</Text>
       </View>
       <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
+        {friends &&
+          friends
+            .slice(0, 3)
+            .map((friend) => <Card musicTaste={friend} key={friend} />)}
       </View>
     </View>
   );
