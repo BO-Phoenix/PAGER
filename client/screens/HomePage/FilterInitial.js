@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Index = () => {
+const FilterInitial = () => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -76,7 +76,6 @@ const Index = () => {
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.headerText}>SELECT EVENT</Text>
       <View style={styles.filterContainer}>
         <View style={styles.filterOptionContainer}>
@@ -102,4 +101,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default FilterInitial;
