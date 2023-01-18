@@ -3,6 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+// -- redux import statements
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserId } from '../../reducers/index.js';
+
+import { getUserByEmail } from '../../db/user';
 
 const auth = getAuth();
 
@@ -32,6 +37,9 @@ const styles = StyleSheet.create({
 });
 
 const SignInScreen = () => {
+  const { userId } = useSelector((state) => state.pagerData);
+  const dispatch = useDispatch();
+
   const [value, setValue] = React.useState({
     email: '',
     password: '',
@@ -45,6 +53,17 @@ const SignInScreen = () => {
         error: 'Email and password are mandatory.',
       });
       return;
+    }
+
+    try {
+      const id = await getUserByEmail(value.email);
+      // console.log('the id inside signIn is: ', id);
+      dispatch(updateUserId(id));
+    } catch (error) {
+      setValue({
+        ...value,
+        error: error.message,
+      });
     }
 
     try {
@@ -90,5 +109,30 @@ const SignInScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 20,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  controls: {
+    flex: 1,
+  },
+
+  control: {
+    marginTop: 10,
+  },
+
+  error: {
+    marginTop: 10,
+    padding: 10,
+    color: '#fff',
+    backgroundColor: '#D54826FF',
+  },
+});
 
 export default SignInScreen;

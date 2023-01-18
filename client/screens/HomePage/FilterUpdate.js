@@ -155,7 +155,9 @@ const FilterUpdate = () => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.button}><Text style={styles.buttonText}>SEARCH</Text></Pressable>
+      <Pressable style={styles.button}>
+        <Text style={styles.buttonText}>SEARCH</Text>
+      </Pressable>
     </View>
   );
 };
