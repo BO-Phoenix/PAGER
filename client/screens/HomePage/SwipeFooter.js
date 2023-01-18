@@ -8,7 +8,7 @@ import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 
 const screenWidth = (Dimensions.get('window').width) * 0.9;
-const screenHeight = (Dimensions.get('window').height) * 0.7;
+const screenHeight = (Dimensions.get('window').height) * 0.75;
 
 const styles = StyleSheet.create({
   container: {
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     width: 170,
     alignItems: 'center',
     justifyContent: 'space-between',
+    zIndex: -1,
   },
   text: {
     fontSize: 40,

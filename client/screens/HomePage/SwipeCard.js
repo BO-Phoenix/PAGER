@@ -9,7 +9,9 @@ import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 
 const screenWidth = (Dimensions.get('window').width) * 0.9;
-const screenHeight = (Dimensions.get('window').height) * 0.65;
+const screenHeight = (Dimensions.get('window').height) * 0.75;
+
+const actionOffset = 100;
 
 const styles = StyleSheet.create({
   container: {
@@ -29,12 +31,20 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 20,
   },
-  name: {
+  details: {
     position: 'absolute',
+    paddingRight: 10,
     bottom: 22,
     left: 22,
+  },
+  name: {
     fontSize: 30,
     fontFamily: 'PoppinsBold',
+    color: 'white',
+  },
+  description: {
+    fontSize: 15,
+    fontFamily: 'Poppins',
     color: 'white',
   },
   choiceContainer: {
@@ -51,19 +61,48 @@ const styles = StyleSheet.create({
   },
 });
 
-const SwipeCard = ({ name, source, isFirst, ...rest }) => {
+const SwipeCard = ({ name, source, description, isFirst, swipe, tiltSign, ...rest }) => {
+  const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
+    inputRange: [-actionOffset, 0, actionOffset],
+    outputRange: ['8deg', '0deg', '-8deg'],
+  });
+
+  const likeOpacity = swipe.x.interpolate({
+    inputRange: [25, actionOffset],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+
+  const dislikeOpacity = swipe.x.interpolate({
+    inputRange: [-actionOffset, -25],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
   const renderChoice = useCallback(() => {
     return (
       <>
-        <View style={[styles.choiceContainer, styles.likeContainer]}>
+        <Animated.View
+          style={[
+            styles.choiceContainer,
+            styles.likeContainer,
+            { opacity: likeOpacity },
+          ]}
+        >
           <SwipeChoice type="LIKE" />
-        </View>
-        <View style={[styles.choiceContainer, styles.dislikeContainer]}>
+        </Animated.View>
+        <Animated.View
+          style={[
+            styles.choiceContainer,
+            styles.dislikeContainer,
+            { opacity: dislikeOpacity },
+          ]}
+        >
           <SwipeChoice type="DISLIKE" />
-        </View>
+        </Animated.View>
       </>
     );
-  }, []);
+  }, [likeOpacity, dislikeOpacity]);
 
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
@@ -74,12 +113,19 @@ const SwipeCard = ({ name, source, isFirst, ...rest }) => {
     return <Loading />;
   }
 
+  const animatedCardStyle = {
+    transform: [...swipe.getTranslateTransform(), { rotate }],
+  };
+
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <Animated.View style={styles.container} {...rest}>
+    <Animated.View style={[styles.container, isFirst && animatedCardStyle]} {...rest}>
       <Image style={styles.image} source={source} />
       <LinearGradient style={styles.gradient} colors={['transparent', 'black']} />
-      <Text style={styles.name}>{name}</Text>
+      <View style={styles.details}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.description}>{description}</Text>
+      </View>
 
       {
         isFirst && renderChoice()
