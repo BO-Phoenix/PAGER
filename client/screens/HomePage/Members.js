@@ -110,12 +110,6 @@ const Memebers = ({ group_obj }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.bodyContainerSection}>
-        <Text style={styles.textDetail}>
-          {'< '}
-          BACK
-        </Text>
-      </View>
       <View style={styles.bodyContainerName}>
         {!!group && (
           <Image

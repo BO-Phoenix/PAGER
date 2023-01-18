@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   textDetail: {
     fontSize: 15,
     fontFamily: 'Poppins',
+    textDecorationLine: 'underline',
   },
   memberImage: {
     width: 75,
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Expanded = ({ group_info }) => {
+const Expanded = ({ group_info, navigation }) => {
   const [group, setGroup] = useState();
   useEffect(() => {
     async function fetchData() {
@@ -147,7 +148,9 @@ const Expanded = ({ group_info }) => {
 
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>SCHEDULE</Text>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('Schedule', group)}
+        >
           <Text style={styles.textDetail}>SEE ALL</Text>
         </TouchableWithoutFeedback>
       </View>
@@ -175,7 +178,9 @@ const Expanded = ({ group_info }) => {
       )}
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>MEMBERS</Text>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('Member', group)}
+        >
           <Text style={styles.textDetail}>SEE ALL</Text>
         </TouchableWithoutFeedback>
       </View>
