@@ -2,24 +2,25 @@
 import { StatusBar } from 'expo-status-bar';
 import { FlatList, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { React, useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button } from 'react-native-elements';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useFonts } from 'expo-font';
+import Navigation from '../screens/Navigation/Index.js';
 import Loading from '../screens/Loading/Index.js';
 import LoginScreen from '../screens/Login/Index.js';
 import Profile from '../screens/Profile/Index.js';
 import HomePage from '../screens/HomePage/Index.js';
 import AllGroups from '../screens/AllGroups/Index.js';
 import IndividualGroups from '../screens/IndividualGroups/Index.js';
-import { getAllEvents } from '../db/event';
 import globalStyles from '../globalStyles';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
 
 const auth = getAuth();
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -83,7 +84,7 @@ export default function App() {
           PAGER
         </Text>
       </SafeAreaView>
-      <Stack.Navigator initialRouteName="IndividualGroups">
+      {/* <Stack.Navigator initialRouteName="Profile">
         <Stack.Screen
           options={{ headerShown: false }}
           name="Profile"
@@ -104,38 +105,14 @@ export default function App() {
           name="IndividualGroups"
           component={IndividualGroups}
         />
-      </Stack.Navigator>
+      </Stack.Navigator>{' '}
+      */}
+      <Navigation />
       <Button
         title="Sign Out"
         style={globalStyles.button}
         onPress={() => auth.signOut()}
       />
-      <SafeAreaView id="header-container" style={styles.navContainer}>
-        <View style={styles.navItem}>
-          <Text id="app-header" style={styles.navIcon}>
-            ICON
-          </Text>
-          <Text id="app-header" style={styles.navText}>
-            PROFILE
-          </Text>
-        </View>
-        <View style={styles.navItem}>
-          <Text id="app-header" style={styles.navIcon}>
-            ICON
-          </Text>
-          <Text id="app-header" style={styles.navText}>
-            HOME
-          </Text>
-        </View>
-        <View style={styles.navItem}>
-          <Text id="app-header" style={styles.navIcon}>
-            ICON
-          </Text>
-          <Text id="app-header" style={styles.navText}>
-            GROUPS
-          </Text>
-        </View>
-      </SafeAreaView>
     </NavigationContainer>
   );
 }

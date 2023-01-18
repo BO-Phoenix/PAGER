@@ -1,6 +1,13 @@
 /* eslint-disable global-require */
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, CheckBox } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  CheckBox,
+} from 'react-native';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
@@ -65,9 +72,13 @@ const styles = StyleSheet.create({
     color: 'white',
     margin: 10,
   },
+  buttonText: {
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+  },
 });
 
-const Index = () => {
+const FilterUpdate = () => {
   const [sizeSmall, setSizeSmall] = useState(false);
   const [sizeMed, setSizeMed] = useState(false);
   const [sizeLarge, setSizeLarge] = useState(false);
@@ -87,7 +98,6 @@ const Index = () => {
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.headerText}>FILTER PREFERENCES</Text>
       <View style={styles.filterContainer}>
         <View style={styles.filter}>
@@ -98,9 +108,7 @@ const Index = () => {
               onValueChange={setSizeSmall}
               style={styles.filterCheckbox}
             />
-            <Text style={styles.filterOptions}>
-              Small (0 - 5)
-            </Text>
+            <Text style={styles.filterOptions}>Small (0 - 5)</Text>
           </View>
           <View style={styles.filterOptionContainer}>
             <CheckBox
@@ -108,9 +116,7 @@ const Index = () => {
               onValueChange={setSizeMed}
               style={styles.filterCheckbox}
             />
-            <Text style={styles.filterOptions}>
-              Medium (6 - 10)
-            </Text>
+            <Text style={styles.filterOptions}>Medium (6 - 10)</Text>
           </View>
           <View style={styles.filterOptionContainer}>
             <CheckBox
@@ -118,9 +124,7 @@ const Index = () => {
               onValueChange={setSizeLarge}
               style={styles.filterCheckbox}
             />
-            <Text style={styles.filterOptions}>
-              Large (11 - 20)
-            </Text>
+            <Text style={styles.filterOptions}>Large (11 - 20)</Text>
           </View>
         </View>
         <View style={styles.filter}>
@@ -131,9 +135,7 @@ const Index = () => {
               onValueChange={setVibeLow}
               style={styles.filterCheckbox}
             />
-            <Text style={styles.filterOptions}>
-              Low
-            </Text>
+            <Text style={styles.filterOptions}>Low</Text>
           </View>
           <View style={styles.filterOptionContainer}>
             <CheckBox
@@ -141,9 +143,7 @@ const Index = () => {
               onValueChange={setVibeMed}
               style={styles.filterCheckbox}
             />
-            <Text style={styles.filterOptions}>
-              Medium
-            </Text>
+            <Text style={styles.filterOptions}>Medium</Text>
           </View>
           <View style={styles.filterOptionContainer}>
             <CheckBox
@@ -151,16 +151,13 @@ const Index = () => {
               onValueChange={setVibeHigh}
               style={styles.filterCheckbox}
             />
-            <Text style={styles.filterOptions}>
-              High
-            </Text>
+            <Text style={styles.filterOptions}>High</Text>
           </View>
         </View>
       </View>
-      <Pressable style={styles.button}>SEARCH</Pressable>
-
+      <Pressable style={styles.button}><Text style={styles.buttonText}>SEARCH</Text></Pressable>
     </View>
   );
 };
 
-export default Index;
+export default FilterUpdate;

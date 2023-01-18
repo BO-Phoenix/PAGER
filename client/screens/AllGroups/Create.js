@@ -4,6 +4,7 @@ import {
   StyleSheet, Text, View, SafeAreaView,
 } from 'react-native';
 import { Form, FormItem, Picker } from 'react-native-form-component';
+import { useSelector } from 'react-redux';
 import {
   getGroupsPerUser,
   getGroupsAttendedPerUser,
@@ -53,6 +54,7 @@ const Create = () => {
   const [event, setEvent] = useState('');
 
   const [allEvents, setAllEvents] = useState([]);
+  const { userId } = useSelector((state) => state.pagerData);
 
   const groupNameInput = useRef();
   const groupDescriptionInput = useRef();
@@ -77,8 +79,21 @@ const Create = () => {
 
   // console.log('this is all events', allEvents);
 
+  // event_date -- DONE
+  // event_id -- DONE
+  // group_image -- DONE
+  // group_name -- DONE
+  // group_description -- DONE
+  // member_list : user's user_id
+  // organizer_name : user's full name
+  // size: string -- DONE
+  // vibe: string -- DONE
+
+
   const submitFormData = () => {
     console.log(
+      'user_id::',
+      userId,
       'name:: ',
       groupName,
       'description:: ',
