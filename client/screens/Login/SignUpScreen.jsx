@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, CheckBox } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -17,16 +17,42 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const { userId } = useSelector((state) => state.pagerData);
   const dispatch = useDispatch();
 
-  const [userDocId, setUserDocId] = useState('');
+  const [likesTechno, setLikesTechno] = useState(false);
+  const [likesHouse, setLikesHouse] = useState(false);
+  const [likesTrance, setLikesTrance] = useState(false);
+  const [likesDubstep, setLikesDubstep] = useState(false);
+  const [likesBass, setLikesBass] = useState(false);
+  const [likesGrime, setLikesGrime] = useState(false);
+  const [likesGarage, setLikesGarage] = useState(false);
+  const [likesTrap, setLikesTrap] = useState(false);
+  const [likesDisco, setLikesDisco] = useState(false);
+  const [likesOther, setLikesOther] = useState(false);
   const [value, setValue] = React.useState({
     email: '',
     password: '',
     firstName: '',
     lastName: '',
+    description: '',
+    music_tastes: [],
     error: ''
   })
 
+  function addMusicTaste() {
+    const allMusic = [];
+    if (likesTechno) value.music_tastes.push('techno');
+    if (likesHouse) value.music_tastes.push('house');
+    if (likesTrance) value.music_tastes.push('trance');
+    if (likesDubstep) value.music_tastes.push('dubstep');
+    if (likesBass) value.music_tastes.push('bass');
+    if (likesGrime) value.music_tastes.push('garage');
+    if (likesGarage) value.music_tastes.push('grime');
+    if (likesTrap) value.music_tastes.push('trap');
+    if (likesDisco) value.music_tastes.push('disco');
+    if (likesOther) value.music_tastes.push('other');
+  }
+
   async function signUp() {
+
     if (value.email === '' || value.password === '') {
       setValue({
         ...value,
@@ -44,21 +70,23 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         error: error.message,
       })
     }
+
     try {
+      addMusicTaste();
+      console.log(value, 'value is', value.music_tastes, 'value.music tastes');
       const id = await addUser({
         email: value.email,
         password: value.password,
         first_name: value.firstName,
         last_name: value.lastName,
         birthday: '',
-        music_tastes: [],
+        music_tastes: value.music_tastes,
         group_list: [],
         friends_list: [],
-        description: '',
+        description: value.description,
         profile_pic: '',
       });
       dispatch(updateUserId(id));
-      setUserDocId(id);
     } catch (error) {
       console.log(error);
     }
@@ -112,6 +140,97 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             size={16}
           />}
         />
+        <Input
+          placeholder='Description: ex (I <3 Flow Toys)'
+          containerStyle={styles.control}
+          value={value.description}
+          onChangeText={(text) => setValue({ ...value, description: text })}
+          leftIcon={<Icon
+            name='newspaper-o'
+            size={16}
+          />}
+        />
+        <Text style={styles.label}>FAVORITE GENRES</Text>
+        <View style={styles.checkboxContainer}>
+          <Text>Techno</Text>
+          <CheckBox
+            value={likesTechno}
+            onValueChange={setLikesTechno}
+            style={styles.checkbox}
+          />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <Text>House</Text>
+          <CheckBox
+            value={likesHouse}
+            onValueChange={setLikesHouse}
+            style={styles.checkbox}
+          />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <Text>Trance</Text>
+          <CheckBox
+            value={likesTrance}
+            onValueChange={setLikesTrance}
+            style={styles.checkbox}
+          />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <Text>Dubstep</Text>
+          <CheckBox
+            value={likesDubstep}
+            onValueChange={setLikesDubstep}
+            style={styles.checkbox}
+          />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <Text>Bass</Text>
+          <CheckBox
+            value={likesBass}
+            onValueChange={setLikesBass}
+            style={styles.checkbox}
+          />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <Text>Grime</Text>
+          <CheckBox
+            value={likesGrime}
+            onValueChange={setLikesGrime}
+            style={styles.checkbox}
+          />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <Text>Garage</Text>
+          <CheckBox
+            value={likesGarage}
+            onValueChange={setLikesGarage}
+            style={styles.checkbox}
+          />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <Text>Trap</Text>
+          <CheckBox
+            value={likesTrap}
+            onValueChange={setLikesTrap}
+            style={styles.checkbox}
+          />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <Text>Disco</Text>
+          <CheckBox
+            value={likesDisco}
+            onValueChange={setLikesDisco}
+            style={styles.checkbox}
+          />
+        </View>
+        <View style={styles.checkboxContainer}>
+          <Text>Other</Text>
+          <CheckBox
+            value={likesOther}
+            onValueChange={setLikesOther}
+            style={styles.checkbox}
+          />
+        </View>
 
         <Button title="Sign up" buttonStyle={styles.control} onPress={signUp} />
       </View>
