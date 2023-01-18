@@ -8,6 +8,7 @@ import {
   Pressable,
   CheckBox,
   FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
@@ -73,7 +74,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     backgroundColor: 'white',
-    padding: 15,
   },
   textTitle: {
     fontSize: 20,
@@ -86,10 +86,11 @@ const styles = StyleSheet.create({
   textDetail: {
     fontSize: 15,
     fontFamily: 'Poppins',
+    textDecorationLine: 'underline',
   },
 });
 
-const Schedule = ({ group_obj }) => {
+const SwipeCard = ({ navigation }) => {
   const [group, setGroup] = useState();
 
   useEffect(() => {
@@ -99,7 +100,6 @@ const Schedule = ({ group_obj }) => {
     }
     fetchData();
   }, []);
-
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -112,34 +112,15 @@ const Schedule = ({ group_obj }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.bodyContainerName}>
-        {!!group && (
-          <Image
-            style={styles.headerImage}
-            source={{ uri: group.group_image }}
-          />
-        )}
-        <Text style={styles.headerName}>{!!group && group.group_name}</Text>
-      </View>
       <View style={styles.bodyContainerSection}>
-        <Text style={styles.textDetailBold}>SCHEDULE</Text>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Group')}>
+          <Text style={styles.textDetail}>
+            Click here to navigate to next page
+          </Text>
+        </TouchableWithoutFeedback>
       </View>
-      {!!group && (
-        <FlatList
-          data={group.plans}
-          keyExtractor={(plan) => plan.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.bodyContainerSchedule}>
-              <Text style={styles.textDetailBold}>
-                {new Date(item.time.seconds * 1000).toDateString()}
-              </Text>
-              <Text style={styles.textDetail}>{item.description}</Text>
-            </View>
-          )}
-        />
-      )}
     </View>
   );
 };
 
-export default Schedule;
+export default SwipeCard;
