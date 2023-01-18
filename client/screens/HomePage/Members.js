@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     margin: 5,
+    // marginHorizontal: 15,
     // borderWidth: 1,
     // borderColor: 'black',
   },
@@ -60,7 +61,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     backgroundColor: 'white',
-    padding: 15,
+    // paddingVertical: 0,
+    // paddingHorizontal: 15,
   },
   textTitle: {
     fontSize: 20,
@@ -74,9 +76,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Poppins',
   },
+  memberImage: {
+    width: 75,
+    height: 75,
+  },
 });
 
-const Schedule = () => {
+const Memebers = () => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -100,23 +106,22 @@ const Schedule = () => {
         <Text style={styles.headerName}>Group Name</Text>
       </View>
       <View style={styles.bodyContainerSection}>
-        <Text style={styles.textDetailBold}>SCHEDULE</Text>
+        <Text style={styles.textDetailBold}>MEMBERS</Text>
       </View>
-      <View style={styles.bodyContainerSchedule}>
-        <Text style={styles.textDetailBold}>TIME</Text>
-        <Text style={styles.textDetail}>Schedule details will go here. Iflook like this.</Text>
+      <View style={styles.bodyContainerMember}>
+        <Image style={styles.headerImage} source={require('../../assets/box.png')} />
+        <Text style={styles.textDetail}>Name Here</Text>
       </View>
-      <View style={styles.bodyContainerSchedule}>
-        <Text style={styles.textDetailBold}>TIME</Text>
-        <Text style={styles.textDetail}>Schedule details will go here.</Text>
+      <View style={styles.bodyContainerMember}>
+        <Image style={styles.headerImage} source={require('../../assets/box.png')} />
+        <Text style={styles.textDetail}>Name Here</Text>
       </View>
-      <View style={styles.bodyContainerSchedule}>
-        <Text style={styles.textDetailBold}>TIME</Text>
-        <Text style={styles.textDetail}>Schedule details will go here.</Text>
+      <View style={styles.bodyContainerMember}>
+        <Image style={styles.headerImage} source={require('../../assets/box.png')} />
+        <Text style={styles.textDetail}>Name Here</Text>
       </View>
-
     </View>
   );
 };
 
-export default Schedule;
+export default Memebers;
