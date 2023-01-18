@@ -84,7 +84,7 @@ export default function App() {
           PAGER
         </Text>
       </SafeAreaView>
-      <Stack.Navigator initialRouteName="Profile">
+      {/* <Stack.Navigator initialRouteName="Profile">
         <Stack.Screen
           options={{ headerShown: false }}
           name="Profile"
