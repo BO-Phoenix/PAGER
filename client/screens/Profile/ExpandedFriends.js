@@ -8,8 +8,6 @@ import {
   Image,
   Pressable,
   CheckBox,
-  Alert,
-  Button,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import { getUser } from '../../db/user.js';
@@ -17,6 +15,7 @@ import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 import Card from './Card';
+import UserHeader from './UserHeader';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,12 +29,12 @@ const styles = StyleSheet.create({
     // borderColor: 'black',
   },
   headerImage: {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     marginTop: 15,
   },
   headerName: {
-    fontSize: 30,
+    fontSize: 20,
     fontFamily: 'PoppinsBold',
   },
   bodyContainerCenter: {
@@ -58,17 +57,7 @@ const styles = StyleSheet.create({
   },
   bodyContainerSection: {
     width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    marginBottom: 5,
-  },
-  bodyContainerRow: {
-    width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
@@ -126,7 +115,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Profile = () => {
+const ExpandedFriends = () => {
   const [user, setUser] = useState([]);
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -149,10 +138,10 @@ const Profile = () => {
   if (!fontLoaded) {
     return <Loading />;
   }
-  const goToFriends = () => console.log('pressed');
+
   return (
     <View style={styles.container}>
-      <Image
+      {/* <Image
         style={styles.headerImage}
         source={require('../../assets/box.png')}
       />
@@ -160,40 +149,17 @@ const Profile = () => {
         <Text style={styles.headerName}>
           {`${user.first_name} ${user.last_name}`}
         </Text>
-      </View>
-      <Pressable style={styles.button}>
-        <Text style={styles.buttonText} onClick={goToFriends}>
-          EDIT
-        </Text>
-      </Pressable>
-      <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetail}>{`${user.description}`}</Text>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>MUSIC TASTES</Text>
-        <Text style={styles.textDetail} onClick={goToFriends}>
-          SEE ALL
-        </Text>
-      </View>
-      {/* <View style={styles.bodyContainerSection}> */}
-      <View style={styles.bodyContainerRow}>
-        {musicTastes &&
-          musicTastes
-            .slice(0, 3)
-            .map((taste) => <Card musicTaste={taste} key={taste} />)}
-      </View>
+      </View> */}
+      <UserHeader user={user}>test</UserHeader>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
-        <Text style={styles.textDetail}>SEE ALL</Text>
       </View>
       <View style={styles.bodyContainerSection}>
         {friends &&
-          friends
-            .slice(0, 3)
-            .map((friend) => <Card musicTaste={friend} key={friend} />)}
+          friends.map((friend) => <Card musicTaste={friend} key={friend} />)}
       </View>
     </View>
   );
 };
 
-export default Profile;
+export default ExpandedFriends;

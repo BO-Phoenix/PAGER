@@ -1,10 +1,23 @@
 /* eslint-disable global-require */
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, CheckBox } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  CheckBox,
+  FlatList,
+} from 'react-native';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
+import {
+  getGroup,
+  getGroupsPerUser,
+  getGroupsAttendedPerUser,
+} from '../../db/group.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -76,7 +89,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const Schedule = () => {
+const Schedule = ({ group_obj }) => {
+  const [group, setGroup] = useState();
+
+  useEffect(() => {
+    async function fetchData() {
+      const group_obj = await getGroup('IrIfBilvP6HSrCHzty9d');
+      setGroup(group_obj);
+    }
+    fetchData();
+  }, []);
+
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -89,32 +112,32 @@ const Schedule = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.bodyContainerSection}>
-        <Text style={styles.textDetail}>
-          {'< '}
-          BACK
-        </Text>
-      </View>
       <View style={styles.bodyContainerName}>
-        <Image style={styles.headerImage} source={require('../../assets/box.png')} />
-        <Text style={styles.headerName}>Group Name</Text>
+        {!!group && (
+          <Image
+            style={styles.headerImage}
+            source={{ uri: group.group_image }}
+          />
+        )}
+        <Text style={styles.headerName}>{!!group && group.group_name}</Text>
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textDetailBold}>SCHEDULE</Text>
       </View>
-      <View style={styles.bodyContainerSchedule}>
-        <Text style={styles.textDetailBold}>TIME</Text>
-        <Text style={styles.textDetail}>Schedule details will go here. Iflook like this.</Text>
-      </View>
-      <View style={styles.bodyContainerSchedule}>
-        <Text style={styles.textDetailBold}>TIME</Text>
-        <Text style={styles.textDetail}>Schedule details will go here.</Text>
-      </View>
-      <View style={styles.bodyContainerSchedule}>
-        <Text style={styles.textDetailBold}>TIME</Text>
-        <Text style={styles.textDetail}>Schedule details will go here.</Text>
-      </View>
-
+      {!!group && (
+        <FlatList
+          data={group.plans}
+          keyExtractor={(plan) => plan.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.bodyContainerSchedule}>
+              <Text style={styles.textDetailBold}>
+                {new Date(item.time.seconds * 1000).toDateString()}
+              </Text>
+              <Text style={styles.textDetail}>{item.description}</Text>
+            </View>
+          )}
+        />
+      )}
     </View>
   );
 };

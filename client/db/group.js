@@ -37,7 +37,7 @@ export async function getGroupPlans(group_id) {
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, ' => ', doc.data());
+    //console.log(doc.id, ' => ', doc.data());
     plans.push({ ...{ id: doc.id }, ...doc.data() });
   });
   console.log('plans are : ', plans);
@@ -70,16 +70,41 @@ export async function getGroupsPerEvent(event_id) {
   const q = query(groupRef, where('event_id', '==', event_id));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
-    console.log(doc.id, ' => ', doc.data());
+    //console.log(doc.id, ' => ', doc.data());
     groups.push({ ...{ id: doc.id }, ...doc.data() });
   });
 
   for (let i = 0; i < groups.length; i++) {
     const plans = await getGroupPlans(groups[i].id);
-    groups_with_plans.push({ ...groups[i], ...{ plans } });
+    const members = await getGroupMembers(groups[i].id);
+    groups_with_plans.push({ ...groups[i], ...{ plans }, ...{ members } });
   }
-  console.log('group with plans : ', groups_with_plans);
+  console.log('group with plans and members : ', groups_with_plans);
 
+  return groups_with_plans;
+}
+
+export async function getGroupsPerUser(user_id) {
+  console.log('get group per user');
+  const groups = [];
+  const groups_with_plans = [];
+  const docRef = doc(db, 'users', user_id);
+  const docSnap = await getDoc(docRef);
+  // console.log('test getdoc : ', docSnap.data().group_list);
+  const user_groups = docSnap.data().group_list;
+  for (let i = 0; i < user_groups.length; i++) {
+    const groupRef = doc(db, 'groups', user_groups[i]);
+    const groupSnap = await getDoc(groupRef);
+    // console.log('test get group : ', groupSnap.data());
+    groups.push({ ...{ id: groupSnap.id }, ...groupSnap.data() });
+  }
+  for (let i = 0; i < groups.length; i++) {
+    const plans = await getGroupPlans(groups[i].id);
+    const members = await getGroupMembers(groups[i].id);
+    groups_with_plans.push({ ...groups[i], ...{ plans }, ...{ members } });
+  }
+
+  console.log('groups with plans and members : ', groups_with_plans);
   return groups_with_plans;
 }
 
@@ -100,21 +125,15 @@ export async function getGroupMembers(group_id) {
   return members;
 }
 
-export async function getGroupsPerUser(user_id) {
-  console.log('get group per user');
-  const groups = [];
-  const docRef = doc(db, 'users', user_id);
+export async function getGroup(group_id) {
+  const docRef = doc(db, 'groups', group_id);
   const docSnap = await getDoc(docRef);
-  // console.log('test getdoc : ', docSnap.data().group_list);
-  const user_groups = docSnap.data().group_list;
-  for (let i = 0; i < user_groups.length; i++) {
-    const groupRef = doc(db, 'groups', user_groups[i]);
-    const groupSnap = await getDoc(groupRef);
-    // console.log('test get group : ', groupSnap.data());
-    groups.push({ ...{ id: groupSnap.id }, ...groupSnap.data() });
-  }
-  console.log('group is : ', groups);
-  return groups;
+  const group = { ...{ id: docSnap.id }, ...docSnap.data() };
+  const plans = await getGroupPlans(group_id);
+  const members = await getGroupMembers(group_id);
+  const group_with_plan = { ...group, ...{ plans }, ...{ members } };
+  console.log('data for one group with plan is : ', group_with_plan);
+  return group_with_plan;
 }
 
 export async function getGroupsAttendedPerUser(user_id) {
@@ -228,11 +247,15 @@ export async function addPlan(group_id, form_data) {
 }
 
 export async function deletePlan(group_id, plan_id) {
-  await deleteDoc(doc(db, `groups/${group_id}/schedule`, plan_id)).then(() => console.log('plan deleted'));
+  await deleteDoc(doc(db, `groups/${group_id}/schedule`, plan_id)).then(() =>
+    console.log('plan deleted'),
+  );
 }
 
 export async function deleteGroup(group_id) {
-  await deleteDoc(doc(db, 'groups', group_id)).then(() => console.log('group deleted'));
+  await deleteDoc(doc(db, 'groups', group_id)).then(() =>
+    console.log('group deleted'),
+  );
 }
 
 export async function addChatMsg(form_data) {

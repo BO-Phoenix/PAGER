@@ -1,6 +1,13 @@
 /* eslint-disable global-require */
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, CheckBox } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  CheckBox,
+} from 'react-native';
 import { useFonts } from 'expo-font';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,6 +18,7 @@ import AllGroups from '../AllGroups/Index.js';
 import Profile from '../Profile/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
+import HomepageNavigator from './HomepageNavigator.js';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +50,6 @@ const Navigation = () => {
   }
 
   return (
-
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
@@ -65,15 +72,10 @@ const Navigation = () => {
           tabBarLabel: 'PROFILE',
         }}
       />
-      <Tab.Screen name="HOME" component={HomePage} />
+      <Tab.Screen name="HOME" component={HomepageNavigator} />
       <Tab.Screen name="GROUPS" component={AllGroups} />
     </Tab.Navigator>
-
   );
 };
 
 export default Navigation;
-
-
-
-

@@ -15,15 +15,17 @@ import { getAllEvents } from '../../db/event';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    overflowY: 'scroll',
   },
   title: {
     fontFamily: 'Arial',
     fontWeight: 'medium',
     fontSize: 24,
+    paddingTop: 15,
   },
   formInput: {
     flex: 1,

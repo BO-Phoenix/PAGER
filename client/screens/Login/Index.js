@@ -3,23 +3,42 @@ import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+// -- redux import statements
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserId } from '../../reducers/index.js';
+
+import { getUserByEmail } from '../../db/user';
 
 const auth = getAuth();
 
 const SignInScreen = () => {
+  const { userId } = useSelector((state) => state.pagerData);
+  const dispatch = useDispatch();
+
   const [value, setValue] = React.useState({
     email: '',
     password: '',
-    error: ''
-  })
+    error: '',
+  });
 
   async function signIn() {
     if (value.email === '' || value.password === '') {
       setValue({
         ...value,
-        error: 'Email and password are mandatory.'
-      })
+        error: 'Email and password are mandatory.',
+      });
       return;
+    }
+
+    try {
+      const id = await getUserByEmail(value.email);
+      // console.log('the id inside signIn is: ', id);
+      dispatch(updateUserId(id));
+    } catch (error) {
+      setValue({
+        ...value,
+        error: error.message,
+      });
     }
 
     try {
@@ -28,7 +47,7 @@ const SignInScreen = () => {
       setValue({
         ...value,
         error: error.message,
-      })
+      });
     }
   }
 
@@ -36,37 +55,36 @@ const SignInScreen = () => {
     <View style={styles.container}>
       <Text>Signin screen!</Text>
 
-      {!!value.error && <View style={styles.error}><Text>{value.error}</Text></View>}
+      {!!value.error && (
+        <View style={styles.error}>
+          <Text>{value.error}</Text>
+        </View>
+      )}
 
       <View style={styles.controls}>
         <Input
-          placeholder='Email'
+          placeholder="Email"
           containerStyle={styles.control}
           value={value.email}
           onChangeText={(text) => setValue({ ...value, email: text })}
-          leftIcon={<Icon
-            name='envelope'
-            size={16}
-          />}
+          leftIcon={<Icon name="envelope" size={16} />}
         />
 
         <Input
-          placeholder='Password'
+          placeholder="Password"
+          style={styles.control}
           containerStyle={styles.control}
           value={value.password}
           onChangeText={(text) => setValue({ ...value, password: text })}
-          secureTextEntry={true}
-          leftIcon={<Icon
-            name='key'
-            size={16}
-          />}
+          secureTextEntry
+          leftIcon={<Icon name="key" size={16} />}
         />
 
         <Button title="Sign in" buttonStyle={styles.control} onPress={signIn} />
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -79,10 +97,11 @@ const styles = StyleSheet.create({
 
   controls: {
     flex: 1,
+    width: '80%',
   },
 
   control: {
-    marginTop: 10
+    marginTop: 10,
   },
 
   error: {
@@ -90,7 +109,7 @@ const styles = StyleSheet.create({
     padding: 10,
     color: '#fff',
     backgroundColor: '#D54826FF',
-  }
+  },
 });
 
 export default SignInScreen;

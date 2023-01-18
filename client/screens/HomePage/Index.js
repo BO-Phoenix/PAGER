@@ -1,6 +1,17 @@
 /* eslint-disable global-require */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { StyleSheet, Text, View, Image, Dimensions, Animated, PanResponder } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  CheckBox,
+  FlatList,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
 import SwipeCard from './SwipeCard.js';
@@ -72,7 +83,7 @@ const Swipe = () => {
   });
 
   const removeTopCard = useCallback(() => {
-    setGroups((prevState) => prevState.slice(1));
+    setGroups(({ navigation }prevState) => prevState.slice(1));
     swipe.setValue({ x: 0, y: 0 });
   }, [swipe]);
 
@@ -89,24 +100,28 @@ const Swipe = () => {
 
   return (
     <View style={styles.container}>
-      {groups.map(({ name, source, description }, index) => {
-        const isFirst = index === 0;
-        const dragHandlers = isFirst ? panResponder.panHandlers : {};
-        return (
-          <SwipeCard
-            key={name}
-            name={name}
-            description={description}
-            source={source}
-            isFirst={isFirst}
-            swipe={swipe}
-            tiltSign={tiltSign}
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...dragHandlers}
-          />
-        );
-      }).reverse()}
-      {/* <SwipeFooter /> */}
+      <Text style={styles.headerText}>SELECT EVENT</Text>
+      <View style={styles.filterContainer}>
+        <FlatList
+          data={events}
+          keyExtractor={(events) => events.id.toString()}
+          numColumns={2}
+          renderItem={({ item }) => (
+            // console.log('date is :',item.event_date)
+            <View style={styles.filterOptionContainer}>
+              <Image
+                style={styles.filterImage}
+                source={{ uri: item.event_image }}
+              />
+              <Text style={styles.filterName}>{item.event_name}</Text>
+              <Text style={styles.filterOptions}>{item.event_location}</Text>
+              <Text style={styles.filterOptions}>
+                {new Date(item.event_date.seconds * 1000).toDateString()}
+              </Text>
+            </View>
+          )}
+        />
+      </View>
     </View>
   );
 };
