@@ -13,7 +13,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-ionicons';
 import Loading from '../Loading/Index.js';
-import HomePage from '../HomePage/Index.js';
+import HomePage from '../HomePage/Members.js';
 import AllGroups from '../AllGroups/Index.js';
 import Profile from '../Profile/Index.js';
 import globalStyles from '../../globalStyles';
