@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import {
   getGroupsPerUser,
   getGroupsAttendedPerUser,
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
 
 const Upcoming = () => {
   const [upcomingUserGroups, setUpcomingUserGroups] = useState([]);
+  const { userId } = useSelector((state) => state.pagerData);
 
   useEffect(() => {
     async function fetchData() {
