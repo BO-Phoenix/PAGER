@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     margin: 5,
-    // marginHorizontal: 15,
     // borderWidth: 1,
     // borderColor: 'black',
   },
@@ -61,8 +60,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     backgroundColor: 'white',
-    // paddingVertical: 0,
-    // paddingHorizontal: 15,
   },
   textTitle: {
     fontSize: 20,
@@ -75,10 +72,6 @@ const styles = StyleSheet.create({
   textDetail: {
     fontSize: 15,
     fontFamily: 'Poppins',
-  },
-  memberImage: {
-    width: 75,
-    height: 75,
   },
 });
 

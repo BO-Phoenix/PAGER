@@ -50,12 +50,15 @@ const styles = StyleSheet.create({
     width: '50%',
     // borderWidth: 1,
     // borderColor: 'black',
+    paddingHorizontal: 5,
     marginBottom: 15,
   },
   filterImage: {
-    width: 230,
-    height: 230,
+    width: '90%',
+    height: 150,
     borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: 'black',
   },
   filterName: {
     fontFamily: 'PoppinsBold',
@@ -121,33 +124,6 @@ const Index = () => {
             </View>
           )}
         />
-        {/* <View style={styles.filterOptionContainer}>
-          <Image
-            style={styles.filterImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.filterName}>EVENT NAME</Text>
-          <Text style={styles.filterOptions}>Location</Text>
-          <Text style={styles.filterOptions}>Date</Text>
-        </View>
-        <View style={styles.filterOptionContainer}>
-          <Image
-            style={styles.filterImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.filterName}>EVENT NAME</Text>
-          <Text style={styles.filterOptions}>Location</Text>
-          <Text style={styles.filterOptions}>Date</Text>
-        </View>
-        <View style={styles.filterOptionContainer}>
-          <Image
-            style={styles.filterImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.filterName}>EVENT NAME</Text>
-          <Text style={styles.filterOptions}>Location</Text>
-          <Text style={styles.filterOptions}>Date</Text>
-        </View> */}
       </View>
     </View>
   );
