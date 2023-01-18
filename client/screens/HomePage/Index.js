@@ -8,6 +8,7 @@ import {
   Pressable,
   CheckBox,
   FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Index = () => {
+const Index = ({ navigation }) => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -110,10 +111,14 @@ const Index = () => {
           renderItem={({ item }) => (
             // console.log('date is :',item.event_date)
             <View style={styles.filterOptionContainer}>
-              <Image
-                style={styles.filterImage}
-                source={{ uri: item.event_image }}
-              />
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('SwipeCard', item)}
+              >
+                <Image
+                  style={styles.filterImage}
+                  source={{ uri: item.event_image }}
+                />
+              </TouchableWithoutFeedback>
               <Text style={styles.filterName}>{item.event_name}</Text>
               <Text style={styles.filterOptions}>{item.event_location}</Text>
               <Text style={styles.filterOptions}>
