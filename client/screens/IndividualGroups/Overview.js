@@ -201,27 +201,30 @@ const Overview = ({ navigation }) => {
             width: '100%',
           }}
         >
-          {plans.slice(0, 3).map((plan) => {
-            let date = new Date(plan.time.seconds);
-            // let date = 'Tue Jan 20 1970 13:01:242424';
-            date += 'string';
-            date = date.slice(16, 21);
-            const num = date.slice(0, 2);
-            if (num > 12) {
-              date = spliceSlice(date, 0, 2, num - 12);
-              date += ' PM';
-            } else {
-              date += ' AM';
-            }
-            return (
-              <View style={styles.schedules} key={plan.id}>
-                <Text style={styles.boldDesc}>
-                  {plan.time.seconds ? date : plan.time.seconds}
-                </Text>
-                <Text>{plan.description}</Text>
-              </View>
-            );
-          })}
+          {plans
+            .sort((a, b) => a.time.seconds - b.time.seconds)
+            .slice(0, 3)
+            .map((plan) => {
+              let date = new Date(plan.time.seconds);
+              // let date = 'Tue Jan 20 1970 13:01:242424';
+              date += 'string';
+              date = date.slice(16, 21);
+              const num = date.slice(0, 2);
+              if (num > 12) {
+                date = spliceSlice(date, 0, 2, num - 12);
+                date += ' PM';
+              } else {
+                date += ' AM';
+              }
+              return (
+                <View style={styles.schedules} key={plan.id}>
+                  <Text style={styles.boldDesc}>
+                    {plan.time.seconds ? date : plan.time.seconds}
+                  </Text>
+                  <Text>{plan.description}</Text>
+                </View>
+              );
+            })}
         </View>
 
         <View style={styles.separation} />

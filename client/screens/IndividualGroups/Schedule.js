@@ -155,24 +155,27 @@ const Chat = ({ navigation }) => {
             width: '100%',
           }}
         >
-          {plans.map((plan) => {
-            let date = new Date(plan.time.seconds);
-            date += 'string';
-            date = date.slice(0, 24);
-            const num = date.slice(16, 18);
-            if (num > 12) {
-              date = spliceSlice(date, 16, 2, num - 12);
-              date += ' PM';
-            } else {
-              date += ' AM';
-            }
-            return (
-              <View style={styles.schedules} key={plan.id}>
-                <B>{plan.time.seconds ? date : plan.time.seconds}</B>
-                <Text>{plan.description}</Text>
-              </View>
-            );
-          })}
+          {plans
+            .sort((a, b) => a.time.seconds - b.time.seconds)
+            .map((plan) => {
+              let date = new Date(plan.time.seconds);
+              // let date = 'Tue Jan 20 1970 13:01:242424';
+              date += 'string';
+              date = date.slice(16, 21);
+              const num = date.slice(0, 2);
+              if (num > 12) {
+                date = spliceSlice(date, 0, 2, num - 12);
+                date += ' PM';
+              } else {
+                date += ' AM';
+              }
+              return (
+                <View style={styles.schedules} key={plan.id}>
+                  <B>{plan.time.seconds ? date : plan.time.seconds}</B>
+                  <Text>{plan.description}</Text>
+                </View>
+              );
+            })}
         </View>
       </View>
     </ScrollView>
