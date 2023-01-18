@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable global-require */
 import React, { useEffect, useState } from 'react';
 import {
@@ -91,6 +92,10 @@ const styles = StyleSheet.create({
     color: 'white',
     margin: 10,
   },
+  buttonText: {
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+  },
   textTitle: {
     fontSize: 20,
     fontFamily: 'PoppinsBold',
@@ -125,11 +130,6 @@ const Profile = () => {
       setUser(res[0]);
       setMusicTastes([...res[0].music_tastes]);
       setFriends([...res[0].friends_list]);
-      // const resMembers = await getGroupMembers('IrIfBilvP6HSrCHzty9d');
-      // setGroupMembers(resMembers);
-      // const resPlans = await getGroupPlans('IrIfBilvP6HSrCHzty9d');
-      // setPlans(resPlans);
-      // console.log(user);
     }
     fetchData();
   }, []);
@@ -149,38 +149,12 @@ const Profile = () => {
           {`${user.first_name} ${user.last_name}`}
         </Text>
       </View>
-      <Pressable style={styles.button}>EDIT</Pressable>
-      {/* <View>{user}</View> */}
-      {/* <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetailBold}>Organizer Name: </Text>
-        <Text style={styles.textDetail}>Name Here</Text>
-      </View> */}
+      <Pressable style={styles.button}>
+        <Text style={styles.buttonText}>EDIT</Text>
+      </Pressable>
       <View style={styles.bodyContainerLeft}>
         <Text style={styles.textDetail}>{`${user.description}`}</Text>
       </View>
-
-      {/* <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>SCHEDULE</Text>
-        <Text style={styles.textDetail}>SEE ALL</Text>
-      </View> */}
-      {/* <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View> */}
-      {/* <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View> */}
-      {/* <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}>TIME</Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
-      </View> */}
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>MUSIC TASTES</Text>
         <Text style={styles.textDetail}>SEE ALL</Text>
@@ -190,15 +164,6 @@ const Profile = () => {
           musicTastes
             .slice(0, 3)
             .map((taste) => <Card musicTaste={taste} key={taste} />)}
-        {/* <View style={styles.bodyContainerMember}>
-
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <Card /> */}
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
@@ -209,27 +174,6 @@ const Profile = () => {
           friends
             .slice(0, 3)
             .map((friend) => <Card musicTaste={friend} key={friend} />)}
-        {/* <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View>
-        <View style={styles.bodyContainerMember}>
-          <Image
-            style={styles.memberImage}
-            source={require('../../assets/box.png')}
-          />
-          <Text style={styles.textDetail}>Name Here</Text>
-        </View> */}
       </View>
     </View>
   );
