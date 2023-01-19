@@ -112,9 +112,9 @@ const Overview = ({ navigation, groupData }) => {
     async function fetchData() {
       const resEvents = await getAllEvents();
       setEvents(resEvents);
-      const resMembers = await getGroupMembers('IrIfBilvP6HSrCHzty9d');
+      const resMembers = await getGroupMembers(groupData.id);
       setGroupMembers(resMembers);
-      const resPlans = await getGroupPlans('IrIfBilvP6HSrCHzty9d');
+      const resPlans = await getGroupPlans(groupData.id);
       setPlans(resPlans);
     }
     fetchData();
@@ -142,15 +142,12 @@ const Overview = ({ navigation, groupData }) => {
 
     return str.slice(0, index) + (add || '') + str.slice(index + count);
   }
-
+  console.log('HERE IS GROUP DATA: ', groupData);
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Image
-          style={styles.main}
-          source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-        />
-        <Text style={styles.name}>Group Name</Text>
+        <Image style={styles.main} source={{ uri: groupData.group_image }} />
+        <Text style={styles.name}>{groupData.group_name}</Text>
 
         <View style={styles.rowName}>
           <Text style={styles.boldDesc}>ORGANIZER</Text>
@@ -158,12 +155,7 @@ const Overview = ({ navigation, groupData }) => {
         </View>
         {/* include conditionally rendered add member button which goes to different screen */}
 
-        <Text style={styles.desc}>
-          {'\n'}
-          Brief description goes here. Lorem ipsum is placeholder text commonly
-          used in the graphic, print, and publishing industries.
-          {'\n'}
-        </Text>
+        <Text style={styles.desc}>{groupData.group_description}</Text>
 
         <View style={styles.separation} />
 
@@ -212,15 +204,12 @@ const Overview = ({ navigation, groupData }) => {
             .map((plan) => {
               let date;
               if (typeof plan.time !== 'object') {
-                console.log('given time: ', plan.time);
                 date = new Date(plan.time);
               } else {
-                console.log('given time: ', plan.time.seconds);
                 date = new Date(plan.time.seconds);
               }
               // let date = 'Tue Jan 20 1970 13:01:242424';
               date = JSON.stringify(date);
-              // console.log(plan.time.seconds, date);
               date = date.slice(12, 17);
               const num = date.slice(0, 2);
               if (num === '12') {
@@ -233,9 +222,7 @@ const Overview = ({ navigation, groupData }) => {
               }
               return (
                 <View style={styles.schedules} key={plan.id}>
-                  <Text style={styles.boldDesc}>
-                    {plan.time.seconds ? date : plan.time.seconds}
-                  </Text>
+                  <Text style={styles.boldDesc}>{date}</Text>
                   <Text>{plan.description}</Text>
                 </View>
               );
@@ -274,7 +261,7 @@ const Overview = ({ navigation, groupData }) => {
             width: '100%',
           }}
         >
-          {groupMembers.map((member) => (
+          {groupData.members.map((member) => (
             <View style={styles.members} key={member.id}>
               <Image
                 style={styles.member}

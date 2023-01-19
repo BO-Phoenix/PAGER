@@ -119,14 +119,14 @@ const Schedule = ({ navigation, groupData }) => {
   // load data
   useEffect(() => {
     async function fetchData() {
-      const resPlans = await getGroupPlans('IrIfBilvP6HSrCHzty9d');
+      const resPlans = await getGroupPlans(groupData.id);
       setPlans(resPlans);
     }
     fetchData();
   }, []);
 
   async function fetchData() {
-    const resPlans = await getGroupPlans('IrIfBilvP6HSrCHzty9d');
+    const resPlans = await getGroupPlans(groupData.id);
     setPlans(resPlans);
   }
 
@@ -273,7 +273,7 @@ const Schedule = ({ navigation, groupData }) => {
               <TouchableOpacity
                 title="AddPlan"
                 onPress={() => {
-                  addPlan('IrIfBilvP6HSrCHzty9d', {
+                  addPlan(groupData.id, {
                     time: Number(value.time),
                     description: value.description,
                   });
@@ -296,11 +296,8 @@ const Schedule = ({ navigation, groupData }) => {
           </View>
         </Modal>
         <View style={styles.group}>
-          <Image
-            style={styles.main}
-            source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-          />
-          <Text style={styles.name}>Group Name</Text>
+          <Image style={styles.main} source={{ uri: groupData.group_image }} />
+          <Text style={styles.name}>{groupData.group_name}</Text>
         </View>
 
         <View style={styles.separation} />
@@ -345,15 +342,12 @@ const Schedule = ({ navigation, groupData }) => {
             .map((plan) => {
               let date;
               if (typeof plan.time !== 'object') {
-                // console.log('given time: ', plan.time);
                 date = new Date(plan.time);
               } else {
-                // console.log('given time: ', plan.time.seconds);
                 date = new Date(plan.time.seconds);
               }
               // let date = 'Tue Jan 20 1970 13:01:242424';
               date = JSON.stringify(date);
-              // console.log(plan.time.seconds, date);
               date = date.slice(12, 17);
               const num = date.slice(0, 2);
               if (num === '12') {
@@ -377,7 +371,7 @@ const Schedule = ({ navigation, groupData }) => {
                     onPress={
                       (e) => {
                         deletePlan(
-                          'IrIfBilvP6HSrCHzty9d',
+                          groupData.id,
                           e.target._internalFiberInstanceHandleDEV.memoizedProps
                             .value,
                         );
