@@ -1,11 +1,21 @@
 /* eslint-disable global-require */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, Animated, PanResponder } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Dimensions,
+  Animated,
+  PanResponder,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
 import SwipeCard from './SwipeCard.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
+import { getGroupsPerEvent } from '../../db/group.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,28 +24,63 @@ const styles = StyleSheet.create({
   },
 });
 
-const Swipe = () => {
-  const groupsArray = [
-    { id: '1', source: require('../../assets/test.gif'), name: 'Name', description: 'blah b sdf dsf ds fds fds fds f ds fds f ds fds f ds fds f dsf ds  dsflah balhb albh' },
-    { id: '2', source: require('../../assets/test.gif'), name: 'Test', description: 'blah blah balhb albh' },
-    { id: '3', source: require('../../assets/test.gif'), name: 'Ug', description: 'blah blah balhb albh' },
-    { id: '4', source: require('../../assets/test.gif'), name: 'Ly', description: 'blah blah balhb albh' },
-    { id: '5', source: require('../../assets/box.png'), name: 'Boy', description: 'blah blah balhb albh' },
-  ];
-  const [groups, setGroups] = useState(groupsArray);
+const Swipe = ({ route, navigation }) => {
+  // const groupsArray = [
+  //   {
+  //     id: '1',
+  //     source: require('../../assets/test.gif'),
+  //     name: 'Name',
+  //     description:
+  //       'blah b sdf dsf ds fds fds fds f ds fds f ds fds f ds fds f dsf ds  dsflah balhb albh',
+  //   },
+  //   {
+  //     id: '2',
+  //     source: require('../../assets/test.gif'),
+  //     name: 'Test',
+  //     description: 'blah blah balhb albh',
+  //   },
+  //   {
+  //     id: '3',
+  //     source: require('../../assets/test.gif'),
+  //     name: 'Ug',
+  //     description: 'blah blah balhb albh',
+  //   },
+  //   {
+  //     id: '4',
+  //     source: require('../../assets/test.gif'),
+  //     name: 'Ly',
+  //     description: 'blah blah balhb albh',
+  //   },
+  //   {
+  //     id: '5',
+  //     source: require('../../assets/box.png'),
+  //     name: 'Boy',
+  //     description: 'blah blah balhb albh',
+  //   },
+  // ];
 
+  const [groups, setGroups] = useState([]);
 
-  const screenWidth = (Dimensions.get('window').width) * 0.9;
-  const screenHeight = (Dimensions.get('window').height) * 0.75;
-  const outOfScreen = (Dimensions.get('window').width) + 0.5 * (Dimensions.get('window').width);
+  const screenWidth = Dimensions.get('window').width * 0.9;
+  const screenHeight = Dimensions.get('window').height * 0.75;
+  const outOfScreen =
+    Dimensions.get('window').width + 0.5 * Dimensions.get('window').width;
   const swipe = useRef(new Animated.ValueXY()).current;
   const tiltSign = useRef(new Animated.Value(1)).current;
 
+  // useEffect(() => {
+  //   if (!groups.length) {
+  //     setGroups(groupsArray);
+  //   }
+  // }, [groups.length]);
+
   useEffect(() => {
-    if (!groups.length) {
-      setGroups(groupsArray);
+    async function fetchData() {
+      const group_list = await getGroupsPerEvent(route.params.id);
+      setGroups(group_list);
     }
-  }, [groups.length]);
+    fetchData();
+  }, []);
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
@@ -55,7 +100,7 @@ const Swipe = () => {
             y: dy,
           },
           useNativeDriver: true,
-        // eslint-disable-next-line no-use-before-define
+          // eslint-disable-next-line no-use-before-define
         }).start(removeTopCard);
       } else {
         Animated.spring(swipe, {
@@ -75,7 +120,6 @@ const Swipe = () => {
     swipe.setValue({ x: 0, y: 0 });
   }, [swipe]);
 
-
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -85,26 +129,37 @@ const Swipe = () => {
     return <Loading />;
   }
 
-
   return (
     <View style={styles.container}>
-      {groups.map(({ name, source, description }, index) => {
-        const isFirst = index === 0;
-        const dragHandlers = isFirst ? panResponder.panHandlers : {};
-        return (
-          <SwipeCard
-            key={name}
-            name={name}
-            description={description}
-            source={source}
-            isFirst={isFirst}
-            swipe={swipe}
-            tiltSign={tiltSign}
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...dragHandlers}
-          />
-        );
-      }).reverse()}
+      {!!groups &&
+        groups
+          .map((group, index) => {
+            const isFirst = index === 0;
+            const dragHandlers = isFirst ? panResponder.panHandlers : {};
+            return (
+              <>
+                <TouchableWithoutFeedback
+                  onPress={() => navigation.navigate('Group', group.id)}
+                >
+                  <Text>Click</Text>
+                </TouchableWithoutFeedback>
+                <SwipeCard
+                  key={group.group_name}
+                  name={group.group_name}
+                  description={group.group_description}
+                  source={group.group_image}
+                  isFirst={isFirst}
+                  swipe={swipe}
+                  tiltSign={tiltSign}
+                  group_id={group.id}
+                  nav={navigation}
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...dragHandlers}
+                />
+              </>
+            );
+          })
+          .reverse()}
       {/* <SwipeFooter /> */}
     </View>
   );

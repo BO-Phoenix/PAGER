@@ -1,15 +1,25 @@
 /* eslint-disable global-require */
 import React, { useState, useCallback } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, Dimensions, Animated } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  Dimensions,
+  Animated,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useFonts } from 'expo-font';
 import { LinearGradient } from 'expo-linear-gradient';
 import Loading from '../Loading/Index.js';
 import SwipeChoice from './SwipeChoice.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
+import { useNavigation } from '@react-navigation/native';
 
-const screenWidth = (Dimensions.get('window').width) * 0.9;
-const screenHeight = (Dimensions.get('window').height) * 0.75;
+const screenWidth = Dimensions.get('window').width * 0.9;
+const screenHeight = Dimensions.get('window').height * 0.75;
 
 const actionOffset = 100;
 
@@ -61,7 +71,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const SwipeCard = ({ name, source, description, isFirst, swipe, tiltSign, ...rest }) => {
+const SwipeCard = ({
+  name,
+  source,
+  description,
+  isFirst,
+  swipe,
+  tiltSign,
+  group_id,
+  ...rest
+}) => {
   const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
     inputRange: [-actionOffset, 0, actionOffset],
     outputRange: ['8deg', '0deg', '-8deg'],
@@ -78,6 +97,8 @@ const SwipeCard = ({ name, source, description, isFirst, swipe, tiltSign, ...res
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
+
+  const navigation = useNavigation();
 
   const renderChoice = useCallback(() => {
     return (
@@ -119,17 +140,22 @@ const SwipeCard = ({ name, source, description, isFirst, swipe, tiltSign, ...res
 
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <Animated.View style={[styles.container, isFirst && animatedCardStyle]} {...rest}>
-      <Image style={styles.image} source={source} />
-      <LinearGradient style={styles.gradient} colors={['transparent', 'black']} />
+    <Animated.View
+      style={[styles.container, isFirst && animatedCardStyle]}
+      {...rest}
+    >
+      <Image style={styles.image} source={{ uri: source }} />
+
+      <LinearGradient
+        style={styles.gradient}
+        colors={['transparent', 'black']}
+      />
       <View style={styles.details}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
 
-      {
-        isFirst && renderChoice()
-      }
+      {isFirst && renderChoice()}
     </Animated.View>
   );
 };

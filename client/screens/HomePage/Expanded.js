@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Expanded = ({ group_info, navigation }) => {
+const Expanded = ({ group_id, navigation }) => {
   const [group, setGroup] = useState();
   useEffect(() => {
     async function fetchData() {
