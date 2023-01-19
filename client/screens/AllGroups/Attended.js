@@ -1,3 +1,4 @@
+/* eslint-disable react/style-prop-object */
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -106,8 +107,13 @@ const Attended = ({ navigation }) => {
         {/* {attendedUserGroups.map(group => { //  pass 'group' as a navigate -- 2nd param ITEM
           return (
             <View style={styles.groupContainer}>
-              <Image style={styles.groupImg} source={{ uri: group.group_image }} />
-              <Text style={styles.groupName} key={group.id}>{group.group_name}</Text>
+              <Image
+                style={styles.groupImg}
+                source={{ uri: group.group_image }}
+              />
+              <Text style={styles.groupName} key={group.id}>
+                {group.group_name}
+              </Text>
               <Icon name="arrow-dropright" size={30} />
             </View>
           );
