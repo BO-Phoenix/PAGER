@@ -8,6 +8,7 @@ import {
   View,
   Image,
   Pressable,
+  FlatList,
   CheckBox,
 } from 'react-native';
 import { useFonts } from 'expo-font';
@@ -30,9 +31,9 @@ const styles = StyleSheet.create({
     // borderColor: 'black',
   },
   headerImage: {
-    width: 100,
-    height: 100,
-    marginTop: 15,
+    width: 75,
+    height: 75,
+    marginRight: 15,
   },
   headerName: {
     fontSize: 20,
@@ -60,7 +61,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    textAlign: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
     paddingVertical: 5,
@@ -131,6 +131,42 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
   },
+  bodyContainerName: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    margin: 10,
+    // borderWidth: 1,
+    // borderColor: 'red',
+  },
+  taste: {
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '40%',
+    padding: 15,
+    flexWrap: 'wrap',
+    marginVertical: 5,
+    margin: 'auto',
+  },
+  bodyContainerRow: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginBottom: 5,
+  },
+  filterContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'space-between',
+    justifyContent: 'center',
+    margin: 10,
+  },
 });
 
 const ExpandedFriends = () => {
@@ -160,16 +196,43 @@ const ExpandedFriends = () => {
 
   return (
     <View style={styles.container}>
-      <UserHeader user={user} />
-      <View style={styles.bodyContainerCenter}>
+      <View style={styles.bodyContainerName}>
+        <Image
+          style={styles.headerImage}
+          source={user.profile_pic}
+        />
+        <Text style={styles.headerName}>
+          {user.first_name}
+          {' '}
+          {user.last_name}
+        </Text>
+      </View>
+      <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>MUSIC TASTES</Text>
       </View>
-      <View style={styles.bodyContainerCards}>
+
+      <View style={styles.filterContainer}>
+        <FlatList
+          data={musicTastes}
+          // keyExtractor={(events) => events.id.toString()}
+          numColumns={2}
+          renderItem={({ item }) => (
+            <View style={styles.taste}>
+              <Text style={styles.textDetailBold}>{item}</Text>
+            </View>
+          )}
+        />
+      </View>
+
+      {/* <View style={styles.bodyContainerRow}>
         {musicTastes &&
           musicTastes.map((taste, idx) => (
-            <TasteCard prop={taste} key={Math.random()} />
+            // <TasteCard prop={taste} key={Math.random()} />
+            <View style={styles.taste} key={Math.random()}>
+              <Text style={styles.textDetailBold}>{taste}</Text>
+            </View>
           ))}
-      </View>
+      </View> */}
     </View>
   );
 };
