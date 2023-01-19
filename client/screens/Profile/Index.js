@@ -137,6 +137,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Poppins',
   },
+  textDetailUnderline: {
+    fontSize: 15,
+    fontFamily: 'Poppins',
+    textDecorationLine: 'underline',
+  },
   memberImage: {
     width: 75,
     height: 75,
@@ -197,7 +202,7 @@ const Profile = ({ navigation }) => {
         <TouchableWithoutFeedback
           onPress={() => navigation.navigate('ExpandedTastes')}
         >
-          <Text style={styles.textDetail}>SEE ALL</Text>
+          <Text style={styles.textDetailUnderline}>SEE ALL</Text>
         </TouchableWithoutFeedback>
       </View>
       {/* <View style={styles.bodyContainerSection}> */}
@@ -212,7 +217,7 @@ const Profile = ({ navigation }) => {
         <TouchableWithoutFeedback
           onPress={() => navigation.navigate('ExpandedFriends')}
         >
-          <Text style={styles.textDetail}>SEE ALL</Text>
+          <Text style={styles.textDetailUnderline}>SEE ALL</Text>
         </TouchableWithoutFeedback>
       </View>
       <View style={styles.bodyContainerSection}>
