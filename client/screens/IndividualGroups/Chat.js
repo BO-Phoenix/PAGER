@@ -47,10 +47,10 @@ const ChatStack = () => {
   );
 };
 
-const Chat = ({ navigation }) => {
+const Chat = ({ navigation, groupData }) => {
   const { userId } = useSelector((state) => state.pagerData); // user_id global state
   const [messages, setMessages] = useState([]);
-  const [groupId, setGroupId] = useState('IrIfBilvP6HSrCHzty9d');
+  const [groupId, setGroupId] = useState(groupData.id);
   const [name, setName] = useState('');
 
   useLayoutEffect(() => {
