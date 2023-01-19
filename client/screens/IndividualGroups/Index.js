@@ -49,7 +49,6 @@ const Index = ({ route }) => {
         }}
         children={() => <Schedule groupData={groupData} />}
       />
-      {/* <Tab.Screen name="AddSchedule" component={AddSchedule} /> */}
       <Tab.Screen
         name="Chat"
         component={Chat}

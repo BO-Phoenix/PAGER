@@ -78,7 +78,11 @@ const SignInScreen = () => {
           leftIcon={<Icon name="key" size={16} />}
         />
 
-        <Button title="Sign in" buttonStyle={globalStyles.button} onPress={signIn} />
+        <Button
+          title="Sign in"
+          buttonStyle={globalStyles.button}
+          onPress={signIn}
+        />
       </View>
     </View>
   );
@@ -95,6 +99,7 @@ const styles = StyleSheet.create({
 
   controls: {
     flex: 1,
+    width: '80%',
   },
 
   control: {

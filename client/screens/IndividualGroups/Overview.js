@@ -9,6 +9,7 @@ import {
   View,
   Button,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Image,
   ScrollView,
 } from 'react-native';
@@ -142,7 +143,6 @@ const Overview = ({ navigation, groupData }) => {
 
     return str.slice(0, index) + (add || '') + str.slice(index + count);
   }
-  console.log('HERE IS GROUP DATA: ', groupData);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -171,8 +171,7 @@ const Overview = ({ navigation, groupData }) => {
               SCHEDULE
             </Text>
           </Text>
-          <TouchableOpacity
-            title="Schedule"
+          <TouchableWithoutFeedback
             onPress={() =>
               navigation.navigate('Schedule', { name: 'Schedule' })
             }
@@ -186,7 +185,7 @@ const Overview = ({ navigation, groupData }) => {
             >
               SEE ALL
             </Text>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         </View>
 
         <View
