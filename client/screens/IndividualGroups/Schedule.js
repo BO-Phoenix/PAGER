@@ -15,7 +15,8 @@ import {
 import globalStyles from '../../globalStyles';
 import { getGroupPlans } from '../../db/group.js';
 
-const Chat = ({ navigation }) => {
+const Chat = ({ navigation, groupData }) => {
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,

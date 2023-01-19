@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const Card = ({ musicTaste, friend }) => {
+  console.log('music taste type :', typeof musicTaste);
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
