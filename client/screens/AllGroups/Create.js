@@ -260,6 +260,5 @@ export default Create;
 // size: string -- DONE
 // vibe: string -- DONE
 
-
 // top priority: andrew's user id setup
 // need to be able to grab user_id and name

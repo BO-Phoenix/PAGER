@@ -1,125 +1,136 @@
 /* eslint-disable global-require */
-import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Pressable,
-  CheckBox,
-  FlatList,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { StyleSheet, Text, View, Image, Pressable, Dimensions, Animated } from 'react-native';
 import { useFonts } from 'expo-font';
+import { LinearGradient } from 'expo-linear-gradient';
 import Loading from '../Loading/Index.js';
+import SwipeChoice from './SwipeChoice.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
-import {
-  getGroup,
-  getGroupsPerUser,
-  getGroupsAttendedPerUser,
-} from '../../db/group.js';
+
+const screenWidth = (Dimensions.get('window').width) * 0.9;
+const screenHeight = (Dimensions.get('window').height) * 0.75;
+
+const actionOffset = 100;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingBottom: 10,
-    overflow: 'scroll',
-    backgroundColor: 'white',
-    // borderWidth: 1,
-    // borderColor: 'black',
+    position: 'absolute',
+    top: 15,
   },
-  bodyContainerName: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    margin: 5,
-    // borderWidth: 1,
-    // borderColor: 'black',
+  image: {
+    width: screenWidth,
+    height: screenHeight,
+    borderRadius: 20,
   },
-  headerImage: {
-    width: 50,
-    height: 50,
-    marginHorizontal: 5,
+  gradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+    borderRadius: 20,
   },
-  headerName: {
-    fontSize: 25,
+  details: {
+    position: 'absolute',
+    paddingRight: 10,
+    bottom: 22,
+    left: 22,
+  },
+  name: {
+    fontSize: 30,
     fontFamily: 'PoppinsBold',
+    color: 'white',
   },
-  bodyContainerMember: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-  },
-  bodyContainerSection: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    marginTop: 5,
-  },
-  bodyContainerSchedule: {
-    width: '100%',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white',
-  },
-  textTitle: {
-    fontSize: 20,
-    fontFamily: 'PoppinsBold',
-  },
-  textDetailBold: {
-    fontSize: 15,
-    fontFamily: 'PoppinsBold',
-  },
-  textDetail: {
+  description: {
     fontSize: 15,
     fontFamily: 'Poppins',
-    textDecorationLine: 'underline',
+    color: 'white',
+  },
+  choiceContainer: {
+    position: 'absolute',
+    top: 100,
+  },
+  likeContainer: {
+    left: 45,
+    transform: [{ rotate: '-30deg' }],
+  },
+  dislikeContainer: {
+    right: 45,
+    transform: [{ rotate: '30deg' }],
   },
 });
 
-const SwipeCard = ({ navigation }) => {
-  const [group, setGroup] = useState();
+const SwipeCard = ({ name, source, description, isFirst, swipe, tiltSign, ...rest }) => {
+  const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
+    inputRange: [-actionOffset, 0, actionOffset],
+    outputRange: ['8deg', '0deg', '-8deg'],
+  });
 
-  useEffect(() => {
-    async function fetchData() {
-      const group_obj = await getGroup('IrIfBilvP6HSrCHzty9d');
-      setGroup(group_obj);
-    }
-    fetchData();
-  }, []);
+  const likeOpacity = swipe.x.interpolate({
+    inputRange: [25, actionOffset],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+
+  const dislikeOpacity = swipe.x.interpolate({
+    inputRange: [-actionOffset, -25],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
+  const renderChoice = useCallback(() => {
+    return (
+      <>
+        <Animated.View
+          style={[
+            styles.choiceContainer,
+            styles.likeContainer,
+            { opacity: likeOpacity },
+          ]}
+        >
+          <SwipeChoice type="LIKE" />
+        </Animated.View>
+        <Animated.View
+          style={[
+            styles.choiceContainer,
+            styles.dislikeContainer,
+            { opacity: dislikeOpacity },
+          ]}
+        >
+          <SwipeChoice type="DISLIKE" />
+        </Animated.View>
+      </>
+    );
+  }, [likeOpacity, dislikeOpacity]);
+
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
 
   if (!fontLoaded) {
     return <Loading />;
   }
 
+  const animatedCardStyle = {
+    transform: [...swipe.getTranslateTransform(), { rotate }],
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.bodyContainerSection}>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Group')}>
-          <Text style={styles.textDetail}>
-            Click here to navigate to next page
-          </Text>
-        </TouchableWithoutFeedback>
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <Animated.View style={[styles.container, isFirst && animatedCardStyle]} {...rest}>
+      <Image style={styles.image} source={source} />
+      <LinearGradient style={styles.gradient} colors={['transparent', 'black']} />
+      <View style={styles.details}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.description}>{description}</Text>
       </View>
-    </View>
+
+      {
+        isFirst && renderChoice()
+      }
+    </Animated.View>
   );
 };
 

@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingBottom: 10,
     overflow: 'scroll',
+    // overflow-x: 'hidden',
     backgroundColor: 'white',
     // borderWidth: 3,
     // borderColor: 'red',
@@ -112,7 +113,7 @@ const Index = ({ navigation }) => {
             // console.log('date is :',item.event_date)
             <View style={styles.filterOptionContainer}>
               <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('SwipeCard', item)}
+                onPress={() => navigation.navigate('Group', item)}
               >
                 <Image
                   style={styles.filterImage}
