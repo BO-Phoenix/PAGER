@@ -9,6 +9,7 @@ import {
   Animated,
   PanResponder,
   TouchableWithoutFeedback,
+  ImageBackground,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useSelector } from 'react-redux';
@@ -16,7 +17,7 @@ import { Form, FormItem, Picker } from 'react-native-form-component';
 import Loading from '../Loading/Index.js';
 import SwipeCard from './SwipeCard.js';
 import globalStyles from '../../globalStyles';
-import emptyBox from '../../assets/box.png';
+import bgImage from '../../assets/swipebg.png';
 import { getGroupsPerEvent, sendRequestToGroup } from '../../db/group.js';
 
 const styles = StyleSheet.create({
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   bodyContainerSection: {
     width: '100%',
@@ -49,6 +51,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  image: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
 });
 
 const Swipe = ({ route, navigation }) => {
@@ -63,8 +70,7 @@ const Swipe = ({ route, navigation }) => {
 
   const screenWidth = Dimensions.get('window').width * 0.9;
   const screenHeight = Dimensions.get('window').height * 0.75;
-  const outOfScreen =
-    Dimensions.get('window').width + 0.5 * Dimensions.get('window').width;
+  const outOfScreen = Dimensions.get('window').width + 0.5 * Dimensions.get('window').width;
   const swipe = useRef(new Animated.ValueXY()).current;
   const tiltSign = useRef(new Animated.Value(1)).current;
 
@@ -213,55 +219,56 @@ const Swipe = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.bodyContainerSection}>
-        <Picker
-          style={{ height: 3, width: 125 }}
-          id="select-size"
-          placeholder="ENERGY/VIBE"
-          items={[
-            { label: 'LOW', value: 'low' },
-            { label: 'MEDIUM', value: 'medium' },
-            { label: 'HIGH', value: 'high' },
-          ]}
-          selectedValue={vibe}
-          onSelection={(item) => handleSelectionVibe(item)}
-        />
-        <Picker
-          style={{ height: 30, width: 125 }}
-          id="select-size"
-          placeholder="GROUP SIZE"
-          items={[
-            { label: 'SMALL (0-5)', value: 'small' },
-            { label: 'MEDIUM (6-10)', value: 'medium' },
-            { label: 'LARGER (11-20)', value: 'large' },
-          ]}
-          selectedValue={size}
-          onSelection={(item) => handleSelectionSize(item)}
-        />
-      </View>
-      {!!groups &&
-        groups
-          .map((group, index) => {
-            const isFirst = index === 0;
-            const dragHandlers = isFirst ? panResponder.panHandlers : {};
-            return (
-              <SwipeCard
-                key={group.group_name}
-                name={group.group_name}
-                description={group.group_description}
-                source={group.group_image}
-                isFirst={isFirst}
-                swipe={swipe}
-                tiltSign={tiltSign}
-                group_id={group.id}
-                nav={navigation}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...dragHandlers}
-              />
-            );
-          })
-          .reverse()}
-      {/* <SwipeFooter /> */}
+      <ImageBackground source={bgImage} resizeMode="cover" style={styles.image}>
+        <View style={styles.bodyContainerSection}>
+          <Picker
+            style={{ height: 3, width: 125 }}
+            id="select-size"
+            placeholder="ENERGY/VIBE"
+            items={[
+              { label: 'LOW', value: 'low' },
+              { label: 'MEDIUM', value: 'medium' },
+              { label: 'HIGH', value: 'high' },
+            ]}
+            selectedValue={vibe}
+            onSelection={(item) => handleSelectionVibe(item)}
+          />
+          <Picker
+            style={{ height: 30, width: 125 }}
+            id="select-size"
+            placeholder="GROUP SIZE"
+            items={[
+              { label: 'SMALL (0-5)', value: 'small' },
+              { label: 'MEDIUM (6-10)', value: 'medium' },
+              { label: 'LARGE (11-20)', value: 'large' },
+            ]}
+            selectedValue={size}
+            onSelection={(item) => handleSelectionSize(item)}
+          />
+        </View>
+        {!!groups
+          && groups
+            .map((group, index) => {
+              const isFirst = index === 0;
+              const dragHandlers = isFirst ? panResponder.panHandlers : {};
+              return (
+                <SwipeCard
+                  key={group.group_name}
+                  name={group.group_name}
+                  description={group.group_description}
+                  source={group.group_image}
+                  isFirst={isFirst}
+                  swipe={swipe}
+                  tiltSign={tiltSign}
+                  group_id={group.id}
+                  nav={navigation}
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...dragHandlers}
+                />
+              );
+            })
+            .reverse()}
+      </ImageBackground>
     </View>
   );
 };
