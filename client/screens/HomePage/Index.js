@@ -113,7 +113,7 @@ const Index = ({ navigation }) => {
             // console.log('date is :',item.event_date)
             <View style={styles.filterOptionContainer}>
               <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('Group', item)}
+                onPress={() => navigation.navigate('Swipe', item)}
               >
                 <Image
                   style={styles.filterImage}
