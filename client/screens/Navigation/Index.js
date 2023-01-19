@@ -16,10 +16,12 @@ import Loading from '../Loading/Index.js';
 import HomePage from '../HomePage/Index.js';
 import AllGroups from '../AllGroups/Index.js';
 import Profile from '../Profile/Index.js';
+import IndividualGroups from '../IndividualGroups/Index';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 import HomepageNavigator from './HomepageNavigator.js';
 import ProfileNavigator from './ProfileNavigator.js';
+import GroupNavigator from './GroupNavigator.js';
 
 const Tab = createBottomTabNavigator();
 
@@ -68,7 +70,7 @@ const Navigation = () => {
     >
       <Tab.Screen name="PROFILE" component={ProfileNavigator} />
       <Tab.Screen name="HOME" component={HomepageNavigator} />
-      <Tab.Screen name="GROUPS" component={AllGroups} />
+      <Tab.Screen name="GROUPS" component={GroupNavigator} />
     </Tab.Navigator>
   );
 };

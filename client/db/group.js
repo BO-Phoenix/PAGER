@@ -66,22 +66,21 @@ export async function getPendeingRequestPerGroup(group_id) {
 export async function getGroupsPerEvent(event_id) {
   console.log('get group per event');
   const groups = [];
-  const groups_with_plans = [];
+  // const groups_with_plans = [];
   const q = query(groupRef, where('event_id', '==', event_id));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
-    //console.log(doc.id, ' => ', doc.data());
     groups.push({ ...{ id: doc.id }, ...doc.data() });
   });
 
-  for (let i = 0; i < groups.length; i++) {
-    const plans = await getGroupPlans(groups[i].id);
-    const members = await getGroupMembers(groups[i].id);
-    groups_with_plans.push({ ...groups[i], ...{ plans }, ...{ members } });
-  }
-  console.log('group with plans and members : ', groups_with_plans);
+  // for (let i = 0; i < groups.length; i++) {
+  //   const plans = await getGroupPlans(groups[i].id);
+  //   const members = await getGroupMembers(groups[i].id);
+  //   groups_with_plans.push({ ...groups[i], ...{ plans }, ...{ members } });
+  // }
+  // console.log('group with plans and members : ', groups_with_plans);
 
-  return groups_with_plans;
+  return groups;
 }
 
 export async function getGroupsPerUser(user_id) {
@@ -126,13 +125,14 @@ export async function getGroupMembers(group_id) {
 }
 
 export async function getGroup(group_id) {
+  // console.log('get group info, plans and memebers');
   const docRef = doc(db, 'groups', group_id);
   const docSnap = await getDoc(docRef);
   const group = { ...{ id: docSnap.id }, ...docSnap.data() };
   const plans = await getGroupPlans(group_id);
   const members = await getGroupMembers(group_id);
   const group_with_plan = { ...group, ...{ plans }, ...{ members } };
-  console.log('data for one group with plan is : ', group_with_plan);
+  console.log('data for one group with plan,members is : ', group_with_plan);
   return group_with_plan;
 }
 
