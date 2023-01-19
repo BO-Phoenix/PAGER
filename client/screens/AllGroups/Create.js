@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   textHeader: {
     fontSize: 24,
     paddingTop: 15,
-    fontFamily: 'Poppins',
+    fontFamily: 'PoppinsBold',
   },
   separation: {
     width: '90%',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   featureHeader: {
     fontSize: 20,
     paddingTop: 15,
-    fontFamily: 'Poppins',
+    fontFamily: 'PoppinsBold',
   },
   formStyle: {
     display: 'flex',
@@ -128,7 +128,6 @@ const Create = () => {
   // react FILE compoenent -- click a button for you to select your image
 
   // 1/18 AGENDA:
-  // TOP PRIORITY -- implement navigator
   // NEXT -- post form data
   // NEXT -- form upload
 
