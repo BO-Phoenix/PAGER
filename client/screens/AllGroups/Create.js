@@ -125,7 +125,6 @@ const Create = () => {
   // react FILE compoenent -- click a button for you to select your image
 
   // 1/18 AGENDA:
-  // TOP PRIORITY -- implement navigator
   // NEXT -- post form data
   // NEXT -- form upload
 

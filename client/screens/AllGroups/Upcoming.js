@@ -22,10 +22,10 @@ import {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     // overflowY: 'scroll',
   },
   textHeader: {
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     padding: 10,
-    // border: '2px solid grey',
+    // borderWidth: 10,
+    // borderColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -129,15 +130,15 @@ const Upcoming = ({ navigation }) => {
           // numColumns={2}
           renderItem={({ item }) => (
             // console.log('group ID :', item.id)
-            <View style={{ height: '100%', width: 350/* , border: '2px solid red' */ }}>
+            <View key={item.id} style={{ width: 350 }}>
               <TouchableWithoutFeedback
                 onPress={() => navigation.navigate('IndividualGroupsIndex', item)}
               >
                 <View style={styles.groupContainer}>
                   <Image style={styles.groupImg} source={{ uri: item.group_image }} />
                   <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Text style={styles.groupName} key={item.id}>{item.group_name}</Text>
-                    <Text style={styles.groupName} key={item.id}>{item.event_name}</Text>
+                    <Text style={styles.groupName}>{item.group_name}</Text>
+                    {/* <Text style={styles.groupName}>{item.event_name}</Text> */}
                   </View>
                   <Icon name="chevron-right" size={30} color="#000000" />
                 </View>
