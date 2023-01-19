@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     // borderColor: 'black',
   },
   headerImage: {
-    width: 50,
-    height: 50,
+    width: 75,
+    height: 75,
     marginRight: 15,
     marginVertical: 15,
   },
