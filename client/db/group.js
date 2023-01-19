@@ -64,12 +64,14 @@ export async function getPendeingRequestPerGroup(group_id) {
 }
 
 export async function getGroupsPerEvent(event_id) {
+  console.log('event_id is : ', event_id);
   console.log('get group per event');
   const groups = [];
   // const groups_with_plans = [];
   const q = query(groupRef, where('event_id', '==', event_id));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
+    //console.log('group info is : ', doc.id, doc.data());
     groups.push({ ...{ id: doc.id }, ...doc.data() });
   });
 
