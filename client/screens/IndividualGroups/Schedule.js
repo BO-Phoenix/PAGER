@@ -126,11 +126,10 @@ const Schedule = ({ navigation, groupData }) => {
   const [plans, setPlans] = useState([]);
   const [date, setDate] = useState('12:00 AM');
   const [value, setValue] = useState({
-    time: Math.floor(new Date().getTime() / 1000.0),
+    time: '1674000000000',
     description: '',
     error: '',
   });
-
   // get data on load
   useEffect(() => {
     async function fetchData() {
