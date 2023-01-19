@@ -48,6 +48,9 @@ const EditProfile = () => {
 
   return (
     <View>
+      <View style={styles.bodyContainerSection}>
+        <Text>SIGN OUT</Text>
+      </View>
       <UserHeader user={user} />
       <View>
         <Text>Description</Text>

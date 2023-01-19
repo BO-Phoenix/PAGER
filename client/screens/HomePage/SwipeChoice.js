@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     borderWidth: 7,
     paddingHorizontal: 15,
     borderRadius: 15,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(f,f,f,f.5)',
   },
   text: {
     fontSize: 40,
@@ -34,8 +34,8 @@ const SwipeChoice = ({ type }) => {
   }
 
   const colors = {
-    LIKE: 'green',
-    DISLIKE: 'red',
+    JOIN: '#4CC9F0',
+    PASS: '#F72585',
   };
 
   const color = colors[type];
