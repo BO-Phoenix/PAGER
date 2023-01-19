@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable global-require */
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable implicit-arrow-linebreak */
@@ -177,11 +178,7 @@ const Overview = ({ navigation, groupData }) => {
               SCHEDULE
             </Text>
           </Text>
-          <TouchableWithoutFeedback
-          // onPress={() =>
-          //   navigation.navigate('Schedule', { name: 'Schedule' })
-          // }
-          >
+          <TouchableWithoutFeedback>
             <Text
               style={{
                 textDecorationLine: 'underline',
@@ -189,7 +186,8 @@ const Overview = ({ navigation, groupData }) => {
                 fontFamily: 'Poppins',
               }}
             >
-              SEE ALL -->
+              SEE ALL --
+              {'>'}
             </Text>
           </TouchableWithoutFeedback>
         </View>
@@ -264,8 +262,7 @@ const Overview = ({ navigation, groupData }) => {
                 source={{ uri: member.profile_pic }}
               />
               <Text>
-                {member.first_name}
-                {member.last_name}
+                {member.first_name} {member.last_name}
               </Text>
             </View>
           ))}
