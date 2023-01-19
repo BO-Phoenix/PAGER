@@ -150,7 +150,7 @@ const Create = () => {
     setGroupImg(result);
   };
 
-  // -- 1/19 fix group image upload
+  // -- 1/19 fix group image upload, opens docs on ios
   const submitFormData = () => {
     const newGroupFormData = {
       event_date: event.event_date,
