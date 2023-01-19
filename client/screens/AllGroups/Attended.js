@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
-  StyleSheet, Text, View, Button, Image, TouchableOpacity, ScrollView, TouchableWithoutFeedback,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
 import { useSelector } from 'react-redux';
@@ -25,7 +31,7 @@ const styles = StyleSheet.create({
   textHeader: {
     fontSize: 24,
     paddingTop: 15,
-    fontFamily: 'Poppins',
+    fontFamily: 'PoppinsBold',
   },
   separation: {
     width: '90%',
@@ -51,16 +57,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     padding: 10,
-    border: '2px solid grey',
+    // border: '2px solid grey',
     alignItems: 'center',
     justifyContent: 'center',
   },
   groupContainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '90%',
+    width: '100%',
     padding: 10,
-    border: '2px solid grey',
+    // border: '2px solid grey',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -97,7 +103,7 @@ const Attended = ({ navigation }) => {
         <Text style={styles.featureHeader}>ATTENDED</Text>
       </View>
       <View style={styles.renderGroupContainer}>
-        {attendedUserGroups.map(group => { //  pass 'group' as a navigate -- 2nd param ITEM
+        {/* {attendedUserGroups.map(group => { //  pass 'group' as a navigate -- 2nd param ITEM
           return (
             <View style={styles.groupContainer}>
               <Image style={styles.groupImg} source={{ uri: group.group_image }} />
@@ -105,7 +111,31 @@ const Attended = ({ navigation }) => {
               <Icon name="arrow-dropright" size={30} />
             </View>
           );
-        })}
+        })} */}
+        <FlatList
+          data={attendedUserGroups}
+          keyExtractor={(groups) => groups.id.toString()}
+          contentContainerStyle={{ width: 350, display: 'flex', flexDirection: 'column', alignItems: 'center'/* , border: '2px solid blue' */ }}
+          // numColumns={2}
+          renderItem={({ item }) => (
+            // console.log('group ID :', item.id)
+            <View style={{ height: '100%', width: 350/* , border: '2px solid red' */ }}>
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('IndividualGroupsIndex', item)}
+              >
+                <View style={styles.groupContainer}>
+                  <Image style={styles.groupImg} source={{ uri: item.group_image }} />
+                  <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Text style={styles.groupName} key={item.id}>{item.group_name}</Text>
+                    <Text style={styles.groupName} key={item.id}>{item.event_name}</Text>
+                  </View>
+
+                  <Icon name="arrow-dropright" size={30} />
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          )}
+        />
       </View>
       {/* <TouchableOpacity
         title="Upcoming"

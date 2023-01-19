@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   textHeader: {
     fontSize: 24,
     paddingTop: 15,
-    fontFamily: 'Poppins',
+    fontFamily: 'PoppinsBold',
   },
   separation: {
     width: '90%',

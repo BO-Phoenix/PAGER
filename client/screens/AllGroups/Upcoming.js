@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   textHeader: {
     fontSize: 24,
     paddingTop: 15,
-    fontFamily: 'Poppins',
+    fontFamily: 'PoppinsBold',
   },
   separation: {
     width: '90%',
@@ -57,16 +57,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     padding: 10,
-    border: '2px solid grey',
+    // border: '2px solid grey',
     alignItems: 'center',
     justifyContent: 'center',
   },
   groupContainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '90%',
+    width: '100%',
     padding: 10,
-    border: '2px solid grey',
+    // border: '2px solid grey',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -104,6 +104,7 @@ const Upcoming = ({ navigation }) => {
     return <Loading />;
   }
 
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.textHeader}>GROUPS</Text>
@@ -124,16 +125,21 @@ const Upcoming = ({ navigation }) => {
         <FlatList
           data={upcomingUserGroups}
           keyExtractor={(groups) => groups.id.toString()}
+          contentContainerStyle={{ width: 350, display: 'flex', flexDirection: 'column', alignItems: 'center'/* , border: '2px solid blue' */ }}
           // numColumns={2}
           renderItem={({ item }) => (
             // console.log('group ID :', item.id)
-            <View>
+            <View style={{ height: '100%', width: 350/* , border: '2px solid red' */ }}>
               <TouchableWithoutFeedback
                 onPress={() => navigation.navigate('IndividualGroupsIndex', item)}
               >
                 <View style={styles.groupContainer}>
                   <Image style={styles.groupImg} source={{ uri: item.group_image }} />
-                  <Text style={styles.groupName} key={item.id}>{item.group_name}</Text>
+                  <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Text style={styles.groupName} key={item.id}>{item.group_name}</Text>
+                    <Text style={styles.groupName} key={item.id}>{item.event_name}</Text>
+                  </View>
+
                   <Icon name="arrow-dropright" size={30} />
                 </View>
               </TouchableWithoutFeedback>
