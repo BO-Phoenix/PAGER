@@ -15,7 +15,8 @@ import Loading from '../Loading/Index.js';
 import SwipeCard from './SwipeCard.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
-import { getGroupsPerEvent } from '../../db/group.js';
+import { getGroupsPerEvent, sendRequestToGroup } from '../../db/group.js';
+import { useSelector } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
 });
 
 const Swipe = ({ route, navigation }) => {
+  const { userId } = useSelector((state) => state.pagerData);
   // const groupsArray = [
   //   {
   //     id: '1',
@@ -138,11 +140,6 @@ const Swipe = ({ route, navigation }) => {
             const dragHandlers = isFirst ? panResponder.panHandlers : {};
             return (
               <>
-                {/* <TouchableWithoutFeedback
-                  onPress={() => navigation.navigate('Group', group.id)}
-                >
-                  <Text>Click</Text>
-                </TouchableWithoutFeedback> */}
                 <SwipeCard
                   key={group.group_name}
                   name={group.group_name}

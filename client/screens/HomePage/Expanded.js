@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
 });
 
 const Expanded = ({ route, navigation }) => {
-  console.log('in the expanded view, group_id is : ', route.params);
   const [group, setGroup] = useState();
   useEffect(() => {
     async function fetchData() {

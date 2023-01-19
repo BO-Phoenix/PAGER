@@ -111,6 +111,7 @@ const SwipeCard = ({
         >
           <SwipeChoice type="LIKE" />
         </Animated.View>
+
         <Animated.View
           style={[
             styles.choiceContainer,
