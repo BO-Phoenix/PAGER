@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
-  StyleSheet, Text, View, Button, Image, TouchableOpacity,
+  StyleSheet, Text, View, Button, Image, TouchableOpacity, ScrollView, TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
 import { useSelector } from 'react-redux';
+import { useFonts } from 'expo-font';
+import Loading from '../Loading/Index.js';
 import {
   getGroupsPerUser,
   getGroupsAttendedPerUser,
@@ -21,20 +23,24 @@ const styles = StyleSheet.create({
     overflowY: 'scroll',
   },
   textHeader: {
-    fontSize: 28,
+    fontSize: 24,
     paddingTop: 15,
+    fontFamily: 'Poppins',
   },
-  // underline: {
-  //   borderBottomWidth: '10',
-  //   borderBottomColor: 'black',
-  //   borderBottomStyle: 'solid',
-  // },
+  separation: {
+    width: '90%',
+    padding: 8,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+  },
   featureHeader: {
-    fontSize: 22,
+    fontSize: 20,
     paddingTop: 15,
+    fontFamily: 'Poppins',
   },
   groupName: {
     fontSize: 22,
+    fontFamily: 'Poppins',
   },
   groupImg: {
     height: 100,
@@ -73,12 +79,25 @@ const Attended = ({ navigation }) => {
   }, []);
   // console.log('does this work?', attendedUserGroups);
 
+  const [fontLoaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
+  });
+
+  if (!fontLoaded) {
+    return <Loading />;
+  }
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.textHeader}>GROUPS</Text>
-      <Text style={styles.featureHeader}>ATTENDED</Text>
+      <View style={styles.separation} />
+      <View style={{ alignSelf: 'flex-start', width: '90%', paddingLeft: 18 }}>
+        <Text style={styles.featureHeader}>ATTENDED</Text>
+      </View>
       <View style={styles.renderGroupContainer}>
-        {attendedUserGroups.map(group => {
+        {attendedUserGroups.map(group => { //  pass 'group' as a navigate -- 2nd param ITEM
           return (
             <View style={styles.groupContainer}>
               <Image style={styles.groupImg} source={{ uri: group.group_image }} />
@@ -108,7 +127,7 @@ const Attended = ({ navigation }) => {
         navigation.navigate('Upcoming', {name: 'Upcoming'})
       } /> */}
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 };
 

@@ -5,6 +5,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import {
   StyleSheet, Text, View, SafeAreaView,
 } from 'react-native';
+import { useFonts } from 'expo-font';
+import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import Upcoming from './Upcoming.js';
 import Attended from './Attended.js';
@@ -13,6 +15,16 @@ import Create from './Create.js';
 const Index = () => {
   const Stack = createNativeStackNavigator();
   const Tab = createMaterialTopTabNavigator();
+
+  const [fontLoaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
+  });
+
+  if (!fontLoaded) {
+    return <Loading />;
+  }
 
   return (
     // <View style={globalStyles.container}>
@@ -25,7 +37,7 @@ const Index = () => {
       //   tabBarIndicatorStyle: { backgroundColor: route.name === 'Upcoming' ? '#B5179E' : route.name === 'Attended' ?'#7209B7' : route.name === 'Create' && '#4895EF' },
       //   })}
       screenOptions={{
-        tabBarLabelStyle: { fontSize: 12 },
+        tabBarLabelStyle: { fontSize: 12, fontFamily: 'Poppins' },
       }}
       // screenOptions={{
       //   tabBarLabelStyle: { fontSize: 12 },

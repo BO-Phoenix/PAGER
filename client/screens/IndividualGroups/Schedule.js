@@ -24,7 +24,7 @@ import globalStyles from '../../globalStyles';
 import { getGroupPlans, addPlan, deletePlan } from '../../db/group.js';
 import Loading from '../Loading/Index';
 
-const Schedule = ({ navigation }) => {
+const Schedule = ({ navigation, groupData }) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
