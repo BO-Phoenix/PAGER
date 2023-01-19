@@ -5,7 +5,8 @@ import SelectEvent from '../HomePage/Index.js';
 import GroupPage from '../HomePage/Expanded.js';
 import SchedulePage from '../HomePage/Schedule.js';
 import MemberPage from '../HomePage/Members.js';
-import SwipeCardPage from '../HomePage/Swipe.js';
+import SwipePage from '../HomePage/Swipe.js';
+import SwipeCardPage from '../HomePage/SwipeCard.js';
 
 const Stack = createStackNavigator();
 
@@ -24,16 +25,22 @@ const HomepageNavigator = () => (
       name="SelectEvents"
       component={SelectEvent}
       options={{
-        // headerTitle: (props) => <LogoTitle {...props} />,
-        title: 'SelectEvents',
+        headerShown: false,
       }}
+    />
+    <Stack.Screen
+      name="Swipe"
+      component={SwipePage}
+      options={{
+        headerShown: false,
+      }}
+      // options={{ headerShown: false }}
     />
     <Stack.Screen
       name="SwipeCard"
       component={SwipeCardPage}
       options={{
-        title: 'SwipeCard',
-        // headerShown: false,
+        headerShown: false,
       }}
       // options={{ headerShown: false }}
     />
