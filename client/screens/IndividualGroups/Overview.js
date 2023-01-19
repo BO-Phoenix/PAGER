@@ -106,7 +106,7 @@ const Overview = ({ navigation, groupData }) => {
     },
     members: {
       alignItems: 'center',
-      width: 100,
+      width: '30%',
       margin: 5,
     },
     member: {
