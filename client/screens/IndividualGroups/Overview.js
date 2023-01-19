@@ -23,7 +23,8 @@ import {
 import { getGroupMembers, getGroupPlans } from '../../db/group.js';
 import Loading from '../Loading/Index';
 
-const Overview = ({ navigation }) => {
+const Overview = ({ navigation, test }) => {
+  console.log('does this work?', test);
   // styles
   const styles = StyleSheet.create({
     container: {

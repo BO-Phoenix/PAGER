@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  FlatList,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-ionicons';
 import { useFonts } from 'expo-font';
@@ -73,7 +81,7 @@ const styles = StyleSheet.create({
   // },
 });
 
-const Upcoming = () => {
+const Upcoming = ({ navigation }) => {
   const [upcomingUserGroups, setUpcomingUserGroups] = useState([]);
   const { userId } = useSelector((state) => state.pagerData);
 
@@ -104,7 +112,7 @@ const Upcoming = () => {
         <Text style={styles.featureHeader}>UPCOMING</Text>
       </View>
       <View style={styles.renderGroupContainer}>
-        {upcomingUserGroups.map(group => {
+        {/* {upcomingUserGroups.map(group => {
           return (
             <View style={styles.groupContainer}>
               <Image style={styles.groupImg} source={{ uri: group.group_image }} />
@@ -112,9 +120,34 @@ const Upcoming = () => {
               <Icon name="arrow-dropright" size={30} />
             </View>
           );
-        })}
+        })} */}
+        <FlatList
+          data={upcomingUserGroups}
+          keyExtractor={(groups) => groups.id.toString()}
+          // numColumns={2}
+          renderItem={({ item }) => (
+            // console.log('group ID :', item.id)
+            <View>
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('IndividualGroupsIndex', item)}
+              >
+
+                <View style={styles.groupContainer}>
+                  <Image style={styles.groupImg} source={{ uri: item.group_image }} />
+                  <Text style={styles.groupName} key={item.id}>{item.group_name}</Text>
+                  <Icon name="arrow-dropright" size={30} />
+                </View>
+
+              </TouchableWithoutFeedback>
+            </View>
+
+
+          )}
+        />
+
+
       </View>
-      <StatusBar style="auto" />
+      {/* <StatusBar style="auto" /> */}
     </ScrollView>
   );
 };
