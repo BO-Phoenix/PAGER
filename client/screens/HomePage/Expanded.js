@@ -160,7 +160,7 @@ const Expanded = ({ route, navigation }) => {
         <Text style={styles.textDetail}>{!!group && group.organizer_name}</Text>
       </View>
       <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetail}>{!!group && group.description}</Text>
+        <Text style={styles.textDetail}>{!!group && group.group_description}</Text>
       </View>
 
       <View style={styles.bodyContainerSection}>
