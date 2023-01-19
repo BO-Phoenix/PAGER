@@ -32,6 +32,8 @@
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-date-picker": "^4.2.6",
+    "react-native-datepicker": "^1.7.2",
+    "react-native-element-dropdown": "^2.5.3",
     "react-native-elements": "^3.4.3",
     "react-native-form-component": "^2.6.8",
     "react-native-ionicons": "^4.6.5",
