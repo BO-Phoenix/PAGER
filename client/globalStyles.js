@@ -31,6 +31,20 @@ const globalStyles = StyleSheet.create({
     fontSize: 18,
     color: '#f0f',
   },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    backgroundColor: '#F72585',
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+    margin: 10,
+  },
+  buttonText: {
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+  },
 });
 
 export default globalStyles;

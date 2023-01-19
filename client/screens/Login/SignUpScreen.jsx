@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, CheckBox } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
+import globalStyles from '../../globalStyles';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { addUser } from '../../db/user.js';
 // -- redux import statements
@@ -248,7 +249,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             />
           </View>
         </View>
-        <Button title="Sign up" buttonStyle={{flex: 1, alignSelf: 'center', justifyContent: 'flex-end', marginTop: 20}} onPress={signUp} />
+        <Button title="Sign up" buttonStyle={globalStyles.button} onPress={signUp} />
       </View>
     </View>
   );

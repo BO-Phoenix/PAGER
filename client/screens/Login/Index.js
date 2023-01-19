@@ -7,6 +7,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserId } from '../../reducers/index.js';
 
+import globalStyles from '../../globalStyles';
 import { getUserByEmail } from '../../db/user';
 
 const auth = getAuth();
@@ -78,7 +79,7 @@ const SignInScreen = () => {
           leftIcon={<Icon name="key" size={16} />}
         />
 
-        <Button title="Sign in" buttonStyle={styles.control} onPress={signIn} />
+        <Button title="Sign in" buttonStyle={globalStyles.button} onPress={signIn} />
       </View>
     </View>
   );
