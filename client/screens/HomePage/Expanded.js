@@ -139,7 +139,6 @@ const Expanded = ({ route, navigation }) => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
 
   if (!fontLoaded) {
@@ -162,6 +161,19 @@ const Expanded = ({ route, navigation }) => {
       <View style={styles.bodyContainerLeft}>
         <Text style={styles.textDetail}>{!!group && group.group_description}</Text>
       </View>
+      <View style={styles.bodyContainerLeft}>
+        <Text style={styles.textDetailBold}>GROUP SIZE: </Text>
+        <Text style={styles.textDetail}>
+          {!!group && group.size.charAt(0).toUpperCase() + (group.size.substr(1).toLowerCase())}
+        </Text>
+      </View>
+      <View style={styles.bodyContainerLeft}>
+        <Text style={styles.textDetailBold}>VIBE: </Text>
+        <Text style={styles.textDetail}>
+          {!!group && group.vibe.charAt(0).toUpperCase() + (group.vibe.substr(1).toLowerCase())}
+        </Text>
+      </View>
+
 
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>SCHEDULE</Text>

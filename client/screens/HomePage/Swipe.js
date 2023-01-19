@@ -147,7 +147,7 @@ const Swipe = ({ route, navigation }) => {
           items={[
             { label: 'SMALL (0-5)', value: 'small' },
             { label: 'MEDIUM (6-10)', value: 'medium' },
-            { label: 'LARGER (11-20)', value: 'large' },
+            { label: 'LARGE (11-20)', value: 'large' },
           ]}
           selectedValue={size}
           onSelection={(item) => setSize(item.value)}
