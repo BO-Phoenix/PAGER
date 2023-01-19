@@ -12,6 +12,7 @@ import {
   Alert,
   Button,
   TouchableWithoutFeedback,
+  FlatList,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -82,6 +83,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     marginBottom: 5,
+    // borderWidth: 1,
+    // borderColor: 'red',
   },
   bodyContainerRow: {
     width: '100%',
@@ -110,6 +113,18 @@ const styles = StyleSheet.create({
     // backgroundColor: 'white',
     // paddingVertical: 0,
     // paddingHorizontal: 15,
+  },
+  taste: {
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '40%',
+    padding: 15,
+    flexWrap: 'wrap',
+    marginVertical: 5,
+    margin: 'auto',
+    // borderWidth: 1,
+    // borderColor: 'red',
   },
   button: {
     alignItems: 'center',
@@ -145,6 +160,29 @@ const styles = StyleSheet.create({
   memberImage: {
     width: 75,
     height: 75,
+  },
+  filterOptionContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '40%',
+    backgroundColor: '#F5F5F5',
+    borderWidth: 1,
+    borderColor: 'black',
+    paddingHorizontal: 5,
+    marginBottom: 15,
+    marginHorizontal: 5,
+  },
+  filterContainer: {
+    // flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    // flexWrap: 'wrap',
+    alignItems: 'space-between',
+    justifyContent: 'center',
+    margin: 10,
+    // borderWidth: 1,
+    // borderColor: 'blue',
   },
 });
 
@@ -208,11 +246,18 @@ const Profile = ({ navigation }) => {
         </TouchableWithoutFeedback>
       </View>
       {/* <View style={styles.bodyContainerSection}> */}
-      <View style={styles.bodyContainerRow}>
-        {musicTastes &&
-          musicTastes
-            .slice(0, 3)
-            .map((taste) => <TasteCard prop={taste} key={taste} />)}
+      <View style={styles.filterContainer}>
+
+        <FlatList
+          data={musicTastes.slice(0, 2)}
+          // keyExtractor={(events) => events.id.toString()}
+          numColumns={2}
+          renderItem={({ item }) => (
+            <View style={styles.taste}>
+              <Text style={styles.textDetailBold}>{item}</Text>
+            </View>
+          )}
+        />
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>

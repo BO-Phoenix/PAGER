@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
     // borderColor: 'black',
   },
   headerImage: {
-    width: 100,
-    height: 100,
-    marginTop: 15,
+    width: 75,
+    height: 75,
+    marginRight: 15,
   },
   headerName: {
     fontSize: 20,
@@ -58,13 +58,13 @@ const styles = StyleSheet.create({
   },
   bodyContainerSection: {
     width: '100%',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
     paddingVertical: 5,
     paddingHorizontal: 15,
-    marginBottom: 5,
+    marginTop: 5,
   },
   bodyContainerSchedule: {
     width: '100%',
@@ -114,6 +114,15 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
   },
+  bodyContainerName: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    margin: 10,
+    // borderWidth: 1,
+    // borderColor: 'red',
+  },
 });
 
 const ExpandedFriends = () => {
@@ -143,16 +152,17 @@ const ExpandedFriends = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Image
-        style={styles.headerImage}
-        source={require('../../assets/box.png')}
-      />
-      <View style={styles.bodyContainerCenter}>
+      <View style={styles.bodyContainerName}>
+        <Image
+          style={styles.headerImage}
+          source={user.profile_pic}
+        />
         <Text style={styles.headerName}>
-          {`${user.first_name} ${user.last_name}`}
+          {user.first_name}
+          {' '}
+          {user.last_name}
         </Text>
-      </View> */}
-      <UserHeader user={user} />
+      </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
       </View>

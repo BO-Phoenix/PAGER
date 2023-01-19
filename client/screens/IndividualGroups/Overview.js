@@ -252,8 +252,14 @@ const Overview = ({ navigation, groupData }) => {
           </Text>
         </View>
 
-        <View style={styles.tabs}>
-          {groupData.members.map((member) => (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            width: '100%',
+          }}
+        >
+          {groupMembers.map((member) => (
             <View style={styles.members} key={member.id}>
               <Image
                 style={styles.member}
