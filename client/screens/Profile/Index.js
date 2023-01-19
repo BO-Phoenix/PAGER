@@ -195,11 +195,11 @@ const Profile = ({ navigation }) => {
   useEffect(() => {
     async function fetchData() {
       const res = await getUser('I4nwq9hMAQin0BjCEe1U');
-      console.log(res, 'res');
+      // console.log(res, 'res');
       setUser(res[0]);
       setMusicTastes(res[0].music_tastes);
       setFriends(res[0].friends_list);
-      console.log(friends, 'friends');
+      // console.log(friends, 'friends');
     }
     fetchData();
   }, []);
@@ -209,7 +209,6 @@ const Profile = ({ navigation }) => {
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
     Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
-
 
   if (!fontLoaded) {
     return <Loading />;
@@ -240,14 +239,13 @@ const Profile = ({ navigation }) => {
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>MUSIC TASTES</Text>
         <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('ExpandedTastes')}
+          onPress={() => navigation.navigate('ExpandedTastes', user)}
         >
           <Text style={styles.textDetailUnderline}>SEE ALL</Text>
         </TouchableWithoutFeedback>
       </View>
       {/* <View style={styles.bodyContainerSection}> */}
       <View style={styles.filterContainer}>
-
         <FlatList
           data={musicTastes.slice(0, 2)}
           // keyExtractor={(events) => events.id.toString()}
@@ -258,7 +256,6 @@ const Profile = ({ navigation }) => {
             </View>
           )}
         />
-
 
         {/* {musicTastes &&
           musicTastes
@@ -275,7 +272,7 @@ const Profile = ({ navigation }) => {
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
         <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('ExpandedFriends')}
+          onPress={() => navigation.navigate('ExpandedFriends', user)}
         >
           <Text style={styles.textDetailUnderline}>SEE ALL</Text>
         </TouchableWithoutFeedback>

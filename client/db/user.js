@@ -91,53 +91,91 @@ export async function setUserInfo(id, data) {
 }
 
 export async function addFriend(id1, id2) {
-  const user1InfoRef = doc(getFS, 'users', id1);
-  const user2InfoRef = doc(getFS, 'users', id2);
-  const query1 = await getDoc(user1InfoRef);
-  const query2 = await getDoc(user2InfoRef);
-  const user1friendInfo = {
-    first_name: query1.data().first_name,
-    last_name: query1.data().last_name,
-    profile_pic: query1.data().profile_pic,
-  };
-  const user2friendInfo = {
-    first_name: query2.data().first_name,
-    last_name: query2.data().last_name,
-    profile_pic: query2.data().profile_pic,
-  };
+  try {
+    const user1InfoRef = await doc(getFS, 'users', id1);
+    const user2InfoRef = await doc(getFS, 'users', id2);
+    //
+    const query1 = await getDoc(user1InfoRef);
+    const query2 = await getDoc(user2InfoRef);
+    //
+    const user1 = await query1.data();
+    const user2 = await query2.data();
 
-  await updateDoc(user1InfoRef, {
-    friends_list: arrayUnion(user2friendInfo),
-  });
-
-  await updateDoc(user2InfoRef, {
-    friends_list: arrayUnion(user1friendInfo),
-  });
+    const user1friendInfo = {
+      first_name: user1.first_name,
+      last_name: user1.last_name,
+      profile_pic: user1.profile_pic,
+      id: id1,
+    };
+    const user2friendInfo = {
+      first_name: user2.first_name,
+      last_name: user2.last_name,
+      profile_pic: user2.profile_pic,
+      id: id2,
+    };
+    // console.log('objects: ', user1friendInfo, user2friendInfo);
+    await updateDoc(user1InfoRef, {
+      friends_list: arrayUnion(user2friendInfo),
+    });
+    await updateDoc(user2InfoRef, {
+      friends_list: arrayUnion(user1friendInfo),
+    });
+    // return await query1.data();
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export async function deleteFriend(id1, id2) {
-  const user1InfoRef = doc(getFS, 'users', id1);
-  const user2InfoRef = doc(getFS, 'users', id2);
-  const query1 = await getDoc(user1InfoRef);
-  const query2 = await getDoc(user2InfoRef);
-  const user1friendInfo = {
-    first_name: query1.data().first_name,
-    last_name: query1.data().last_name,
-    profile_pic: query1.data().profile_pic,
-  };
-  const user2friendInfo = {
-    first_name: query2.data().first_name,
-    last_name: query2.data().last_name,
-    profile_pic: query2.data().profile_pic,
-  };
+  // console.log(id1, id2, 'ids');
+  try {
+    const user1InfoRef = await doc(getFS, 'users', id1);
+    const user2InfoRef = await doc(getFS, 'users', id2);
+    //
+    const query1 = await getDoc(user1InfoRef);
+    const query2 = await getDoc(user2InfoRef);
+    //
+    const user1 = await query1.data();
+    const user2 = await query2.data();
 
-  await updateDoc(user1InfoRef, {
-    friends_list: arrayRemove(user2friendInfo),
-  });
+    const user1friendInfo = {
+      first_name: user1.first_name,
+      last_name: user1.last_name,
+      profile_pic: user1.profile_pic,
+      id: id1,
+    };
+    const user2friendInfo = {
+      first_name: user2.first_name,
+      last_name: user2.last_name,
+      profile_pic: user2.profile_pic,
+      id: id2,
+    };
+    // console.log('objects: ', user1friendInfo, user2friendInfo);
+    await updateDoc(user1InfoRef, {
+      friends_list: arrayRemove(user2friendInfo),
+    });
+    await updateDoc(user2InfoRef, {
+      friends_list: arrayRemove(user1friendInfo),
+    });
+    // return await query1.data();
+  } catch (err) {
+    console.log(err);
+  }
 
-  await updateDoc(user2InfoRef, {
-    friends_list: arrayRemove(user1friendInfo),
-  });
+  // const friendRef1 = await doc(getFS, 'users', id1);
+  // console.log(friendRef1);
+  // const friend1Snap = await getDoc(friendRef1);
+  // console.log(friend1Snap.data());
+  // try {
+  //   const friend1Snap = await getDoc(friendRef1);
+  //   // if (!friend1Snap.exists()) {
+  //   //   console.log('user with this event id does not exists');
+  //   // }
+  //   console.log('friendSnap1: ', friend1Snap.data());
+  //   // return eventSnap.data();
+  // } catch (err) {
+  //   console.log(err);
+  // }
 }
 
 // const newUser = {

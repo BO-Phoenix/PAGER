@@ -84,7 +84,6 @@ const Attended = ({ navigation }) => {
     }
     fetchData();
   }, []);
-  // console.log('does this work?', attendedUserGroups);
 
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
@@ -104,34 +103,36 @@ const Attended = ({ navigation }) => {
         <Text style={styles.featureHeader}>ATTENDED</Text>
       </View>
       <View style={styles.renderGroupContainer}>
-        {/* {attendedUserGroups.map(group => { //  pass 'group' as a navigate -- 2nd param ITEM
-          return (
-            <View style={styles.groupContainer}>
-              <Image
-                style={styles.groupImg}
-                source={{ uri: group.group_image }}
-              />
-              <Text style={styles.groupName} key={group.id}>
-                {group.group_name}
-              </Text>
-              <Icon name="arrow-dropright" size={30} />
-            </View>
-          );
-        })} */}
         <FlatList
           data={attendedUserGroups}
           keyExtractor={(groups) => groups.id.toString()}
-          contentContainerStyle={{ width: 350, display: 'flex', flexDirection: 'column', alignItems: 'center'/* , border: '2px solid blue' */ }}
+          contentContainerStyle={{
+            width: 350,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center' /* , border: '2px solid blue' */,
+          }}
           // numColumns={2}
           renderItem={({ item }) => (
             // console.log('group ID :', item.id)
             <View key={item.id} style={{ width: 350 }}>
               <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('IndividualGroupsIndex', item)}
+                onPress={() =>
+                  navigation.navigate('IndividualGroupsIndex', item)
+                }
               >
                 <View style={styles.groupContainer}>
-                  <Image style={styles.groupImg} source={{ uri: item.group_image }} />
-                  <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <Image
+                    style={styles.groupImg}
+                    source={{ uri: item.group_image }}
+                  />
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
                     <Text style={styles.groupName}>{item.group_name}</Text>
                     <Text style={styles.groupName}>{item.event_name}</Text>
                   </View>
@@ -143,28 +144,29 @@ const Attended = ({ navigation }) => {
           )}
         />
       </View>
-      {/* <TouchableOpacity
-        title="Upcoming"
-        onPress={() => navigation.navigate('Upcoming', { name: 'Upcoming' })}
-      >
-        <Text>Upcoming</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        title="Create"
-        onPress={() => navigation.navigate('Create', { name: 'Create' })}
-      >
-        <Text>Create</Text>
-      </TouchableOpacity> */}
-
-      {/* <Button
-      title="Upcoming"
-      onPress={() =>
-        navigation.navigate('Upcoming', {name: 'Upcoming'})
-      } /> */}
       <StatusBar style="auto" />
     </ScrollView>
   );
 };
 
 export default Attended;
+
+// {/* <TouchableOpacity
+//   title="Upcoming"
+//   onPress={() => navigation.navigate('Upcoming', { name: 'Upcoming' })}
+// >
+//   <Text>Upcoming</Text>
+// </TouchableOpacity>
+
+// <TouchableOpacity
+//   title="Create"
+//   onPress={() => navigation.navigate('Create', { name: 'Create' })}
+// >
+//   <Text>Create</Text>
+// </TouchableOpacity> */}
+
+// {/* <Button
+// title="Upcoming"
+// onPress={() =>
+//   navigation.navigate('Upcoming', {name: 'Upcoming'})
+// } /> */}
