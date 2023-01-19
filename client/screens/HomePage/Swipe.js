@@ -138,11 +138,11 @@ const Swipe = ({ route, navigation }) => {
             const dragHandlers = isFirst ? panResponder.panHandlers : {};
             return (
               <>
-                <TouchableWithoutFeedback
+                {/* <TouchableWithoutFeedback
                   onPress={() => navigation.navigate('Group', group.id)}
                 >
                   <Text>Click</Text>
-                </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback> */}
                 <SwipeCard
                   key={group.group_name}
                   name={group.group_name}

@@ -79,6 +79,7 @@ const SwipeCard = ({
   swipe,
   tiltSign,
   group_id,
+  nav,
   ...rest
 }) => {
   const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
@@ -97,8 +98,6 @@ const SwipeCard = ({
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
-
-  const navigation = useNavigation();
 
   const renderChoice = useCallback(() => {
     return (
@@ -144,7 +143,9 @@ const SwipeCard = ({
       style={[styles.container, isFirst && animatedCardStyle]}
       {...rest}
     >
-      <Image style={styles.image} source={{ uri: source }} />
+      <TouchableWithoutFeedback onPress={() => nav.navigate('Group', group_id)}>
+        <Image style={styles.image} source={{ uri: source }} />
+      </TouchableWithoutFeedback>
 
       <LinearGradient
         style={styles.gradient}
