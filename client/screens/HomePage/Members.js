@@ -96,15 +96,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const Memebers = ({ group_obj }) => {
+const Memebers = ({ route }) => {
   const [group, setGroup] = useState();
 
   useEffect(() => {
-    async function fetchData() {
-      const group_obj = await getGroup('IrIfBilvP6HSrCHzty9d');
-      setGroup(group_obj);
-    }
-    fetchData();
+    setGroup(route.params);
   }, []);
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),

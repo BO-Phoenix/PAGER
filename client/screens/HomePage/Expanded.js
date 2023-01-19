@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const Expanded = ({ group_info, navigation }) => {
+const Expanded = ({ route, navigation }) => {
   const [group, setGroup] = useState();
   useEffect(() => {
     async function fetchData() {
-      const group_obj = await getGroup('IrIfBilvP6HSrCHzty9d');
+      const group_obj = await getGroup(route.params);
       setGroup(group_obj);
     }
     fetchData();
