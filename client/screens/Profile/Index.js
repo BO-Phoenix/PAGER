@@ -135,15 +135,10 @@ const Profile = ({ navigation }) => {
   const [user, setUser] = useState({});
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
-  const [fontLoaded] = useFonts({
-    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
-    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
-  });
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getUser(userId);
+      const res = await getUser('I4nwq9hMAQin0BjCEe1U');
       console.log(res, 'res');
       setUser(res[0]);
       setMusicTastes(res[0].music_tastes);
@@ -152,6 +147,13 @@ const Profile = ({ navigation }) => {
     }
     fetchData();
   }, []);
+
+  const [fontLoaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
+  });
+
 
   if (!fontLoaded) {
     return <Loading />;
