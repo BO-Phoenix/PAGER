@@ -258,19 +258,6 @@ const Profile = ({ navigation }) => {
             </View>
           )}
         />
-
-
-        {/* {musicTastes &&
-          musicTastes
-            .slice(0, 3)
-            .map((taste) => {
-              return (
-                // <TasteCard prop={taste} key={taste} />
-                <View style={styles.taste} key={Math.random()}>
-                  <Text style={styles.textDetailBold}>{taste}</Text>
-                </View>
-              );
-            })} */}
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
