@@ -11,62 +11,56 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { useFonts } from 'expo-font';
+import { useSelector } from 'react-redux';
+import { Form, FormItem, Picker } from 'react-native-form-component';
 import Loading from '../Loading/Index.js';
 import SwipeCard from './SwipeCard.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 import { getGroupsPerEvent, sendRequestToGroup } from '../../db/group.js';
-import { useSelector } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
     alignItems: 'center',
+  },
+  bodyContainerSection: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    backgroundColor: 'white',
+    paddingVertical: 0,
+    paddingHorizontal: 20,
+    marginVertical: 0,
+  },
+  textTitle: {
+    fontSize: 20,
+    fontFamily: 'PoppinsBold',
+  },
+  formInput: {
+    width: 100,
+    flex: 1,
+    backgroundColor: '#fff',
+    color: 'black',
+    border: 1,
+    borderColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
 const Swipe = ({ route, navigation }) => {
   const { userId } = useSelector((state) => state.pagerData);
-  // const groupsArray = [
-  //   {
-  //     id: '1',
-  //     source: require('../../assets/test.gif'),
-  //     name: 'Name',
-  //     description:
-  //       'blah b sdf dsf ds fds fds fds f ds fds f ds fds f ds fds f dsf ds  dsflah balhb albh',
-  //   },
-  //   {
-  //     id: '2',
-  //     source: require('../../assets/test.gif'),
-  //     name: 'Test',
-  //     description: 'blah blah balhb albh',
-  //   },
-  //   {
-  //     id: '3',
-  //     source: require('../../assets/test.gif'),
-  //     name: 'Ug',
-  //     description: 'blah blah balhb albh',
-  //   },
-  //   {
-  //     id: '4',
-  //     source: require('../../assets/test.gif'),
-  //     name: 'Ly',
-  //     description: 'blah blah balhb albh',
-  //   },
-  //   {
-  //     id: '5',
-  //     source: require('../../assets/box.png'),
-  //     name: 'Boy',
-  //     description: 'blah blah balhb albh',
-  //   },
-  // ];
+  const [size, setSize] = useState('');
+  const [vibe, setVibe] = useState('');
 
   const [groups, setGroups] = useState([]);
 
   const screenWidth = Dimensions.get('window').width * 0.9;
   const screenHeight = Dimensions.get('window').height * 0.75;
-  const outOfScreen =
-    Dimensions.get('window').width + 0.5 * Dimensions.get('window').width;
+  const outOfScreen = Dimensions.get('window').width + 0.5 * Dimensions.get('window').width;
   const swipe = useRef(new Animated.ValueXY()).current;
   const tiltSign = useRef(new Animated.Value(1)).current;
 
@@ -133,27 +127,51 @@ const Swipe = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      {!!groups &&
-        groups
+      <View style={styles.bodyContainerSection}>
+        <Picker
+          style={{ height: 3, width: 125 }}
+          id="select-size"
+          placeholder="ENERGY/VIBE"
+          items={[
+            { label: 'LOW', value: 'low' },
+            { label: 'MEDIUM', value: 'medium' },
+            { label: 'HIGH', value: 'high' },
+          ]}
+          selectedValue={vibe}
+          onSelection={(item) => setVibe(item.value)}
+        />
+        <Picker
+          style={{ height: 30, width: 125 }}
+          id="select-size"
+          placeholder="GROUP SIZE"
+          items={[
+            { label: 'SMALL (0-5)', value: 'small' },
+            { label: 'MEDIUM (6-10)', value: 'medium' },
+            { label: 'LARGER (11-20)', value: 'large' },
+          ]}
+          selectedValue={size}
+          onSelection={(item) => setSize(item.value)}
+        />
+      </View>
+      {!!groups
+        && groups
           .map((group, index) => {
             const isFirst = index === 0;
             const dragHandlers = isFirst ? panResponder.panHandlers : {};
             return (
-              <>
-                <SwipeCard
-                  key={group.group_name}
-                  name={group.group_name}
-                  description={group.group_description}
-                  source={group.group_image}
-                  isFirst={isFirst}
-                  swipe={swipe}
-                  tiltSign={tiltSign}
-                  group_id={group.id}
-                  nav={navigation}
-                  // eslint-disable-next-line react/jsx-props-no-spreading
-                  {...dragHandlers}
-                />
-              </>
+              <SwipeCard
+                key={group.group_name}
+                name={group.group_name}
+                description={group.group_description}
+                source={group.group_image}
+                isFirst={isFirst}
+                swipe={swipe}
+                tiltSign={tiltSign}
+                group_id={group.id}
+                nav={navigation}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...dragHandlers}
+              />
             );
           })
           .reverse()}

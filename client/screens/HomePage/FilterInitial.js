@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     margin: 10,
-    paddingBottom: 200,
+    paddingBottom: 50,
     // borderWidth: 3,
     // borderColor: 'green',
   },

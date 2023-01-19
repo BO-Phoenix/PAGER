@@ -108,11 +108,11 @@ export default function App() {
       </Stack.Navigator>{' '}
       */}
       <Navigation />
-      <Button
+      {/* <Button
         title="Sign Out"
         style={globalStyles.button}
         onPress={() => auth.signOut()}
-      />
+      /> */}
     </NavigationContainer>
   );
 }

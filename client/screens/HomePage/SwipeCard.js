@@ -1,3 +1,5 @@
+/* eslint-disable import/order */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable global-require */
 import React, { useState, useCallback } from 'react';
 import {
@@ -26,7 +28,7 @@ const actionOffset = 100;
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 15,
+    top: 50,
   },
   image: {
     width: screenWidth,
@@ -109,7 +111,7 @@ const SwipeCard = ({
             { opacity: likeOpacity },
           ]}
         >
-          <SwipeChoice type="LIKE" />
+          <SwipeChoice type="JOIN" />
         </Animated.View>
 
         <Animated.View
@@ -119,7 +121,7 @@ const SwipeCard = ({
             { opacity: dislikeOpacity },
           ]}
         >
-          <SwipeChoice type="DISLIKE" />
+          <SwipeChoice type="PASS" />
         </Animated.View>
       </>
     );

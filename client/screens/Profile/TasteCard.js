@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: 80,
     height: 80,
-    backgroundColor: 'grey',
+    backgroundColor: '#F5F5F5',
     justifyContent: 'space-between',
     margin: 15,
   },
@@ -43,13 +43,17 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
   },
+  textDetailBold: {
+    fontSize: 15,
+    fontFamily: 'PoppinsBold',
+    margin: 'auto',
+  },
 });
 
 const TasteCard = ({ prop }) => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
 
   if (!fontLoaded) {
@@ -58,7 +62,7 @@ const TasteCard = ({ prop }) => {
 
   return (
     <View style={styles.square}>
-      <Text style={styles.text}>{prop}</Text>
+      <Text style={styles.textDetailBold}>{prop}</Text>
     </View>
   );
 };
