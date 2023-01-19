@@ -186,18 +186,6 @@ const Overview = ({ navigation, groupData }) => {
               SCHEDULE
             </Text>
           </Text>
-          <TouchableWithoutFeedback>
-            <Text
-              style={{
-                textDecorationLine: 'underline',
-                fontSize: 20,
-                fontFamily: 'Poppins',
-              }}
-            >
-              SEE ALL --
-              {'>'}
-            </Text>
-          </TouchableWithoutFeedback>
         </View>
 
         <View
