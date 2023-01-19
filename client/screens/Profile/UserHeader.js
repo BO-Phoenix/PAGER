@@ -136,10 +136,7 @@ const UserHeader = ({ user }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.headerImage}
-        source={require('../../assets/box.png')}
-      />
+      <Image style={styles.headerImage} source={user.profile_pic} />
       {/* <View style={styles.bodyContainerCenter}> */}
       <Text style={styles.headerName}>
         {`${user.first_name} ${user.last_name}`}

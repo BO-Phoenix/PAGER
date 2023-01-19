@@ -9,6 +9,7 @@ import {
   Pressable,
   CheckBox,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { getUser } from '../../db/user.js';
 import Loading from '../Loading/Index.js';
@@ -116,9 +117,10 @@ const styles = StyleSheet.create({
 });
 
 const ExpandedFriends = () => {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
+  const { userId } = useSelector((state) => state.pagerData);
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -127,10 +129,10 @@ const ExpandedFriends = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getUser('I4nwq9hMAQin0BjCEe1U');
+      const res = await getUser(userId);
       setUser(res[0]);
-      setMusicTastes([...res[0].music_tastes]);
-      setFriends([...res[0].friends_list]);
+      setMusicTastes(res[0].music_tastes);
+      setFriends(res[0].friends_list);
     }
     fetchData();
   }, []);
@@ -150,13 +152,13 @@ const ExpandedFriends = () => {
           {`${user.first_name} ${user.last_name}`}
         </Text>
       </View> */}
-      <UserHeader user={user}>test</UserHeader>
+      <UserHeader user={user} />
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
       </View>
       <View style={styles.bodyContainerSection}>
         {friends &&
-          friends.map((friend) => <Card musicTaste={friend} key={friend} />)}
+          friends.map((item) => <Card prop={item} key={Math.random()} />)}
       </View>
     </View>
   );

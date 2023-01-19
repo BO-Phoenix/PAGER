@@ -1,6 +1,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable global-require */
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -18,6 +19,7 @@ import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 import Card from './Card';
+import TasteCard from './TasteCard';
 
 const styles = StyleSheet.create({
   container: {
@@ -128,7 +130,9 @@ const styles = StyleSheet.create({
 });
 
 const Profile = ({ navigation }) => {
-  const [user, setUser] = useState([]);
+  const { userId } = useSelector((state) => state.pagerData);
+  // console.log(userId);
+  const [user, setUser] = useState({});
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
   const [fontLoaded] = useFonts({
@@ -139,10 +143,12 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getUser('I4nwq9hMAQin0BjCEe1U');
+      const res = await getUser(userId);
+      console.log(res, 'res');
       setUser(res[0]);
-      setMusicTastes([...res[0].music_tastes]);
-      setFriends([...res[0].friends_list]);
+      setMusicTastes(res[0].music_tastes);
+      setFriends(res[0].friends_list);
+      console.log(friends, 'friends');
     }
     fetchData();
   }, []);
@@ -150,23 +156,19 @@ const Profile = ({ navigation }) => {
   if (!fontLoaded) {
     return <Loading />;
   }
-  const goToFriends = () => console.log('pressed');
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.headerImage}
-        source={require('../../assets/box.png')}
-      />
+      <Image style={styles.headerImage} source={user.profile_pic} />
       <View style={styles.bodyContainerCenter}>
         <Text style={styles.headerName}>
           {`${user.first_name} ${user.last_name}`}
         </Text>
       </View>
-      <Pressable style={styles.button}>
-        <Text style={styles.buttonText} onClick={goToFriends}>
-          EDIT
-        </Text>
-      </Pressable>
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate('EditProfile')}
+      >
+        <Text style={styles.textDetail}>EDIT PROFILE</Text>
+      </TouchableWithoutFeedback>
       <View style={styles.bodyContainerLeft}>
         <Text style={styles.textDetail}>{`${user.description}`}</Text>
       </View>
@@ -183,7 +185,7 @@ const Profile = ({ navigation }) => {
         {musicTastes &&
           musicTastes
             .slice(0, 3)
-            .map((taste) => <Card musicTaste={taste} key={taste} />)}
+            .map((taste) => <TasteCard prop={taste} key={taste} />)}
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
@@ -194,10 +196,17 @@ const Profile = ({ navigation }) => {
         </TouchableWithoutFeedback>
       </View>
       <View style={styles.bodyContainerSection}>
-        {friends &&
+        {!!friends &&
           friends
             .slice(0, 3)
-            .map((friend) => <Card musicTaste={friend} key={friend} />)}
+            .map((friend) => (
+              <Card
+                prop={friend}
+                key={Math.random()}
+                friends={friends}
+                setFriends={setFriends}
+              />
+            ))}
       </View>
     </View>
   );
