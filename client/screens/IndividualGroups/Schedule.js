@@ -1,3 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
 /* eslint-disable react/style-prop-object */
 import React, { useEffect, useState } from 'react';
@@ -74,7 +78,7 @@ const Schedule = ({ navigation }) => {
       // margin: 20,
       // borderRadius: 20,
       position: 'absolute',
-      bottom: 70,
+      bottom: 106,
       backgroundColor: 'white',
       padding: 35,
       alignItems: 'center',
@@ -341,10 +345,10 @@ const Schedule = ({ navigation }) => {
             .map((plan) => {
               let date;
               if (typeof plan.time !== 'object') {
-                console.log('given time: ', plan.time);
+                // console.log('given time: ', plan.time);
                 date = new Date(plan.time);
               } else {
-                console.log('given time: ', plan.time.seconds);
+                // console.log('given time: ', plan.time.seconds);
                 date = new Date(plan.time.seconds);
               }
               // let date = 'Tue Jan 20 1970 13:01:242424';

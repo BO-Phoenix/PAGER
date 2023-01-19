@@ -4,13 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { StyleSheet, Text, View } from 'react-native';
 import globalStyles from '../../globalStyles';
-import {
-  Overview,
-  Schedule,
-  AddSchedule,
-  Chat,
-  Members,
-} from './individualgroups';
+import { Overview, Schedule, Chat, Members } from './individualgroups';
 
 const Index = () => {
   const Stack = createNativeStackNavigator();
