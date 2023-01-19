@@ -12,6 +12,7 @@ import { useFonts } from 'expo-font';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Loading from '../Loading/Index.js';
 import HomePage from '../HomePage/Index.js';
 import AllGroups from '../AllGroups/Index.js';
@@ -22,6 +23,7 @@ import emptyBox from '../../assets/box.png';
 import HomepageNavigator from './HomepageNavigator.js';
 import ProfileNavigator from './ProfileNavigator.js';
 import GroupNavigator from './GroupNavigator.js';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -68,9 +70,33 @@ const Navigation = () => {
         },
       })}
     >
-      <Tab.Screen name="PROFILE" component={ProfileNavigator} />
-      <Tab.Screen name="HOME" component={HomepageNavigator} />
-      <Tab.Screen name="GROUPS" component={GroupNavigator} />
+      <Tab.Screen
+        name="PROFILE"
+        component={ProfileNavigator}
+        options={{
+          tabBarIcon: ({ color = '#000000', size = 30 }) => (
+            <Icon name="user" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="HOME"
+        component={HomepageNavigator}
+        options={{
+          tabBarIcon: ({ color = '#000000', size = 30 }) => (
+            <Icon name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="GROUPS"
+        component={GroupNavigator}
+        options={{
+          tabBarIcon: ({ color = '#000000', size = 30 }) => (
+            <Icon name="group" size={size} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
