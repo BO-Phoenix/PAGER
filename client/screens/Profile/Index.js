@@ -100,12 +100,12 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 32,
     backgroundColor: '#F72585',
     fontFamily: 'PoppinsBold',
     color: 'white',
-    margin: 10,
+    marginBottom: 5,
   },
   buttonText: {
     fontFamily: 'PoppinsBold',
@@ -164,11 +164,12 @@ const Profile = ({ navigation }) => {
           {`${user.first_name} ${user.last_name}`}
         </Text>
       </View>
-      <TouchableWithoutFeedback
+      <Pressable
+        style={styles.button}
         onPress={() => navigation.navigate('EditProfile')}
       >
-        <Text style={styles.textDetail}>EDIT PROFILE</Text>
-      </TouchableWithoutFeedback>
+        <Text style={styles.buttonText}>EDIT PROFILE</Text>
+      </Pressable>
       <View style={styles.bodyContainerLeft}>
         <Text style={styles.textDetail}>{`${user.description}`}</Text>
       </View>

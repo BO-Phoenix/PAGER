@@ -58,7 +58,7 @@ const SwipeFooter = ({ type }) => {
 
   const colors = {
     LIKE: 'green',
-    DISLIKE: 'red',
+    PASS: 'red',
   };
 
   const color = colors[type];

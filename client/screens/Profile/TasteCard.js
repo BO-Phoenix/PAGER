@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: 80,
     height: 80,
-    backgroundColor: 'grey',
+    backgroundColor: '#F5F5F5',
     justifyContent: 'space-between',
     margin: 15,
   },
