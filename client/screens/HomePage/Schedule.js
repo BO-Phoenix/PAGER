@@ -48,14 +48,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'PoppinsBold',
   },
-  bodyContainerMember: {
+  bodyContainerLeft: {
     width: '100%',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'flex-start',
     backgroundColor: 'white',
     paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
   },
   bodyContainerSection: {
     width: '100%',
@@ -72,8 +72,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    backgroundColor: 'white',
-    padding: 15,
+    backgroundColor: '#F5F5F5',
+    padding: 5,
+    marginBottom: 15,
+    // borderWidth: 1,
+    // borderColor: 'black',
   },
   textTitle: {
     fontSize: 20,
@@ -103,7 +106,6 @@ const Schedule = ({ group_obj }) => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
 
   if (!fontLoaded) {
@@ -122,22 +124,24 @@ const Schedule = ({ group_obj }) => {
         <Text style={styles.headerName}>{!!group && group.group_name}</Text>
       </View>
       <View style={styles.bodyContainerSection}>
-        <Text style={styles.textDetailBold}>SCHEDULE</Text>
+        <Text style={styles.textTitle}>SCHEDULE</Text>
       </View>
-      {!!group && (
-        <FlatList
-          data={group.plans}
-          keyExtractor={(plan) => plan.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.bodyContainerSchedule}>
-              <Text style={styles.textDetailBold}>
-                {new Date(item.time.seconds * 1000).toDateString()}
-              </Text>
-              <Text style={styles.textDetail}>{item.description}</Text>
-            </View>
-          )}
-        />
-      )}
+      <View style={styles.bodyContainerLeft}>
+        {!!group && (
+          <FlatList
+            data={group.plans}
+            keyExtractor={(plan) => plan.id.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.bodyContainerSchedule}>
+                <Text style={styles.textDetailBold}>
+                  {new Date(item.time.seconds * 1000).toDateString()}
+                </Text>
+                <Text style={styles.textDetail}>{item.description}</Text>
+              </View>
+            )}
+          />
+        )}
+      </View>
     </View>
   );
 };
