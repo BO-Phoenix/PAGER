@@ -257,7 +257,7 @@ const Overview = ({ navigation, groupData }) => {
             width: '100%',
           }}
         >
-          {groupData.members.map((member) => (
+          {groupMembers.map((member) => (
             <View style={styles.members} key={member.id}>
               <Image
                 style={styles.member}

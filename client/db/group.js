@@ -64,12 +64,14 @@ export async function getPendeingRequestPerGroup(group_id) {
 }
 
 export async function getGroupsPerEvent(event_id) {
+  console.log('event_id is : ', event_id);
   console.log('get group per event');
   const groups = [];
   // const groups_with_plans = [];
   const q = query(groupRef, where('event_id', '==', event_id));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
+    //console.log('group info is : ', doc.id, doc.data());
     groups.push({ ...{ id: doc.id }, ...doc.data() });
   });
 
@@ -89,22 +91,21 @@ export async function getGroupsPerUser(user_id) {
   const groups_with_plans = [];
   const docRef = doc(db, 'users', user_id);
   const docSnap = await getDoc(docRef);
-  // console.log('test getdoc : ', docSnap.data().group_list);
   const user_groups = docSnap.data().group_list;
   for (let i = 0; i < user_groups.length; i++) {
     const groupRef = doc(db, 'groups', user_groups[i]);
     const groupSnap = await getDoc(groupRef);
-    // console.log('test get group : ', groupSnap.data());
     groups.push({ ...{ id: groupSnap.id }, ...groupSnap.data() });
   }
-  for (let i = 0; i < groups.length; i++) {
-    const plans = await getGroupPlans(groups[i].id);
-    const members = await getGroupMembers(groups[i].id);
-    groups_with_plans.push({ ...groups[i], ...{ plans }, ...{ members } });
-  }
 
-  console.log('groups with plans and members : ', groups_with_plans);
-  return groups_with_plans;
+  // for (let i = 0; i < groups.length; i++) {
+  //   const plans = await getGroupPlans(groups[i].id);
+  //   const members = await getGroupMembers(groups[i].id);
+  //   groups_with_plans.push({ ...groups[i], ...{ plans }, ...{ members } });
+  // }
+
+  // console.log('groups with plans and members : ', groups_with_plans);
+  return groups;
 }
 
 export async function getGroupMembers(group_id) {
@@ -137,11 +138,10 @@ export async function getGroup(group_id) {
 }
 
 export async function getGroupsAttendedPerUser(user_id) {
-  console.log('get attended group');
+  // console.log('get attended group');
   const groups = await getGroupsPerUser(user_id);
   const result = [];
   for (let i = 0; i < groups.length; i++) {
-    // console.log('date and time is ', groups[i].event_date.toDate(), new Date());
     if (groups[i].event_date.toDate() < new Date()) {
       result.push(groups[i]);
     }
@@ -151,7 +151,7 @@ export async function getGroupsAttendedPerUser(user_id) {
 }
 
 export async function getGroupsUpcommingPerUser(user_id) {
-  console.log('get upcoming group');
+  // console.log('get upcoming group');
   const groups = await getGroupsPerUser(user_id);
   const result = [];
   for (let i = 0; i < groups.length; i++) {

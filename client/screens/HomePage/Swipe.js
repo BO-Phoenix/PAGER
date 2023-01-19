@@ -55,12 +55,16 @@ const Swipe = ({ route, navigation }) => {
   const { userId } = useSelector((state) => state.pagerData);
   const [size, setSize] = useState('');
   const [vibe, setVibe] = useState('');
+  const [allGroups, setAllGroups] = useState([]);
+  const [vibeGroups, setVibeGroups] = useState([]);
+  const [sizeGroups, setSizeGroups] = useState([]);
 
   const [groups, setGroups] = useState([]);
 
   const screenWidth = Dimensions.get('window').width * 0.9;
   const screenHeight = Dimensions.get('window').height * 0.75;
-  const outOfScreen = Dimensions.get('window').width + 0.5 * Dimensions.get('window').width;
+  const outOfScreen =
+    Dimensions.get('window').width + 0.5 * Dimensions.get('window').width;
   const swipe = useRef(new Animated.ValueXY()).current;
   const tiltSign = useRef(new Animated.Value(1)).current;
 
@@ -74,6 +78,10 @@ const Swipe = ({ route, navigation }) => {
     async function fetchData() {
       const group_list = await getGroupsPerEvent(route.params.id);
       setGroups(group_list);
+      setAllGroups(group_list);
+      setVibeGroups(group_list);
+      setSizeGroups(group_list);
+      // console.log('current group is : ', currentGroup);
     }
     fetchData();
   }, []);
@@ -113,6 +121,7 @@ const Swipe = ({ route, navigation }) => {
 
   const removeTopCard = useCallback(() => {
     setGroups((prevState) => prevState.slice(1));
+    console.log('the top one is : ', groups);
     swipe.setValue({ x: 0, y: 0 });
   }, [swipe]);
 
@@ -124,6 +133,83 @@ const Swipe = ({ route, navigation }) => {
   if (!fontLoaded) {
     return <Loading />;
   }
+  const handleSelection = (item, criteria) => {
+    const vibe_groups = [];
+    const size_groups = [];
+    if (criteria === 'vibe') {
+      console.log('select vibe');
+      setVibe(item.value);
+      console.log('all groups is : ', allGroups);
+      // setGroups(allGroups);
+      allGroups.forEach((group) => {
+        if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
+          console.log('group is vibe :', item.value, group.group_name);
+          vibe_groups.push(group);
+        }
+      });
+      setGroups(vibe_groups);
+    } else {
+      console.log('select vibe');
+      setSize(item.value);
+      allGroups.forEach((group) => {
+        if (group.size.toLowerCase() === item.value.toLowerCase()) {
+          console.log('group is size :', item.value, group.group_name);
+          size_groups.push(group);
+        }
+      });
+      setGroups(size_groups);
+    }
+  };
+
+  const handleSelectionVibe = (item) => {
+    const vibe_groups = [];
+    console.log('select vibe');
+    setVibe(item.value);
+    allGroups.forEach((group) => {
+      if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
+        console.log('group is vibe :', item.value, group.group_name);
+        if (groups.length === 0) {
+          allGroups.forEach((inner_size) => {
+            if (inner_size.id === group.id) {
+              vibe_groups.push(inner_size);
+            }
+          });
+        } else {
+          groups.forEach((size_group) => {
+            if (size_group.id === group.id) {
+              vibe_groups.push(size_group);
+            }
+          });
+        }
+      }
+    });
+    setGroups(vibe_groups);
+  };
+
+  const handleSelectionSize = (item) => {
+    const size_groups = [];
+    console.log('select size');
+    setSize(item.value);
+    allGroups.forEach((group) => {
+      if (group.size.toLowerCase() === item.value.toLowerCase()) {
+        console.log('group is size :', item.value, group.group_name);
+        if (groups.length === 0) {
+          allGroups.forEach((inner_vibe) => {
+            if (inner_vibe.id === group.id) {
+              size_groups.push(inner_vibe);
+            }
+          });
+        } else {
+          groups.forEach((vibe_group) => {
+            if (vibe_group.id === group.id) {
+              size_groups.push(vibe_group);
+            }
+          });
+        }
+      }
+    });
+    setGroups(size_groups);
+  };
 
   return (
     <View style={styles.container}>
@@ -138,7 +224,7 @@ const Swipe = ({ route, navigation }) => {
             { label: 'HIGH', value: 'high' },
           ]}
           selectedValue={vibe}
-          onSelection={(item) => setVibe(item.value)}
+          onSelection={(item) => handleSelectionVibe(item)}
         />
         <Picker
           style={{ height: 30, width: 125 }}
@@ -150,11 +236,11 @@ const Swipe = ({ route, navigation }) => {
             { label: 'LARGE (11-20)', value: 'large' },
           ]}
           selectedValue={size}
-          onSelection={(item) => setSize(item.value)}
+          onSelection={(item) => handleSelectionSize(item)}
         />
       </View>
-      {!!groups
-        && groups
+      {!!groups &&
+        groups
           .map((group, index) => {
             const isFirst = index === 0;
             const dragHandlers = isFirst ? panResponder.panHandlers : {};
