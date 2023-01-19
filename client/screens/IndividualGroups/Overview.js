@@ -9,6 +9,7 @@ import {
   View,
   Button,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Image,
   ScrollView,
 } from 'react-native';
@@ -60,6 +61,12 @@ const Overview = ({ navigation, groupData }) => {
       fontFamily: 'Poppins',
       fontSize: 14,
     },
+    groupDesc: {
+      marginTop: 5,
+      alignSelf: 'start',
+      fontFamily: 'Poppins',
+      fontSize: 14,
+    },
     tabs: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
@@ -102,22 +109,25 @@ const Overview = ({ navigation, groupData }) => {
     },
   });
 
+  // set states
   const [events, setEvents] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
   const [plans, setPlans] = useState([]);
 
+  // get data
   useEffect(() => {
     async function fetchData() {
       const resEvents = await getAllEvents();
       setEvents(resEvents);
-      const resMembers = await getGroupMembers('IrIfBilvP6HSrCHzty9d');
+      const resMembers = await getGroupMembers(groupData.id);
       setGroupMembers(resMembers);
-      const resPlans = await getGroupPlans('IrIfBilvP6HSrCHzty9d');
+      const resPlans = await getGroupPlans(groupData.id);
       setPlans(resPlans);
     }
     fetchData();
   }, []);
 
+  // load font
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -127,6 +137,7 @@ const Overview = ({ navigation, groupData }) => {
   if (!fontLoaded) {
     return <Loading />;
   }
+
   // format time
   function spliceSlice(str, index, count, add) {
     if (index < 0) {
@@ -138,15 +149,11 @@ const Overview = ({ navigation, groupData }) => {
 
     return str.slice(0, index) + (add || '') + str.slice(index + count);
   }
-
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Image
-          style={styles.main}
-          source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-        />
-        <Text style={styles.name}>Group Name</Text>
+        <Image style={styles.main} source={{ uri: groupData.group_image }} />
+        <Text style={styles.name}>{groupData.group_name}</Text>
 
         <View style={styles.rowName}>
           <Text style={styles.boldDesc}>ORGANIZER</Text>
@@ -154,12 +161,7 @@ const Overview = ({ navigation, groupData }) => {
         </View>
         {/* include conditionally rendered add member button which goes to different screen */}
 
-        <Text style={styles.desc}>
-          {'\n'}
-          Brief description goes here. Lorem ipsum is placeholder text commonly
-          used in the graphic, print, and publishing industries.
-          {'\n'}
-        </Text>
+        <Text style={styles.groupDesc}>{groupData.group_description}</Text>
 
         <View style={styles.separation} />
 
@@ -175,11 +177,10 @@ const Overview = ({ navigation, groupData }) => {
               SCHEDULE
             </Text>
           </Text>
-          <TouchableOpacity
-            title="Schedule"
-            onPress={() =>
-              navigation.navigate('Schedule', { name: 'Schedule' })
-            }
+          <TouchableWithoutFeedback
+          // onPress={() =>
+          //   navigation.navigate('Schedule', { name: 'Schedule' })
+          // }
           >
             <Text
               style={{
@@ -188,9 +189,9 @@ const Overview = ({ navigation, groupData }) => {
                 fontFamily: 'Poppins',
               }}
             >
-              SEE ALL
+              SEE ALL -->
             </Text>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         </View>
 
         <View
@@ -203,14 +204,22 @@ const Overview = ({ navigation, groupData }) => {
         >
           {plans
             .sort((a, b) => a.time.seconds - b.time.seconds)
+            .sort((a, b) => a.time - b.time)
             .slice(0, 3)
             .map((plan) => {
-              let date = new Date(plan.time.seconds);
+              let date;
+              if (typeof plan.time !== 'object') {
+                date = new Date(plan.time);
+              } else {
+                date = new Date(plan.time.seconds);
+              }
               // let date = 'Tue Jan 20 1970 13:01:242424';
-              date += 'string';
-              date = date.slice(16, 21);
+              date = JSON.stringify(date);
+              date = date.slice(12, 17);
               const num = date.slice(0, 2);
-              if (num > 12) {
+              if (num === '12') {
+                date += ' PM';
+              } else if (num > 12) {
                 date = spliceSlice(date, 0, 2, num - 12);
                 date += ' PM';
               } else {
@@ -218,9 +227,7 @@ const Overview = ({ navigation, groupData }) => {
               }
               return (
                 <View style={styles.schedules} key={plan.id}>
-                  <Text style={styles.boldDesc}>
-                    {plan.time.seconds ? date : plan.time.seconds}
-                  </Text>
+                  <Text style={styles.boldDesc}>{date}</Text>
                   <Text>{plan.description}</Text>
                 </View>
               );
@@ -241,25 +248,16 @@ const Overview = ({ navigation, groupData }) => {
               GROUP MEMBERS
             </Text>
           </Text>
-          {/* <TouchableOpacity
-            title="Members"
-            onPress={() => navigation.navigate('Members', { name: 'Members' })}
-          >
-            <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
-              SEE ALL
-            </Text>
-          </TouchableOpacity> */}
         </View>
 
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-evenly',
-            // borderWidth: 1,
             width: '100%',
           }}
         >
-          {groupMembers.map((member) => (
+          {groupData.members.map((member) => (
             <View style={styles.members} key={member.id}>
               <Image
                 style={styles.member}

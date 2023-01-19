@@ -1,3 +1,5 @@
+/* eslint-disable react/no-children-prop */
+/* eslint-disable global-require */
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -5,13 +7,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
 import globalStyles from '../../globalStyles';
-import {
-  Overview,
-  Schedule,
-  AddSchedule,
-  Chat,
-  Members,
-} from './individualgroups';
+import { Overview, Schedule, Chat, Members } from './individualgroups';
 // --added by maddie
 import Loading from '../Loading/Index.js';
 
@@ -33,7 +29,9 @@ const Index = ({ route }) => {
   return (
     <Tab.Navigator
       initialRouteName="Overview"
-      screenOptions={{ tabBarLabelStyle: { fontSize: 12, fontFamily: 'Poppins' } }}
+      screenOptions={{
+        tabBarLabelStyle: { fontSize: 12, fontFamily: 'Poppins' },
+      }}
     >
       <Tab.Screen
         name="Overview"
@@ -51,21 +49,14 @@ const Index = ({ route }) => {
         }}
         children={() => <Schedule groupData={groupData} />}
       />
-      {/* <Tab.Screen name="AddSchedule" component={AddSchedule} /> */}
       <Tab.Screen
         name="Chat"
-        component={Chat}
+        // component={Chat}
         options={{
           tabBarIndicatorStyle: { backgroundColor: '#4895EF' },
         }}
+        children={() => <Chat groupData={groupData} />}
       />
-      {/* CAN'T FIGURE OUT HOW TO HIDE THE TAB RN */}
-      {/* <Tab.Screen
-        name="Members"
-        component={Members}
-        navigationOptions={{ tabBarVisible: false }}
-        options={{ tabBarVisible: false }}
-      /> */}
     </Tab.Navigator>
   );
 };
