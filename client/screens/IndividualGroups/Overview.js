@@ -178,9 +178,9 @@ const Overview = ({ navigation, groupData }) => {
             </Text>
           </Text>
           <TouchableWithoutFeedback
-            onPress={() =>
-              navigation.navigate('Schedule', { name: 'Schedule' })
-            }
+          // onPress={() =>
+          //   navigation.navigate('Schedule', { name: 'Schedule' })
+          // }
           >
             <Text
               style={{
@@ -189,7 +189,7 @@ const Overview = ({ navigation, groupData }) => {
                 fontFamily: 'Poppins',
               }}
             >
-              SEE ALL
+              SEE ALL -->
             </Text>
           </TouchableWithoutFeedback>
         </View>
@@ -248,21 +248,12 @@ const Overview = ({ navigation, groupData }) => {
               GROUP MEMBERS
             </Text>
           </Text>
-          {/* <TouchableOpacity
-            title="Members"
-            onPress={() => navigation.navigate('Members', { name: 'Members' })}
-          >
-            <Text style={{ textDecorationLine: 'underline', fontSize: 20 }}>
-              SEE ALL
-            </Text>
-          </TouchableOpacity> */}
         </View>
 
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-evenly',
-            // borderWidth: 1,
             width: '100%',
           }}
         >
