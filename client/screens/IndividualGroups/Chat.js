@@ -49,27 +49,29 @@ const ChatStack = () => {
 const Chat = ({ navigation }) => {
   const { userId } = useSelector((state) => state.pagerData); // user_id global state
   const [messages, setMessages] = useState([]);
+  const [groupId, setGroupId] = useState('IrIfBilvP6HSrCHzty9d');
 
   useLayoutEffect(() => {
-    // const collectionRef = collection(db, 'chat');
-    // const q = query(collectionRef, orderBy('created_on', 'desc'));
+    const collectionRef = collection(db, 'chat');
+    const q = query(collectionRef, orderBy('createdAt', 'desc'));
 
-    // const unsubscribe = onSnapshot(q, (snapshot) => {
-    //   console.log('snapshot');
-    //   setMessages(
-    //     snapshot.docs.map((doc) => ({
-    //       _id: doc.id,
-    //       created_on: doc.data(),
-    //       message_body: doc.data().message_body,
-    //       sender_name: doc.data().sender_name,
-    //       group_id: doc.data().group_id,
-    //     })),
-    //   );
-    // });
-    // return unsubscribe;
-
-    const groupMessages = getChatMsgsPerGroup('IrIfBilvP6HSrCHzty9d');
-    console.log('these are group messages:', groupMessages);
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      console.log('snapshot');
+      setMessages(
+        snapshot.docs.map((doc) => ({
+          _id: doc.id,
+          createdAt: doc.data().createdAt.toDate(),
+          text: doc.data().text,
+          user: doc.data().user,
+          group_id: groupId,
+        })),
+      );
+    });
+    return unsubscribe;
+    // const groupMessages = getChatMsgsPerGroup('IrIfBilvP6HSrCHzty9d').then(
+    //   (result) => {
+    //     setMessages(result);
+    //   },
   }, []);
 
   const onSend = useCallback((messages = []) => {
@@ -77,13 +79,12 @@ const Chat = ({ navigation }) => {
       GiftedChat.append(previousMessages, messages),
     );
 
-    const { _id, created_on, message_body, sender_name, group_id } =
-      messages[0];
+    const { _id, createdAt, text, user, group_id } = messages[0];
     addDoc(collection(db, 'chat'), {
       _id,
-      created_on,
-      message_body,
-      sender_name,
+      createdAt,
+      text,
+      user,
       group_id,
     });
   }, []);
@@ -93,7 +94,9 @@ const Chat = ({ navigation }) => {
       messages={messages}
       onSend={(messages) => onSend(messages)}
       user={{
-        _id: authChat?.currentUser?.email,
+        id: authChat?.currentUser?.email,
+        avatar:
+          'https://firebasestorage.googleapis.com/v0/b/project-pager-ac1f6.appspot.com/o/images%2Fphoenix-nest.png8919b168-f674-477d-afb3-adc85c9d573b?alt=media&token=8a5c635e-5ce6-45c3-b018-3eb9d40b1f83',
       }}
     />
   );
