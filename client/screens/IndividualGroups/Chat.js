@@ -9,6 +9,7 @@ import {
   collection,
   addDoc,
   orderBy,
+  where,
   query,
   onSnapshot,
 } from 'firebase/firestore';
@@ -50,21 +51,24 @@ const Chat = ({ navigation }) => {
   const { userId } = useSelector((state) => state.pagerData); // user_id global state
   const [messages, setMessages] = useState([]);
   const [groupId, setGroupId] = useState('IrIfBilvP6HSrCHzty9d');
+  const [name, setName] = useState('');
 
   useLayoutEffect(() => {
     const collectionRef = collection(db, 'chat');
-    const q = query(collectionRef, orderBy('createdAt', 'desc'));
+    const q = query(
+      collectionRef,
+      where('user.group_id', '==', groupId),
+      orderBy('createdAt', 'desc'),
+    );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log('snapshot');
+      console.log('snapshot', snapshot);
       setMessages(
         snapshot.docs.map((doc) => ({
           _id: doc.id,
           createdAt: doc.data().createdAt.toDate(),
           text: doc.data().text,
           user: doc.data().user,
-          // group_id: groupId,
-          // reaction: false,
         })),
       );
     });
@@ -88,6 +92,7 @@ const Chat = ({ navigation }) => {
       user,
       // group_id,
     });
+    console.log(messages);
   }, []);
 
   return (
@@ -99,6 +104,7 @@ const Chat = ({ navigation }) => {
         avatar:
           'https://c8.alamy.com/zooms/9/9c30002a90914b58b785a537a39421ba/2c80ydc.jpg',
         group_id: groupId,
+        reaction: false,
       }}
     />
   );
