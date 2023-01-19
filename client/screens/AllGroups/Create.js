@@ -22,10 +22,10 @@ import { getUser } from '../../db/user';
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 0,
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     overflowY: 'scroll',
   },
   textHeader: {
@@ -46,20 +46,18 @@ const styles = StyleSheet.create({
   },
   formStyle1: {
     display: 'flex',
-    borderTopColor: 'blue',
-    borderTopWidth: 2,
-    borderBottomColor: 'blue',
-    borderBottomWidth: 2,
+    // borderWidth: 2,
+    // borderColor: 'blue',
+    margin: 0,
   },
   formStyle2: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopColor: 'blue',
-    borderTopWidth: 2,
-    borderBottomColor: 'blue',
-    borderBottomWidth: 2,
+    // borderWidth: 2,
+    // borderColor: 'red',
+    margin: 0,
   },
   formInput: {
     // flex: 1,
@@ -69,16 +67,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontFamily: 'Poppins',
   },
-  btnStyle: {
-    // flex: 1,
-    backgroundColor: '#F72585',
+  btnStyleSubmit: {
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'Poppins',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    backgroundColor: '#F72585',
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+    borderRadius: 0,
   },
-  btnTextStyle: {
-    fontFamily: 'Poppins',
-    fontSize: 18,
+  btnTextStyleSubmit: {
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+  },
+  btnStyleUpload: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    backgroundColor: '#4895EF',
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+    borderRadius: 0,
+  },
+  btnTextStyleUpload: {
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+    fontSize: 14,
   },
 });
 
@@ -134,6 +150,7 @@ const Create = () => {
     setGroupImg(result);
   };
 
+  // -- 1/19 fix group image upload
   const submitFormData = () => {
     const newGroupFormData = {
       event_date: event.event_date,
@@ -161,8 +178,8 @@ const Create = () => {
         <Form
           onButtonPress={() => { submitFormData(); }}
           buttonText="CREATE GROUP"
-          buttonStyle={styles.btnStyle}
-          buttonTextStyle={styles.btnTextStyle}
+          buttonStyle={styles.btnStyleSubmit}
+          buttonTextStyle={styles.btnTextStyleSubmit}
           style={styles.formStyle1}
         >
           <FormItem
@@ -218,8 +235,8 @@ const Create = () => {
           <Form
             onButtonPress={() => { pickDocument(); }}
             buttonText="UPLOAD IMAGE"
-            buttonStyle={styles.btnStyle}
-            buttonTextStyle={styles.btnTextStyle}
+            buttonStyle={styles.btnStyleUpload}
+            buttonTextStyle={styles.btnTextStyleUpload}
             style={styles.formStyle2}
           />
         </Form>
