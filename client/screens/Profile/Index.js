@@ -202,7 +202,7 @@ const Profile = ({ navigation }) => {
             .map((friend) => (
               <Card
                 prop={friend}
-                key={friend}
+                key={Math.random()}
                 friends={friends}
                 setFriends={setFriends}
               />

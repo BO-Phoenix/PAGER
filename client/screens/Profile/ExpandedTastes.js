@@ -166,7 +166,9 @@ const ExpandedFriends = () => {
       </View>
       <View style={styles.bodyContainerCards}>
         {musicTastes &&
-          musicTastes.map((taste) => <TasteCard prop={taste} key={taste} />)}
+          musicTastes.map((taste, idx) => (
+            <TasteCard prop={taste} key={Math.random()} />
+          ))}
       </View>
     </View>
   );
