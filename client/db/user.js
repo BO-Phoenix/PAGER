@@ -38,14 +38,13 @@ export async function getUser(id) {
   const querySnapshot = await getDoc(userRef);
 
   user.push(querySnapshot.data());
-  console.log('data for one user : ', user);
+  // console.log('data for one user : ', user);
   return user;
 }
 
 export async function addUser(doc) {
   try {
     const docRef = await addDoc(usersRef, doc);
-    console.log('document has been added: ', docRef.id, docRef);
     return docRef.id;
   } catch (err) {
     console.error(err);
