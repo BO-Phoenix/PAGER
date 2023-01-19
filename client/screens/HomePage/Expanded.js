@@ -68,20 +68,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 5,
   },
-  bodyContainerSchedule: {
+  bodyContainerContentMem: {
     width: '100%',
+    alignItems: 'space-between',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 15,
+  },
+  bodyContainerSchedule: {
+    // width: '100%',
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    backgroundColor: 'white',
+    backgroundColor: '#F5F5F5',
+    marginBottom: 10,
+    padding: 5,
     // paddingVertical: 0,
     // paddingHorizontal: 15,
+    // borderWidth: 1,
+    // borderColor: 'black',
   },
   bodyContainerMember: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    // width: '100%',
     // backgroundColor: 'white',
     // paddingVertical: 0,
     // paddingHorizontal: 15,
@@ -97,6 +109,11 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsBold',
   },
   textDetail: {
+    fontSize: 15,
+    fontFamily: 'Poppins',
+    // textDecorationLine: 'underline',
+  },
+  textSeeAll: {
     fontSize: 15,
     fontFamily: 'Poppins',
     textDecorationLine: 'underline',
@@ -151,40 +168,38 @@ const Expanded = ({ group_info, navigation }) => {
         <TouchableWithoutFeedback
           onPress={() => navigation.navigate('Schedule', group)}
         >
-          <Text style={styles.textDetail}>SEE ALL</Text>
+          <Text style={styles.textSeeAll}>SEE ALL</Text>
         </TouchableWithoutFeedback>
       </View>
-      <View style={styles.bodyContainerSection}>
-        <View style={styles.bodyContainerSchedule}>
-          <Text style={styles.textDetailBold}></Text>
-          <Text style={styles.textDetail}>Detail</Text>
-        </View>
+      <View style={styles.bodyContainerLeft}>
+        {!!group && (
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal={false}
+            data={group.plans.length > 3 ? group.plans.slice(0, 3) : group.plans}
+            keyExtractor={(plan) => plan.id.toString()}
+            renderItem={({ item }) => {
+              return (
+                <View style={styles.bodyContainerSchedule}>
+                  <Text style={styles.textDetailBold}>
+                    {!!group && new Date(item.time.seconds * 1000).toDateString()}
+                  </Text>
+                  <Text style={styles.textDetail}>{item.description}</Text>
+                </View>
+              );
+            }}
+          />
+        )}
       </View>
-      {!!group && (
-        <FlatList
-          data={group.plans.length > 3 ? group.plans.slice(0, 3) : group.plans}
-          keyExtractor={(plan) => plan.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.bodyContainerSection}>
-              <View style={styles.bodyContainerSchedule}>
-                <Text style={styles.textDetailBold}>
-                  {!!group && new Date(item.time.seconds * 1000).toDateString()}
-                </Text>
-                <Text style={styles.textDetail}>{item.description}</Text>
-              </View>
-            </View>
-          )}
-        />
-      )}
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>MEMBERS</Text>
         <TouchableWithoutFeedback
           onPress={() => navigation.navigate('Member', group)}
         >
-          <Text style={styles.textDetail}>SEE ALL</Text>
+          <Text style={styles.textSeeAll}>SEE ALL</Text>
         </TouchableWithoutFeedback>
       </View>
-      <View style={styles.bodyContainerSection}>
+      <View style={styles.bodyContainerContentMem}>
         {!!group && (
           <FlatList
             data={
