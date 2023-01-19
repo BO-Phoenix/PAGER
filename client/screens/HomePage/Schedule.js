@@ -93,15 +93,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const Schedule = ({ group_obj }) => {
+const Schedule = ({ route }) => {
   const [group, setGroup] = useState();
+  console.log('what is route params in schedule', route.params);
 
   useEffect(() => {
-    async function fetchData() {
-      const group_obj = await getGroup('IrIfBilvP6HSrCHzty9d');
-      setGroup(group_obj);
-    }
-    fetchData();
+    setGroup(route.params);
   }, []);
 
   const [fontLoaded] = useFonts({
