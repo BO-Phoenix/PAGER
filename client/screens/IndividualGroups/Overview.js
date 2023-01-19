@@ -22,7 +22,7 @@ import {
   addGroupToEvent,
   removeGroupFromEvent,
 } from '../../db/event.js';
-import { getGroupMembers, getGroupPlans } from '../../db/group.js';
+import { getGroupMembers, getGroupPlans, getGroup } from '../../db/group.js';
 import Loading from '../Loading/Index';
 
 const Overview = ({ navigation, groupData }) => {
@@ -118,6 +118,7 @@ const Overview = ({ navigation, groupData }) => {
   // set states
   const [events, setEvents] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
+  const [group, setGroup] = useState([]);
   const [plans, setPlans] = useState([]);
 
   // get data
@@ -129,6 +130,8 @@ const Overview = ({ navigation, groupData }) => {
       setGroupMembers(resMembers);
       const resPlans = await getGroupPlans(groupData.id);
       setPlans(resPlans);
+      const resGroup = await getGroup(groupData.id);
+      setGroup(resGroup);
     }
     fetchData();
   }, []);
@@ -155,6 +158,7 @@ const Overview = ({ navigation, groupData }) => {
 
     return str.slice(0, index) + (add || '') + str.slice(index + count);
   }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -163,7 +167,7 @@ const Overview = ({ navigation, groupData }) => {
 
         <View style={styles.rowName}>
           <Text style={styles.boldDesc}>ORGANIZER</Text>
-          <Text style={styles.desc}>: Name Here</Text>
+          <Text style={styles.desc}>: {group.organizer_name}</Text>
         </View>
 
         <Text style={styles.groupDesc}>{groupData.group_description}</Text>
@@ -252,13 +256,7 @@ const Overview = ({ navigation, groupData }) => {
           </Text>
         </View>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            width: '100%',
-          }}
-        >
+        <View style={styles.tabs}>
           {groupMembers.map((member) => (
             <View style={styles.members} key={member.id}>
               <Image
