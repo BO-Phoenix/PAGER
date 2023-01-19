@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
   // },
   square: {
     display: 'flex',
-    width: 200,
-    height: 60,
+    width: 80,
+    height: 80,
     backgroundColor: 'grey',
     justifyContent: 'space-between',
     margin: 15,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const TasteCard = ({ musicTaste, friend }) => {
+const TasteCard = ({ prop }) => {
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -58,7 +58,7 @@ const TasteCard = ({ musicTaste, friend }) => {
 
   return (
     <View style={styles.square}>
-      <Text style={styles.text}>{musicTaste.toUpperCase()}</Text>
+      <Text style={styles.text}>{prop}</Text>
     </View>
   );
 };

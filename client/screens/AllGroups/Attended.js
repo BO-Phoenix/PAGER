@@ -1,7 +1,13 @@
+/* eslint-disable react/style-prop-object */
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
-  StyleSheet, Text, View, Button, Image, TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
 import { useSelector } from 'react-redux';
@@ -78,11 +84,16 @@ const Attended = ({ navigation }) => {
       <Text style={styles.textHeader}>GROUPS</Text>
       <Text style={styles.featureHeader}>ATTENDED</Text>
       <View style={styles.renderGroupContainer}>
-        {attendedUserGroups.map(group => {
+        {attendedUserGroups.map((group) => {
           return (
             <View style={styles.groupContainer}>
-              <Image style={styles.groupImg} source={{ uri: group.group_image }} />
-              <Text style={styles.groupName} key={group.id}>{group.group_name}</Text>
+              <Image
+                style={styles.groupImg}
+                source={{ uri: group.group_image }}
+              />
+              <Text style={styles.groupName} key={group.id}>
+                {group.group_name}
+              </Text>
               <Icon name="arrow-dropright" size={30} />
             </View>
           );
