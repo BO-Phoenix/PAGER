@@ -53,8 +53,6 @@ const SignInScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Signin screen!</Text>
-
       {!!value.error && (
         <View style={styles.error}>
           <Text>{value.error}</Text>
