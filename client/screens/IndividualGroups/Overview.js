@@ -67,12 +67,7 @@ const Overview = ({ navigation, groupData }) => {
       alignSelf: 'start',
       fontFamily: 'Poppins',
       fontSize: 14,
-    },
-    tabs: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      // borderWidth: 1,
-      width: '100%',
+      paddingHorizontal: 15,
     },
     selected: {
       backgroundColor: '#B5179E',
@@ -100,13 +95,23 @@ const Overview = ({ navigation, groupData }) => {
       alignSelf: 'start',
       padding: 5,
       // borderWidth: 2
+      paddingHorizontal: 15,
+    },
+    tabs: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'start',
+      // borderWidth: 1,
+      width: '100%',
     },
     members: {
-      // flexDirection: 'row'
+      alignItems: 'center',
+      width: 100,
+      margin: 5,
     },
     member: {
-      height: 50,
-      width: 50,
+      height: 75,
+      width: 75,
     },
   });
 
@@ -160,7 +165,6 @@ const Overview = ({ navigation, groupData }) => {
           <Text style={styles.boldDesc}>ORGANIZER</Text>
           <Text style={styles.desc}>: Name Here</Text>
         </View>
-        {/* include conditionally rendered add member button which goes to different screen */}
 
         <Text style={styles.groupDesc}>{groupData.group_description}</Text>
 
@@ -248,21 +252,15 @@ const Overview = ({ navigation, groupData }) => {
           </Text>
         </View>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            width: '100%',
-          }}
-        >
+        <View style={styles.tabs}>
           {groupData.members.map((member) => (
             <View style={styles.members} key={member.id}>
               <Image
                 style={styles.member}
                 source={{ uri: member.profile_pic }}
               />
-              <Text>
-                {member.first_name} {member.last_name}
+              <Text style={{ fontSize: 15, fontFamily: 'Poppins' }}>
+                {member.first_name}
               </Text>
             </View>
           ))}
