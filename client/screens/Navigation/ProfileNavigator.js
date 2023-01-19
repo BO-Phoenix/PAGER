@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Index from '../Profile/Index';
 import ExpandedFriends from '../Profile/ExpandedFriends';
 import ExpandedTastes from '../Profile/ExpandedTastes';
+import EditProfile from '../Profile/EditProfile';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,13 @@ const HomepageNavigator = () => (
       component={ExpandedTastes}
       options={{
         title: 'Music Tastes',
+      }}
+    />
+    <Stack.Screen
+      name="EditProfile"
+      component={EditProfile}
+      options={{
+        title: 'Edit Profile',
       }}
     />
   </Stack.Navigator>
