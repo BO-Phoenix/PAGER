@@ -1,6 +1,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable global-require */
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -136,6 +137,7 @@ const ExpandedFriends = () => {
   const [user, setUser] = useState([]);
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
+  const { userId } = useSelector((state) => state.pagerData);
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -144,7 +146,7 @@ const ExpandedFriends = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getUser('I4nwq9hMAQin0BjCEe1U');
+      const res = await getUser(userId);
       setUser(res[0]);
       setMusicTastes([...res[0].music_tastes]);
       setFriends([...res[0].friends_list]);
@@ -164,8 +166,8 @@ const ExpandedFriends = () => {
       </View>
       <View style={styles.bodyContainerCards}>
         {musicTastes &&
-          musicTastes.map((taste) => (
-            <TasteCard musicTaste={taste} key={taste} />
+          musicTastes.map((taste, idx) => (
+            <TasteCard prop={taste} key={Math.random()} />
           ))}
       </View>
     </View>
