@@ -5,7 +5,7 @@ import SelectEvent from '../HomePage/Index.js';
 import GroupPage from '../HomePage/Expanded.js';
 import SchedulePage from '../HomePage/Schedule.js';
 import MemberPage from '../HomePage/Members.js';
-import SwipeCardPage from '../HomePage/SwipeCard.js';
+import SwipeCardPage from '../HomePage/Swipe.js';
 
 const Stack = createStackNavigator();
 
