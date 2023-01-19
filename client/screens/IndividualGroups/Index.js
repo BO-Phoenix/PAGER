@@ -43,13 +43,6 @@ const Index = () => {
           tabBarIndicatorStyle: { backgroundColor: '#4895EF' },
         }}
       />
-      {/* CAN'T FIGURE OUT HOW TO HIDE THE TAB RN */}
-      {/* <Tab.Screen
-        name="Members"
-        component={Members}
-        navigationOptions={{ tabBarVisible: false }}
-        options={{ tabBarVisible: false }}
-      /> */}
     </Tab.Navigator>
   );
 };

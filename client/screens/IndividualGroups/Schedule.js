@@ -15,9 +15,9 @@ import {
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import { useFonts } from 'expo-font';
-import DatePicker from 'react-native-date-picker';
+import DatePicker from 'react-native-datepicker';
 import globalStyles from '../../globalStyles';
-import { getGroupPlans } from '../../db/group.js';
+import { getGroupPlans, addPlan, deletePlan } from '../../db/group.js';
 import Loading from '../Loading/Index';
 
 const Schedule = ({ navigation }) => {
@@ -61,6 +61,7 @@ const Schedule = ({ navigation }) => {
       marginTop: 20,
       alignSelf: 'start',
       padding: 5,
+      width: '100%',
       // borderWidth: 2},
     },
     centeredView: {
@@ -99,12 +100,15 @@ const Schedule = ({ navigation }) => {
   // use states
   const [modalVisible, setModalVisible] = useState(false);
   const [plans, setPlans] = useState([]);
-  const [date, setDate] = useState(new Date());
+  // const [date, setDate] = useState(new Date());
   const [value, setValue] = useState({
+    date: new Date(),
     description: '',
     error: '',
   });
-
+  // console.log(Math.floor(new Date().getTime() / 1000.0));
+  // console.log(value.date);
+  // console.log('time rn: ', Date(Date.now()));
   // load data
   useEffect(() => {
     async function fetchData() {
@@ -113,6 +117,11 @@ const Schedule = ({ navigation }) => {
     }
     fetchData();
   }, []);
+
+  async function fetchData() {
+    const resPlans = await getGroupPlans('IrIfBilvP6HSrCHzty9d');
+    setPlans(resPlans);
+  }
 
   // load font
   const [fontLoaded] = useFonts({
@@ -167,15 +176,34 @@ const Schedule = ({ navigation }) => {
             <View style={styles.modalView}>
               {/* modal container */}
               <Text style={styles.modalText}>
-                Add plan to schedule modal
-                {/* <Input
-                  placeholder="Time"
-                  containerStyle={styles.modalInput}
-                  value={value.time}
-                  onChangeText={(text) => setValue({ ...value, time: text })}
-                /> */}
-                {/* WANT TO INCORPORATE DAT EPICKER */}
-                {/* <DatePicker date={date} onDateChange={setDate} /> */}
+                <DatePicker
+                  style={{ width: 200 }}
+                  date={value.date}
+                  mode="time"
+                  placeholder="select time"
+                  format="h:mm a"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  onDateChange={(date) => {
+                    console.log(date);
+                    setValue({ ...value, date });
+                  }}
+                  customStyles={{
+                    dateIcon: {
+                      position: 'absolute',
+                      left: 0,
+                      top: 4,
+                      marginLeft: 0,
+                    },
+                    dateInput: { marginLeft: 36, color: 'black' },
+                    datePicker: {
+                      backgroundColor: 'black',
+                    },
+                    datePickerCon: {
+                      backgroundColor: 'black',
+                    },
+                  }}
+                />
                 <Input
                   placeholder="Description"
                   containerStyle={styles.modalInput}
@@ -187,7 +215,14 @@ const Schedule = ({ navigation }) => {
               </Text>
               <TouchableOpacity
                 title="AddPlan"
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  addPlan('IrIfBilvP6HSrCHzty9d', {
+                    time: value.date,
+                    description: value.description,
+                  });
+                  fetchData();
+                  setModalVisible(!modalVisible);
+                }}
               >
                 <Text
                   style={{
@@ -197,7 +232,7 @@ const Schedule = ({ navigation }) => {
                     marginRight: 5,
                   }}
                 >
-                  X
+                  ADD SCHEDULE
                 </Text>
               </TouchableOpacity>
             </View>
@@ -250,10 +285,16 @@ const Schedule = ({ navigation }) => {
           {plans
             .sort((a, b) => a.time.seconds - b.time.seconds)
             .map((plan) => {
-              let date = new Date(plan.time.seconds);
+              let date;
+              if (typeof plan.time !== 'object') {
+                date = new Date(plan.time);
+              } else {
+                date = new Date(plan.time.seconds);
+              }
               // let date = 'Tue Jan 20 1970 13:01:242424';
-              date += 'string';
-              date = date.slice(16, 21);
+              date = JSON.stringify(date);
+              // console.log(plan.time.seconds, date);
+              date = date.slice(12, 17);
               const num = date.slice(0, 2);
               if (num > 12) {
                 date = spliceSlice(date, 0, 2, num - 12);
@@ -262,8 +303,35 @@ const Schedule = ({ navigation }) => {
                 date += ' AM';
               }
               return (
-                <View style={styles.schedules} key={plan.id}>
-                  <B>{plan.time.seconds ? date : plan.time.seconds}</B>
+                <View
+                  style={styles.schedules}
+                  key={plan.id}
+                  value={plan.id}
+                  name={plan.id}
+                >
+                  <B>{date}</B>
+                  <TouchableOpacity
+                    title="DeletePlan"
+                    onPress={(e) =>
+                      // deletePlan('IrIfBilvP6HSrCHzty9d', e.target)
+                      console.log(e.target.value)
+                    }
+                  >
+                    <Text
+                      value={plan.id}
+                      name={plan.id}
+                      style={{
+                        position: 'absolute',
+                        right: 0,
+                        fontSize: 20,
+                        fontFamily: 'PoppinsBold',
+                        marginTop: 0,
+                        marginRight: 5,
+                      }}
+                    >
+                      X
+                    </Text>
+                  </TouchableOpacity>
                   <Text>{plan.description}</Text>
                 </View>
               );
