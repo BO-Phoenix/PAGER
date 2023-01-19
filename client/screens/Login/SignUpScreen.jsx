@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, CheckBox } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
+import globalStyles from '../../globalStyles';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { addUser } from '../../db/user.js';
 // -- redux import statements
@@ -157,8 +158,8 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             size={16}
           />}
         />
-        <View style={{justifyContent: 'center', alignSelf: 'center'}}>
-          <Text>I confirm that I'm 18+</Text>
+        <View style={{marginTop: 15, marginBottom: 15, justifyContent: 'center', alignSelf: 'center'}}>
+          <Text style={{marginLeft: 10}}>I confirm that I'm 18+</Text>
           <CheckBox
             value={isOverEighteen}
             onValueChange={setIsOverEighteen}
@@ -248,7 +249,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             />
           </View>
         </View>
-        <Button title="Sign up" buttonStyle={styles.control} onPress={signUp} />
+        <Button title="Sign up" buttonStyle={globalStyles.button} onPress={signUp} />
       </View>
     </View>
   );
@@ -264,13 +265,23 @@ const styles = StyleSheet.create({
 
   controls: {
     flex: 1,
+    alignSelf: 'center',
+    width: '80%',
+  },
+
+  label: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
 
   allCheckboxContainer: {
     flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
-    marginBotom: 20,
+    marginLeft: 100,
+    maxHeight: '10em',
   },
 
   checkboxContainer: {
@@ -281,6 +292,8 @@ const styles = StyleSheet.create({
 
   checkbox: {
     alignSelf: 'center',
+    marginTop: -15,
+    marginLeft: -150,
   },
 
   control: {
