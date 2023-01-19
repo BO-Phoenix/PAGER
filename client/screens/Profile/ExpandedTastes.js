@@ -8,16 +8,14 @@ import {
   Image,
   Pressable,
   CheckBox,
-  Alert,
-  Button,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import { getUser } from '../../db/user.js';
 import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
-import Card from './Card';
+import TasteCard from './TasteCard';
+import UserHeader from './UserHeader';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,12 +29,12 @@ const styles = StyleSheet.create({
     // borderColor: 'black',
   },
   headerImage: {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     marginTop: 15,
   },
   headerName: {
-    fontSize: 30,
+    fontSize: 20,
     fontFamily: 'PoppinsBold',
   },
   bodyContainerCenter: {
@@ -61,16 +59,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    marginBottom: 5,
-  },
-  bodyContainerRow: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    textAlign: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
     paddingVertical: 5,
@@ -94,6 +83,22 @@ const styles = StyleSheet.create({
     // backgroundColor: 'white',
     // paddingVertical: 0,
     // paddingHorizontal: 15,
+  },
+  bodyContainerCards: {
+    alignItems: 'center',
+    flex: 1,
+    // flexDirection: 'column',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    width: '100%',
+    // flexDirection: 'column',
+    // alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    // paddingVertical: 90,
+    // paddingHorizontal: 50,
+    // paddingBottom: 50,
+    // marginBottom: 5,
   },
   button: {
     alignItems: 'center',
@@ -127,7 +132,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Profile = ({ navigation }) => {
+const ExpandedFriends = () => {
   const [user, setUser] = useState([]);
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -150,57 +155,21 @@ const Profile = ({ navigation }) => {
   if (!fontLoaded) {
     return <Loading />;
   }
-  const goToFriends = () => console.log('pressed');
+
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.headerImage}
-        source={require('../../assets/box.png')}
-      />
+      <UserHeader user={user} />
       <View style={styles.bodyContainerCenter}>
-        <Text style={styles.headerName}>
-          {`${user.first_name} ${user.last_name}`}
-        </Text>
-      </View>
-      <Pressable style={styles.button}>
-        <Text style={styles.buttonText} onClick={goToFriends}>
-          EDIT
-        </Text>
-      </Pressable>
-      <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetail}>{`${user.description}`}</Text>
-      </View>
-      <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>MUSIC TASTES</Text>
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('ExpandedTastes')}
-        >
-          <Text style={styles.textDetail}>SEE ALL</Text>
-        </TouchableWithoutFeedback>
       </View>
-      {/* <View style={styles.bodyContainerSection}> */}
-      <View style={styles.bodyContainerRow}>
+      <View style={styles.bodyContainerCards}>
         {musicTastes &&
-          musicTastes
-            .slice(0, 3)
-            .map((taste) => <Card musicTaste={taste} key={taste} />)}
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>FRIENDS</Text>
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('ExpandedFriends')}
-        >
-          <Text style={styles.textDetail}>SEE ALL</Text>
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        {friends &&
-          friends
-            .slice(0, 3)
-            .map((friend) => <Card musicTaste={friend} key={friend} />)}
+          musicTastes.map((taste) => (
+            <TasteCard musicTaste={taste} key={taste} />
+          ))}
       </View>
     </View>
   );
 };
 
-export default Profile;
+export default ExpandedFriends;

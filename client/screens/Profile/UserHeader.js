@@ -1,4 +1,3 @@
-/* eslint-disable operator-linebreak */
 /* eslint-disable global-require */
 import React, { useEffect, useState } from 'react';
 import {
@@ -8,20 +7,16 @@ import {
   Image,
   Pressable,
   CheckBox,
-  Alert,
-  Button,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import { getUser } from '../../db/user.js';
 import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
-import Card from './Card';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingBottom: 10,
@@ -31,13 +26,14 @@ const styles = StyleSheet.create({
     // borderColor: 'black',
   },
   headerImage: {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     marginTop: 15,
   },
   headerName: {
-    fontSize: 30,
+    fontSize: 20,
     fontFamily: 'PoppinsBold',
+    align: 'center',
   },
   bodyContainerCenter: {
     alignItems: 'flex-start',
@@ -127,80 +123,30 @@ const styles = StyleSheet.create({
   },
 });
 
-const Profile = ({ navigation }) => {
-  const [user, setUser] = useState([]);
-  const [musicTastes, setMusicTastes] = useState([]);
-  const [friends, setFriends] = useState([]);
-  const [fontLoaded] = useFonts({
-    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
-    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
-  });
+const UserHeader = ({ user }) => {
+  // const [fontLoaded] = useFonts({
+  //   Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+  //   PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+  //   Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
+  // });
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await getUser('I4nwq9hMAQin0BjCEe1U');
-      setUser(res[0]);
-      setMusicTastes([...res[0].music_tastes]);
-      setFriends([...res[0].friends_list]);
-    }
-    fetchData();
-  }, []);
+  // if (!fontLoaded) {
+  //   return <Loading />;
+  // }
 
-  if (!fontLoaded) {
-    return <Loading />;
-  }
-  const goToFriends = () => console.log('pressed');
   return (
     <View style={styles.container}>
       <Image
         style={styles.headerImage}
         source={require('../../assets/box.png')}
       />
-      <View style={styles.bodyContainerCenter}>
-        <Text style={styles.headerName}>
-          {`${user.first_name} ${user.last_name}`}
-        </Text>
-      </View>
-      <Pressable style={styles.button}>
-        <Text style={styles.buttonText} onClick={goToFriends}>
-          EDIT
-        </Text>
-      </Pressable>
-      <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetail}>{`${user.description}`}</Text>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>MUSIC TASTES</Text>
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('ExpandedTastes')}
-        >
-          <Text style={styles.textDetail}>SEE ALL</Text>
-        </TouchableWithoutFeedback>
-      </View>
-      {/* <View style={styles.bodyContainerSection}> */}
-      <View style={styles.bodyContainerRow}>
-        {musicTastes &&
-          musicTastes
-            .slice(0, 3)
-            .map((taste) => <Card musicTaste={taste} key={taste} />)}
-      </View>
-      <View style={styles.bodyContainerSection}>
-        <Text style={styles.textTitle}>FRIENDS</Text>
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('ExpandedFriends')}
-        >
-          <Text style={styles.textDetail}>SEE ALL</Text>
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={styles.bodyContainerSection}>
-        {friends &&
-          friends
-            .slice(0, 3)
-            .map((friend) => <Card musicTaste={friend} key={friend} />)}
-      </View>
+      {/* <View style={styles.bodyContainerCenter}> */}
+      <Text style={styles.headerName}>
+        {`${user.first_name} ${user.last_name}`}
+      </Text>
+      {/* </View> */}
     </View>
   );
 };
 
-export default Profile;
+export default UserHeader;

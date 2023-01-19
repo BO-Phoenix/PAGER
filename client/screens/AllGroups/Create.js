@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import {
-  StyleSheet, Text, View, SafeAreaView,
-} from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { Form, FormItem, Picker } from 'react-native-form-component';
 import { useSelector } from 'react-redux';
 import {
@@ -15,15 +13,17 @@ import { getAllEvents } from '../../db/event';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    overflowY: 'scroll',
   },
   title: {
     fontFamily: 'Arial',
     fontWeight: 'medium',
     fontSize: 24,
+    paddingTop: 15,
   },
   formInput: {
     flex: 1,
@@ -89,7 +89,6 @@ const Create = () => {
   // size: string -- DONE
   // vibe: string -- DONE
 
-
   const submitFormData = () => {
     console.log(
       'user_id::',
@@ -125,7 +124,9 @@ const Create = () => {
         CREATE GROUP
       </Text>
       <Form
-        onButtonPress={() => { submitFormData(); }}
+        onButtonPress={() => {
+          submitFormData();
+        }}
         buttonText="CREATE GROUP"
         buttonStyle={styles.btnStyle}
         buttonTextStyle={styles.btnTextStyle}
@@ -145,7 +146,9 @@ const Create = () => {
           placeholder="GROUP DESCRIPTION"
           isRequired
           value={groupDescription}
-          onChangeText={(groupDescription) => setGroupDescription(groupDescription)}
+          onChangeText={(groupDescription) =>
+            setGroupDescription(groupDescription)
+          }
           ref={groupDescriptionInput}
         />
         <Picker
@@ -215,7 +218,6 @@ export default Create;
 // organizer_name : user's full name
 // size: string -- DONE
 // vibe: string -- DONE
-
 
 // top priority: andrew's user id setup
 // need to be able to grab user_id and name
