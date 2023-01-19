@@ -113,14 +113,21 @@ const Create = () => {
 
   // event_date -- DONE
   // event_id -- DONE
-  // group_image -- DONE
+  // group_image --
   // group_name -- DONE
   // group_description -- DONE
-  // member_list : user's user_id
-  // organizer_name : user's full name
+  // member_list : user's user_id -- DONE
+  // organizer_name : user's user_name --get request for user info using ID
   // size: string -- DONE
   // vibe: string -- DONE
 
+  // ** object with key/value pairs -- named the same
+  // react FILE compoenent -- click a button for you to select your image
+
+  // 1/18 AGENDA:
+  // TOP PRIORITY -- implement navigator
+  // NEXT -- post form data
+  // NEXT -- form upload
 
   const submitFormData = () => {
     console.log(

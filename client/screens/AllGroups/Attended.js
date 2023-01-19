@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
-  StyleSheet, Text, View, Button, Image, TouchableOpacity, ScrollView,
+  StyleSheet, Text, View, Button, Image, TouchableOpacity, ScrollView, TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
 import { useSelector } from 'react-redux';
@@ -97,7 +97,7 @@ const Attended = ({ navigation }) => {
         <Text style={styles.featureHeader}>ATTENDED</Text>
       </View>
       <View style={styles.renderGroupContainer}>
-        {attendedUserGroups.map(group => {
+        {attendedUserGroups.map(group => { //  pass 'group' as a navigate -- 2nd param ITEM
           return (
             <View style={styles.groupContainer}>
               <Image style={styles.groupImg} source={{ uri: group.group_image }} />
