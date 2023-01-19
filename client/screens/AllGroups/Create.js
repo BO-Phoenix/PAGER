@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   featureHeader: {
     fontSize: 20,
     paddingTop: 15,
-    fontFamily: 'Poppins',
+    fontFamily: 'PoppinsBold',
   },
   formStyle: {
     display: 'flex',

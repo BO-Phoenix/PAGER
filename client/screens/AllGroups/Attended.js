@@ -9,7 +9,7 @@ import {
   FlatList,
   TouchableWithoutFeedback,
 } from 'react-native';
-import Icon from 'react-native-ionicons';
+import Icon from 'react-native-vector-icons/Feather';
 import { useSelector } from 'react-redux';
 import { useFonts } from 'expo-font';
 import Loading from '../Loading/Index.js';
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   featureHeader: {
     fontSize: 20,
     paddingTop: 15,
-    fontFamily: 'Poppins',
+    fontFamily: 'PoppinsBold',
   },
   groupName: {
     fontSize: 22,
@@ -130,7 +130,7 @@ const Attended = ({ navigation }) => {
                     <Text style={styles.groupName} key={item.id}>{item.event_name}</Text>
                   </View>
 
-                  <Icon name="arrow-dropright" size={30} />
+                  <Icon name="chevron-right" size={30} color="#000000" />
                 </View>
               </TouchableWithoutFeedback>
             </View>
