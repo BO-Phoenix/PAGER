@@ -207,14 +207,25 @@ const Overview = ({ navigation }) => {
         >
           {plans
             .sort((a, b) => a.time.seconds - b.time.seconds)
+            .sort((a, b) => a.time - b.time)
             .slice(0, 3)
             .map((plan) => {
-              let date = new Date(plan.time.seconds);
+              let date;
+              if (typeof plan.time !== 'object') {
+                console.log('given time: ', plan.time);
+                date = new Date(plan.time);
+              } else {
+                console.log('given time: ', plan.time.seconds);
+                date = new Date(plan.time.seconds);
+              }
               // let date = 'Tue Jan 20 1970 13:01:242424';
-              date += 'string';
-              date = date.slice(16, 21);
+              date = JSON.stringify(date);
+              // console.log(plan.time.seconds, date);
+              date = date.slice(12, 17);
               const num = date.slice(0, 2);
-              if (num > 12) {
+              if (num === '12') {
+                date += ' PM';
+              } else if (num > 12) {
                 date = spliceSlice(date, 0, 2, num - 12);
                 date += ' PM';
               } else {

@@ -71,17 +71,20 @@ const Schedule = ({ navigation }) => {
       marginTop: 22,
     },
     modalView: {
-      margin: 20,
+      // margin: 20,
+      // borderRadius: 20,
+      position: 'absolute',
+      bottom: 70,
       backgroundColor: 'white',
-      borderRadius: 20,
       padding: 35,
       alignItems: 'center',
       shadowColor: '#000',
+      height: '60%',
       shadowOffset: {
         width: 0,
         height: 2,
       },
-      shadowOpacity: 0.25,
+      shadowOpacity: 0.5,
       shadowRadius: 4,
       elevation: 5,
     },
@@ -100,9 +103,9 @@ const Schedule = ({ navigation }) => {
   // use states
   const [modalVisible, setModalVisible] = useState(false);
   const [plans, setPlans] = useState([]);
-  // const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
   const [value, setValue] = useState({
-    date: new Date(),
+    time: Math.floor(new Date().getTime() / 1000.0),
     description: '',
     error: '',
   });
@@ -175,18 +178,52 @@ const Schedule = ({ navigation }) => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               {/* modal container */}
-              <Text style={styles.modalText}>
+              <View style={styles.modalText}>
                 <DatePicker
                   style={{ width: 200 }}
-                  date={value.date}
+                  date={date}
                   mode="time"
+                  androidMode="spinner"
                   placeholder="select time"
                   format="h:mm a"
                   confirmBtnText="Confirm"
                   cancelBtnText="Cancel"
+                  getDateStr="true"
                   onDateChange={(date) => {
+                    let hr = Number(date.split(':')[0]);
+                    let min = Number(date.split(':')[1].slice(0, 2));
+                    const a = date.split(' ')[1];
+                    if (a === 'am') {
+                      min *= 60;
+                      if (hr === 12) {
+                        hr = 0;
+                        hr += min;
+                        hr = JSON.stringify(hr);
+                        while (hr.length < 5) {
+                          hr = `0${hr}`;
+                        }
+                      } else {
+                        hr *= 3600;
+                        hr += min;
+                      }
+                    } else {
+                      min *= 60;
+                      if (hr === 12) {
+                        hr = 43200;
+                        hr += min;
+                      } else {
+                        hr *= 3600;
+                        hr += 43200;
+                        hr += min;
+                      }
+                    }
+                    const now = `16740${hr}000`;
+                    console.log('a: ', a);
+                    console.log('now: ', now);
+                    const str = '16740';
                     console.log(date);
-                    setValue({ ...value, date });
+                    setDate(date);
+                    setValue({ ...value, time: now });
                   }}
                   customStyles={{
                     dateIcon: {
@@ -204,20 +241,36 @@ const Schedule = ({ navigation }) => {
                     },
                   }}
                 />
+                <TouchableOpacity
+                  title="CloseModal"
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontFamily: 'PoppinsBold',
+                      marginTop: 0,
+                      marginRight: 5,
+                    }}
+                  >
+                    X
+                  </Text>
+                </TouchableOpacity>
                 <Input
                   placeholder="Description"
                   containerStyle={styles.modalInput}
-                  value={value.description}
                   onChangeText={(text) =>
                     setValue({ ...value, description: text })
                   }
                 />
-              </Text>
+              </View>
               <TouchableOpacity
                 title="AddPlan"
                 onPress={() => {
                   addPlan('IrIfBilvP6HSrCHzty9d', {
-                    time: value.date,
+                    time: Number(value.time),
                     description: value.description,
                   });
                   fetchData();
@@ -284,11 +337,14 @@ const Schedule = ({ navigation }) => {
         >
           {plans
             .sort((a, b) => a.time.seconds - b.time.seconds)
+            .sort((a, b) => a.time - b.time)
             .map((plan) => {
               let date;
               if (typeof plan.time !== 'object') {
+                console.log('given time: ', plan.time);
                 date = new Date(plan.time);
               } else {
+                console.log('given time: ', plan.time.seconds);
                 date = new Date(plan.time.seconds);
               }
               // let date = 'Tue Jan 20 1970 13:01:242424';
@@ -296,7 +352,9 @@ const Schedule = ({ navigation }) => {
               // console.log(plan.time.seconds, date);
               date = date.slice(12, 17);
               const num = date.slice(0, 2);
-              if (num > 12) {
+              if (num === '12') {
+                date += ' PM';
+              } else if (num > 12) {
                 date = spliceSlice(date, 0, 2, num - 12);
                 date += ' PM';
               } else {
@@ -312,9 +370,19 @@ const Schedule = ({ navigation }) => {
                   <B>{date}</B>
                   <TouchableOpacity
                     title="DeletePlan"
-                    onPress={(e) =>
-                      // deletePlan('IrIfBilvP6HSrCHzty9d', e.target)
-                      console.log(e.target.value)
+                    onPress={
+                      (e) => {
+                        deletePlan(
+                          'IrIfBilvP6HSrCHzty9d',
+                          e.target._internalFiberInstanceHandleDEV.memoizedProps
+                            .value,
+                        );
+
+                        fetchData();
+                      }
+                      // console.log(
+                      //   e.target._internalFiberInstanceHandleDEV.memoizedProps
+                      //     .value)
                     }
                   >
                     <Text
@@ -323,7 +391,7 @@ const Schedule = ({ navigation }) => {
                       style={{
                         position: 'absolute',
                         right: 0,
-                        fontSize: 20,
+                        fontSize: 30,
                         fontFamily: 'PoppinsBold',
                         marginTop: 0,
                         marginRight: 5,
