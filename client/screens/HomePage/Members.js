@@ -42,7 +42,13 @@ const styles = StyleSheet.create({
   headerImage: {
     width: 50,
     height: 50,
-    marginHorizontal: 5,
+    marginRight: 15,
+    marginVertical: 15,
+  },
+  memberImage: {
+    width: 50,
+    height: 50,
+    marginRight: 15,
   },
   headerName: {
     fontSize: 25,
@@ -54,8 +60,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    marginBottom: 15,
+    // paddingHorizontal: 10,
   },
   bodyContainerSection: {
     width: '100%',
@@ -67,12 +73,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginTop: 5,
   },
-  bodyContainerSchedule: {
+  bodyContainerLeft: {
     width: '100%',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     backgroundColor: 'white',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
   },
   textTitle: {
     fontSize: 20,
@@ -117,23 +125,25 @@ const Memebers = ({ route }) => {
         <Text style={styles.headerName}>{!!group && group.group_name}</Text>
       </View>
       <View style={styles.bodyContainerSection}>
-        <Text style={styles.textDetailBold}>MEMBERS</Text>
+        <Text style={styles.textTitle}>MEMBERS</Text>
       </View>
-      {!!group && (
-        <FlatList
-          data={group.members}
-          keyExtractor={(member) => member.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.bodyContainerMember}>
-              <Image
-                style={styles.headerImage}
-                source={{ uri: item.profile_pic }}
-              />
-              <Text style={styles.textDetail}>{item.first_name}</Text>
-            </View>
-          )}
-        />
-      )}
+      <View style={styles.bodyContainerLeft}>
+        {!!group && (
+          <FlatList
+            data={group.members}
+            keyExtractor={(member) => member.id.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.bodyContainerMember}>
+                <Image
+                  style={styles.memberImage}
+                  source={{ uri: item.profile_pic }}
+                />
+                <Text style={styles.textDetail}>{item.first_name}</Text>
+              </View>
+            )}
+          />
+        )}
+      </View>
     </View>
   );
 };

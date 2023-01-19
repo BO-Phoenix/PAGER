@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingBottom: 10,
     overflow: 'scroll',
+    // overflow-x: 'hidden',
     backgroundColor: 'white',
     // borderWidth: 3,
     // borderColor: 'red',
