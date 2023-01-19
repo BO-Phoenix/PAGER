@@ -14,12 +14,16 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { useFonts } from 'expo-font';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getUser } from '../../db/user.js';
 import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 import Card from './Card';
 import TasteCard from './TasteCard';
+import { useAuthentication } from '../../utils/hooks/useAuthentication';
+
+const auth = getAuth();
 
 const styles = StyleSheet.create({
   container: {
@@ -35,7 +39,7 @@ const styles = StyleSheet.create({
   headerImage: {
     width: 200,
     height: 200,
-    marginTop: 15,
+    marginTop: 10,
   },
   headerName: {
     fontSize: 30,
@@ -58,6 +62,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingVertical: 5,
     paddingHorizontal: 15,
+  },
+  bodyContainerRight: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+    backgroundColor: 'white',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    textDecorationLine: 'underline',
   },
   bodyContainerSection: {
     width: '100%',
@@ -131,7 +145,6 @@ const styles = StyleSheet.create({
 
 const Profile = ({ navigation }) => {
   const { userId } = useSelector((state) => state.pagerData);
-  // console.log(userId);
   const [user, setUser] = useState({});
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -157,7 +170,13 @@ const Profile = ({ navigation }) => {
     return <Loading />;
   }
   return (
+    // onPress={() => auth.signOut()}
     <View style={styles.container}>
+      <View style={styles.bodyContainerRight}>
+        <Pressable onPress={() => auth.signOut()}>
+          <Text style={styles.textDetailBold}>SIGN OUT</Text>
+        </Pressable>
+      </View>
       <Image style={styles.headerImage} source={user.profile_pic} />
       <View style={styles.bodyContainerCenter}>
         <Text style={styles.headerName}>
