@@ -82,8 +82,8 @@ const Card = ({ prop, friends, setFriends }) => {
         <Text>x</Text>
       </Button> */}
       <Text style={styles.textDetail}>{prop.first_name}</Text>
-      <Pressable style={styles.button} onPress={() => unfriend(prop.id)}>
-        <Text style={styles.buttonText}>Unfriend</Text>
+      <Pressable style={styles.button} onPress={() => unfriend(prop.last_name)}>
+        <Text style={styles.buttonText}>UNFRIEND</Text>
       </Pressable>
     </View>
   );
