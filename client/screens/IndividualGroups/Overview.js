@@ -61,6 +61,12 @@ const Overview = ({ navigation, groupData }) => {
       fontFamily: 'Poppins',
       fontSize: 14,
     },
+    groupDesc: {
+      marginTop: 5,
+      alignSelf: 'start',
+      fontFamily: 'Poppins',
+      fontSize: 14,
+    },
     tabs: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
@@ -155,7 +161,7 @@ const Overview = ({ navigation, groupData }) => {
         </View>
         {/* include conditionally rendered add member button which goes to different screen */}
 
-        <Text style={styles.desc}>{groupData.group_description}</Text>
+        <Text style={styles.groupDesc}>{groupData.group_description}</Text>
 
         <View style={styles.separation} />
 

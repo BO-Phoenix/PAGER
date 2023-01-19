@@ -51,10 +51,11 @@ const Index = ({ route }) => {
       />
       <Tab.Screen
         name="Chat"
-        component={Chat}
+        // component={Chat}
         options={{
           tabBarIndicatorStyle: { backgroundColor: '#4895EF' },
         }}
+        children={() => <Chat groupData={groupData} />}
       />
     </Tab.Navigator>
   );

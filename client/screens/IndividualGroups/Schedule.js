@@ -32,18 +32,19 @@ const Schedule = ({ navigation, groupData }) => {
       alignItems: 'center',
       justifyContent: 'center',
       padding: 10,
-      overflowY: 'scroll',
       height: '100%',
     },
     group: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
+      alignItems: 'center',
     },
-    main: { height: 50, width: 50 },
+    main: { height: 60, width: 60 },
     name: {
-      fontSize: 30,
-      margin: 'auto',
-      marginLeft: 10,
+      fontSize: 40,
+      marginVertical: 'auto',
+      alignItems: 'center',
+      marginLeft: 20,
       fontFamily: 'PoppinsBold',
     },
     separation: {
@@ -57,9 +58,9 @@ const Schedule = ({ navigation, groupData }) => {
       marginBottom: 5,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      borderColor: 'green',
-      // borderWidth: 1,
       width: '100%',
+      fontFamily: 'PoppinsBold',
+      alignItems: 'center',
     },
     schedules: {
       marginTop: 20,
@@ -67,6 +68,17 @@ const Schedule = ({ navigation, groupData }) => {
       padding: 5,
       width: '100%',
       // borderWidth: 2},
+    },
+    boldDesc: {
+      alignSelf: 'start',
+      fontFamily: 'PoppinsBold',
+      fontSize: 14,
+    },
+    desc: {
+      alignSelf: 'start',
+      // borderWidth: 1,
+      fontFamily: 'Poppins',
+      fontSize: 14,
     },
     centeredView: {
       flex: 1,
@@ -78,45 +90,48 @@ const Schedule = ({ navigation, groupData }) => {
       // margin: 20,
       // borderRadius: 20,
       position: 'absolute',
-      bottom: 106,
+      width: '100%',
+      bottom: 150,
       backgroundColor: 'white',
       padding: 35,
-      alignItems: 'center',
+      // alignItems: 'center',r
       shadowColor: '#000',
-      height: '60%',
+      height: '55%',
+      opacity: 0.99,
       shadowOffset: {
         width: 0,
         height: 2,
       },
-      shadowOpacity: 0.5,
-      shadowRadius: 4,
+      shadowOpacity: 0.8,
+      shadowRadius: 50,
       elevation: 5,
     },
     modalInput: {
-      alignItems: 'center',
+      // alignItems: 'center',
       width: '100%',
     },
+    closeModal: {
+      alignSelf: 'end',
+    },
+    error: {
+      marginTop: 10,
+      padding: 10,
+      color: '#fff',
+      backgroundColor: '#D54826FF',
+    },
   });
-
-  // bold specific words
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const B = ({ children }) => (
-    <Text style={{ fontWeight: '900' }}>{children}</Text>
-  );
 
   // use states
   const [modalVisible, setModalVisible] = useState(false);
   const [plans, setPlans] = useState([]);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState('12:00 AM');
   const [value, setValue] = useState({
     time: Math.floor(new Date().getTime() / 1000.0),
     description: '',
     error: '',
   });
-  // console.log(Math.floor(new Date().getTime() / 1000.0));
-  // console.log(value.date);
-  // console.log('time rn: ', Date(Date.now()));
-  // load data
+
+  // get data on load
   useEffect(() => {
     async function fetchData() {
       const resPlans = await getGroupPlans(groupData.id);
@@ -125,6 +140,7 @@ const Schedule = ({ navigation, groupData }) => {
     fetchData();
   }, []);
 
+  // get data function
   async function fetchData() {
     const resPlans = await getGroupPlans(groupData.id);
     setPlans(resPlans);
@@ -141,7 +157,7 @@ const Schedule = ({ navigation, groupData }) => {
     return <Loading />;
   }
 
-  // format time
+  // splice strings
   function spliceSlice(str, index, count, add) {
     if (index < 0) {
       index = str.length + index;
@@ -156,12 +172,19 @@ const Schedule = ({ navigation, groupData }) => {
   // add schedule handler
   async function addSchedule() {
     if (value.time === '' || value.description === '') {
-      setValue({ ...value, error: 'Please input time AND description!' });
+      setValue({ ...value, error: 'Input time AND description' });
       return;
     }
 
     try {
       // function to add time and description to database
+      addPlan(groupData.id, {
+        time: Number(value.time),
+        description: value.description,
+      });
+      fetchData();
+      setValue({ description: '', time: '' });
+      setModalVisible(!modalVisible);
     } catch (err) {
       setValue({ ...value, error: err.message });
     }
@@ -183,6 +206,26 @@ const Schedule = ({ navigation, groupData }) => {
             <View style={styles.modalView}>
               {/* modal container */}
               <View style={styles.modalText}>
+                <TouchableOpacity
+                  title="CloseModal"
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <Text
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      fontSize: 20,
+                      fontFamily: 'PoppinsBold',
+                      marginTop: 0,
+                      marginRight: 5,
+                    }}
+                  >
+                    X
+                  </Text>
+                </TouchableOpacity>
                 <DatePicker
                   style={{ width: 200 }}
                   date={date}
@@ -245,23 +288,6 @@ const Schedule = ({ navigation, groupData }) => {
                     },
                   }}
                 />
-                <TouchableOpacity
-                  title="CloseModal"
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      fontFamily: 'PoppinsBold',
-                      marginTop: 0,
-                      marginRight: 5,
-                    }}
-                  >
-                    X
-                  </Text>
-                </TouchableOpacity>
                 <Input
                   placeholder="Description"
                   containerStyle={styles.modalInput}
@@ -273,25 +299,29 @@ const Schedule = ({ navigation, groupData }) => {
               <TouchableOpacity
                 title="AddPlan"
                 onPress={() => {
-                  addPlan(groupData.id, {
-                    time: Number(value.time),
-                    description: value.description,
-                  });
-                  fetchData();
-                  setModalVisible(!modalVisible);
+                  addSchedule();
                 }}
               >
                 <Text
                   style={{
-                    fontSize: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingVertical: 12,
+                    paddingHorizontal: 32,
+                    backgroundColor: '#F72585',
                     fontFamily: 'PoppinsBold',
-                    marginTop: 0,
-                    marginRight: 5,
+                    color: 'white',
+                    margin: 10,
                   }}
                 >
                   ADD SCHEDULE
                 </Text>
               </TouchableOpacity>
+              {!!value.error && (
+                <View style={styles.error}>
+                  <Text>{value.error}</Text>
+                </View>
+              )}
             </View>
           </View>
         </Modal>
@@ -306,7 +336,6 @@ const Schedule = ({ navigation, groupData }) => {
             style={{
               fontSize: 20,
               fontFamily: 'PoppinsBold',
-              margin: 'auto',
               height: 20,
             }}
           >
@@ -318,7 +347,7 @@ const Schedule = ({ navigation, groupData }) => {
           >
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 30,
                 fontFamily: 'PoppinsBold',
                 marginTop: 0,
                 marginRight: 5,
@@ -365,7 +394,7 @@ const Schedule = ({ navigation, groupData }) => {
                   value={plan.id}
                   name={plan.id}
                 >
-                  <B>{date}</B>
+                  <Text style={styles.boldDesc}>{date}</Text>
                   <TouchableOpacity
                     title="DeletePlan"
                     onPress={
@@ -398,7 +427,7 @@ const Schedule = ({ navigation, groupData }) => {
                       X
                     </Text>
                   </TouchableOpacity>
-                  <Text>{plan.description}</Text>
+                  <Text styles={styles.desc}>{plan.description}</Text>
                 </View>
               );
             })}
