@@ -10,6 +10,7 @@ import {
   CheckBox,
   Alert,
   Button,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import { getUser } from '../../db/user.js';
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const [user, setUser] = useState([]);
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -171,9 +172,11 @@ const Profile = () => {
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>MUSIC TASTES</Text>
-        <Text style={styles.textDetail} onClick={goToFriends}>
-          SEE ALL
-        </Text>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('ExpandedTastes')}
+        >
+          <Text style={styles.textDetail}>SEE ALL</Text>
+        </TouchableWithoutFeedback>
       </View>
       {/* <View style={styles.bodyContainerSection}> */}
       <View style={styles.bodyContainerRow}>
@@ -184,7 +187,11 @@ const Profile = () => {
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
-        <Text style={styles.textDetail}>SEE ALL</Text>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('ExpandedFriends')}
+        >
+          <Text style={styles.textDetail}>SEE ALL</Text>
+        </TouchableWithoutFeedback>
       </View>
       <View style={styles.bodyContainerSection}>
         {friends &&
