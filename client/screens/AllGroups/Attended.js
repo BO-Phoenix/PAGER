@@ -23,10 +23,10 @@ import {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     overflowY: 'scroll',
   },
   textHeader: {
