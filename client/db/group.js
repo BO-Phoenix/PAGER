@@ -37,7 +37,7 @@ export async function getGroupPlans(group_id) {
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    //console.log(doc.id, ' => ', doc.data());
+    // console.log(doc.id, ' => ', doc.data());
     plans.push({ ...{ id: doc.id }, ...doc.data() });
   });
   console.log('plans are : ', plans);
@@ -178,7 +178,7 @@ export async function getChatMsgsPerGroup(group_id) {
 
 // post request
 export async function createGroup(form_data, organizer_id) {
-  console.log('create group');
+  // console.log('create group');
   const image = form_data.group_image;
   const imageRef = ref(storage, `image/${image.name}`);
   uploadBytes(imageRef, image)
@@ -247,15 +247,11 @@ export async function addPlan(group_id, form_data) {
 }
 
 export async function deletePlan(group_id, plan_id) {
-  await deleteDoc(doc(db, `groups/${group_id}/schedule`, plan_id)).then(() =>
-    console.log('plan deleted'),
-  );
+  await deleteDoc(doc(db, `groups/${group_id}/schedule`, plan_id)).then(() => console.log('plan deleted'));
 }
 
 export async function deleteGroup(group_id) {
-  await deleteDoc(doc(db, 'groups', group_id)).then(() =>
-    console.log('group deleted'),
-  );
+  await deleteDoc(doc(db, 'groups', group_id)).then(() => console.log('group deleted'));
 }
 
 export async function addChatMsg(form_data) {
