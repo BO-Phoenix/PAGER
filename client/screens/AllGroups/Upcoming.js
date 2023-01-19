@@ -71,15 +71,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  // headerText: {
-  //   fontSize: 25,
-  //   fontFamily: 'PoppinsBold',
-  //   margin: 10,
-  // },
-  // bodyText: {
-  //   fontFamily: 'PoppinsBold',
-  //   fontSize: 15,
-  // },
 });
 
 const Upcoming = ({ navigation }) => {
@@ -105,7 +96,6 @@ const Upcoming = ({ navigation }) => {
     return <Loading />;
   }
 
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.textHeader}>GROUPS</Text>
@@ -114,15 +104,6 @@ const Upcoming = ({ navigation }) => {
         <Text style={styles.featureHeader}>UPCOMING</Text>
       </View>
       <View style={styles.renderGroupContainer}>
-        {/* {upcomingUserGroups.map(group => {
-          return (
-            <View style={styles.groupContainer}>
-              <Image style={styles.groupImg} source={{ uri: group.group_image }} />
-              <Text style={styles.groupName} key={group.id}>{group.group_name}</Text>
-              <Icon name="arrow-dropright" size={30} />
-            </View>
-          );
-        })} */}
         <FlatList
           data={upcomingUserGroups}
           keyExtractor={(groups) => groups.id.toString()}
