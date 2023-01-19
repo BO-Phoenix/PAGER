@@ -8,6 +8,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
 import { useSelector } from 'react-redux';

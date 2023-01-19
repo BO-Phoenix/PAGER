@@ -158,7 +158,7 @@ const ExpandedFriends = () => {
       </View>
       <View style={styles.bodyContainerSection}>
         {friends &&
-          friends.map((item) => <Card prop={item} key={() => Math.Random()} />)}
+          friends.map((item) => <Card prop={item} key={Math.random()} />)}
       </View>
     </View>
   );
