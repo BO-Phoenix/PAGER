@@ -5,10 +5,11 @@ import { Input, Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
 import globalStyles from '../../globalStyles';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { addUser } from '../../db/user.js';
+import { addUser, setUserInfo } from '../../db/user.js';
 // -- redux import statements
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserId } from '../../reducers/index.js';
+import * as DocumentPicker from 'expo-document-picker';
 
 const auth = getAuth();
 
@@ -29,6 +30,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [likesTrap, setLikesTrap] = useState(false);
   const [likesDisco, setLikesDisco] = useState(false);
   const [likesOther, setLikesOther] = useState(false);
+  const [userImg, setUserImg] = useState({});
   const [value, setValue] = React.useState({
     email: '',
     password: '',
@@ -39,8 +41,15 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     error: ''
   })
 
+  const pickDocument = async () => {
+    let result = await DocumentPicker.getDocumentAsync({});
+    // console.log(result);
+    setUserImg(result);
+    // alert(result.uri);
+    // console.log(userImg);
+  };
+
   function addMusicTaste() {
-    const allMusic = [];
     if (likesTechno) value.music_tastes.push('techno');
     if (likesHouse) value.music_tastes.push('house');
     if (likesTrance) value.music_tastes.push('trance');
@@ -83,7 +92,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 
     try {
       addMusicTaste();
-      console.log(value, 'value is', value.music_tastes, 'value.music tastes');
+      // console.log(value, 'value is', value.music_tastes, 'value.music tastes');
       const id = await addUser({
         email: value.email,
         password: value.password,
@@ -91,12 +100,18 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         last_name: value.lastName,
         birthday: '',
         music_tastes: value.music_tastes,
-        group_list: [],
-        friends_list: [],
+        group_list: [''],
+        friends_list: [''],
         description: value.description,
-        profile_pic: '',
+        profile_pic: 'https://firebasestorage.googleapis.com/v0/b/project-pager-ac1f6.appspot.com/o/images%2Ftest.gif?alt=media&token=7fa8b785-1559-4a07-8551-83d4ce0a4b6f',
       });
-      dispatch(updateUserId(id));
+      try {
+        dispatch(updateUserId(id));
+      } catch (err) {
+        console.log(err);
+      }
+      // console.log('we are sending userId and userImg to setUserinfo', userId, userImg);
+      setUserInfo(userId, userImg);
     } catch (error) {
       console.log(error);
     }
@@ -158,6 +173,9 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             size={16}
           />}
         />
+        <View style={{marginBottom: -10}}>
+          <Button buttonStyle={globalStyles.button} title="Upload Profile Image" onPress={pickDocument} />
+        </View>
         <View style={{marginTop: 15, marginBottom: 15, justifyContent: 'center', alignSelf: 'center'}}>
           <Text style={{marginLeft: 10}}>I confirm that I'm 18+</Text>
           <CheckBox
