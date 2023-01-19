@@ -1,11 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Image } from 'react-native';
-// -- maddie's pages
+// -- maddie's page
 import AllGroupsIndex from '../AllGroups/Index.js';
-import Attended from '../AllGroups/Attended.js';
-import Upcoming from '../AllGroups/Upcoming.js';
-// -- jeff's pages
+// -- jeff's page
 import IndividualGroupsIndex from '../IndividualGroups/Index.js';
 
 

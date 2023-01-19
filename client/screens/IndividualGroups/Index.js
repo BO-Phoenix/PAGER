@@ -16,10 +16,7 @@ import {
 import Loading from '../Loading/Index.js';
 
 const Index = ({ route }) => {
-  const test = route.params;
-  console.log('THIS IS INSIDE OVERVIEW INDEX', test);
-
-
+  const groupData = route.params;
   const Stack = createNativeStackNavigator();
   const Tab = createMaterialTopTabNavigator();
 
@@ -44,14 +41,15 @@ const Index = ({ route }) => {
         options={{
           tabBarIndicatorStyle: { backgroundColor: '#B5179E' },
         }}
-        children={() => <Overview test={test} />}
+        children={() => <Overview groupData={groupData} />}
       />
       <Tab.Screen
         name="Schedule"
-        component={Schedule}
+        // component={Schedule}
         options={{
           tabBarIndicatorStyle: { backgroundColor: '#7209B7' },
         }}
+        children={() => <Schedule groupData={groupData} />}
       />
       {/* <Tab.Screen name="AddSchedule" component={AddSchedule} /> */}
       <Tab.Screen

@@ -131,21 +131,15 @@ const Upcoming = ({ navigation }) => {
               <TouchableWithoutFeedback
                 onPress={() => navigation.navigate('IndividualGroupsIndex', item)}
               >
-
                 <View style={styles.groupContainer}>
                   <Image style={styles.groupImg} source={{ uri: item.group_image }} />
                   <Text style={styles.groupName} key={item.id}>{item.group_name}</Text>
                   <Icon name="arrow-dropright" size={30} />
                 </View>
-
               </TouchableWithoutFeedback>
             </View>
-
-
           )}
         />
-
-
       </View>
       {/* <StatusBar style="auto" /> */}
     </ScrollView>
