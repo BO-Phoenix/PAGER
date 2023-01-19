@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
   headerImage: {
     width: 50,
     height: 50,
-    marginHorizontal: 5,
+    marginRight: 15,
+    marginVertical: 15,
   },
   headerName: {
     fontSize: 25,

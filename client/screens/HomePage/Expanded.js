@@ -68,12 +68,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 5,
   },
-  bodyContainerContent: {
-    width: '100%',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    paddingHorizontal: 15,
-  },
   bodyContainerContentMem: {
     width: '100%',
     alignItems: 'space-between',
@@ -177,7 +171,7 @@ const Expanded = ({ group_info, navigation }) => {
           <Text style={styles.textSeeAll}>SEE ALL</Text>
         </TouchableWithoutFeedback>
       </View>
-      <View style={styles.bodyContainerContent}>
+      <View style={styles.bodyContainerLeft}>
         {!!group && (
           <FlatList
             showsHorizontalScrollIndicator={false}
