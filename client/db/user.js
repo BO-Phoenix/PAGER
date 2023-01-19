@@ -67,19 +67,20 @@ export async function getUserByEmail(email) {
 }
 
 export async function setUserInfo(id, data) {
-  const image = data.profile_pic;
+  // console.log('the id and the data being passed', id, data);
+  const image = data;
   const imageRef = ref(storage, `images/${image.name}`);
   uploadBytes(imageRef, image)
     .then((result) => {
-      console.log('document has been uploaded: ');
+      // console.log('document has been uploaded: ');
       return getDownloadURL(result.ref);
     })
     .then((url) => {
-      data.profile_pic = url;
+      // console.log('the url being passed in setUserInfo', url);
       const userInfoRef = doc(getFS, 'users', id);
-      setDoc(userInfoRef, data, { merge: true })
+      updateDoc(userInfoRef, { profile_pic: url })
         .then((docRef) => {
-          console.log('document has been updated: ');
+          // console.log('document has been updated: ');
         })
         .catch((err) => {
           console.error(err);
