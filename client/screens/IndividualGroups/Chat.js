@@ -9,6 +9,7 @@ import {
   collection,
   addDoc,
   orderBy,
+  where,
   query,
   onSnapshot,
 } from 'firebase/firestore';
@@ -46,24 +47,28 @@ const ChatStack = () => {
   );
 };
 
-const Chat = ({ navigation }) => {
+const Chat = ({ navigation, groupData }) => {
   const { userId } = useSelector((state) => state.pagerData); // user_id global state
   const [messages, setMessages] = useState([]);
-  const [groupId, setGroupId] = useState('IrIfBilvP6HSrCHzty9d');
+  const [groupId, setGroupId] = useState(groupData.id);
+  const [name, setName] = useState('');
 
   useLayoutEffect(() => {
     const collectionRef = collection(db, 'chat');
-    const q = query(collectionRef, orderBy('createdAt', 'desc'));
+    const q = query(
+      collectionRef,
+      where('user.group_id', '==', groupId),
+      orderBy('createdAt', 'desc'),
+    );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log('snapshot');
+      console.log('snapshot', snapshot);
       setMessages(
         snapshot.docs.map((doc) => ({
           _id: doc.id,
           createdAt: doc.data().createdAt.toDate(),
           text: doc.data().text,
           user: doc.data().user,
-          group_id: groupId,
         })),
       );
     });
@@ -78,15 +83,16 @@ const Chat = ({ navigation }) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages),
     );
-
-    const { _id, createdAt, text, user, group_id } = messages[0];
+    // group_id
+    const { _id, createdAt, text, user } = messages[0];
     addDoc(collection(db, 'chat'), {
       _id,
       createdAt,
       text,
       user,
-      group_id,
+      // group_id,
     });
+    console.log(messages);
   }, []);
 
   return (
@@ -96,7 +102,9 @@ const Chat = ({ navigation }) => {
       user={{
         id: authChat?.currentUser?.email,
         avatar:
-          'https://firebasestorage.googleapis.com/v0/b/project-pager-ac1f6.appspot.com/o/images%2Fphoenix-nest.png8919b168-f674-477d-afb3-adc85c9d573b?alt=media&token=8a5c635e-5ce6-45c3-b018-3eb9d40b1f83',
+          'https://c8.alamy.com/zooms/9/9c30002a90914b58b785a537a39421ba/2c80ydc.jpg',
+        group_id: groupId,
+        reaction: false,
       }}
     />
   );
