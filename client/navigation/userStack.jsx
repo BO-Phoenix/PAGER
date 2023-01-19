@@ -105,7 +105,8 @@ export default function App() {
           name="IndividualGroups"
           component={IndividualGroups}
         />
-      </Stack.Navigator> */}
+      </Stack.Navigator>{' '}
+      */}
       <Navigation />
       <Button
         title="Sign Out"

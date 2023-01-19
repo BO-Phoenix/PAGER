@@ -16,6 +16,7 @@ import Loading from '../Loading/Index.js';
 import HomePage from '../HomePage/Index.js';
 import AllGroups from '../AllGroups/Index.js';
 import Profile from '../Profile/Index.js';
+import IndividualGroups from '../IndividualGroups/Index';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 import HomepageNavigator from './HomepageNavigator.js';
