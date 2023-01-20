@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
 
 const Swipe = ({ route, navigation }) => {
   const { userId } = useSelector((state) => state.pagerData);
-  const [size, setSize] = useState('');
-  const [vibe, setVibe] = useState('');
+  const [size, setSize] = useState('medium');
+  const [vibe, setVibe] = useState('medium');
   const [allGroups, setAllGroups] = useState([]);
   const [vibeGroups, setVibeGroups] = useState([]);
   const [sizeGroups, setSizeGroups] = useState([]);
@@ -70,7 +70,8 @@ const Swipe = ({ route, navigation }) => {
 
   const screenWidth = Dimensions.get('window').width * 0.9;
   const screenHeight = Dimensions.get('window').height * 0.75;
-  const outOfScreen = Dimensions.get('window').width + 0.5 * Dimensions.get('window').width;
+  const outOfScreen =
+    Dimensions.get('window').width + 0.5 * Dimensions.get('window').width;
   const swipe = useRef(new Animated.ValueXY()).current;
   const tiltSign = useRef(new Animated.Value(1)).current;
 
@@ -192,6 +193,48 @@ const Swipe = ({ route, navigation }) => {
     setGroups(vibe_groups);
   };
 
+  const handleSelectionVibeNew = (item) => {
+    const vibe_groups = [];
+    console.log('select vibe');
+    setVibe(item.value);
+    allGroups.forEach((group) => {
+      if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
+        console.log('group is vibe :', item.value, group.group_name);
+        vibe_groups.push(group);
+      }
+    });
+    setVibeGroups(vibe_groups);
+  };
+
+  const handleSelectionSizeNew = (item) => {
+    const size_group = [];
+    console.log('select size');
+    setSize(item.value);
+    allGroups.forEach((group) => {
+      if (group.size.toLowerCase() === item.value.toLowerCase()) {
+        console.log('group is size :', item.value, group.group_name);
+        size_group.push(group);
+      }
+    });
+    setSizeGroups(size_group);
+  };
+
+  // const handleClick = (item, criteria) => {
+  //   if (criteria === 'vibe') {
+  //   }
+  //   const final_group = [];
+  //   handleSelectionSizeNew(size);
+  //   handleSelectionVibeNew(vibe);
+  //   vibeGroups.forEach((vibe_group) => {
+  //     sizeGroups.forEach((size_group) => {
+  //       if (vibe_group.id === size_group.id) {
+  //         final_group.push(vibe_group);
+  //       }
+  //     });
+  //   });
+  //   return final_group;
+  // };
+
   const handleSelectionSize = (item) => {
     const size_groups = [];
     console.log('select size');
@@ -246,8 +289,8 @@ const Swipe = ({ route, navigation }) => {
             onSelection={(item) => handleSelectionSize(item)}
           />
         </View>
-        {!!groups
-          && groups
+        {!!groups &&
+          groups
             .map((group, index) => {
               const isFirst = index === 0;
               const dragHandlers = isFirst ? panResponder.panHandlers : {};

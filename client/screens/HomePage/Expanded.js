@@ -131,6 +131,7 @@ const Expanded = ({ route, navigation }) => {
   useEffect(() => {
     async function fetchData() {
       const group_obj = await getGroup(route.params);
+      console.log('group obj in expanded view : ', group_obj);
       setGroup(group_obj);
     }
     fetchData();
@@ -159,21 +160,26 @@ const Expanded = ({ route, navigation }) => {
         <Text style={styles.textDetail}>{!!group && group.organizer_name}</Text>
       </View>
       <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetail}>{!!group && group.group_description}</Text>
+        <Text style={styles.textDetail}>
+          {!!group && group.group_description}
+        </Text>
       </View>
       <View style={styles.bodyContainerLeft}>
         <Text style={styles.textDetailBold}>GROUP SIZE: </Text>
         <Text style={styles.textDetail}>
-          {!!group && group.size.charAt(0).toUpperCase() + (group.size.substr(1).toLowerCase())}
+          {!!group &&
+            group.size.charAt(0).toUpperCase() +
+              group.size.substr(1).toLowerCase()}
         </Text>
       </View>
       <View style={styles.bodyContainerLeft}>
         <Text style={styles.textDetailBold}>VIBE: </Text>
         <Text style={styles.textDetail}>
-          {!!group && group.vibe.charAt(0).toUpperCase() + (group.vibe.substr(1).toLowerCase())}
+          {!!group &&
+            group.vibe.charAt(0).toUpperCase() +
+              group.vibe.substr(1).toLowerCase()}
         </Text>
       </View>
-
 
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>SCHEDULE</Text>
@@ -188,13 +194,16 @@ const Expanded = ({ route, navigation }) => {
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={false}
-            data={group.plans.length > 3 ? group.plans.slice(0, 3) : group.plans}
+            data={
+              group.plans.length > 3 ? group.plans.slice(0, 3) : group.plans
+            }
             keyExtractor={(plan) => plan.id.toString()}
             renderItem={({ item }) => {
               return (
                 <View style={styles.bodyContainerSchedule}>
                   <Text style={styles.textDetailBold}>
-                    {!!group && new Date(item.time.seconds * 1000).toDateString()}
+                    {!!group &&
+                      new Date(item.time.seconds * 1000).toLocaleTimeString()}
                   </Text>
                   <Text style={styles.textDetail}>{item.description}</Text>
                 </View>
