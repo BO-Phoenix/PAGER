@@ -198,27 +198,14 @@ const Overview = ({ navigation, groupData }) => {
         >
           {plans
             .sort((a, b) => a.time.seconds - b.time.seconds)
-            .sort((a, b) => a.time - b.time)
             .slice(0, 3)
             .map((plan) => {
-              let date;
-              if (typeof plan.time !== 'object') {
-                date = new Date(plan.time);
-              } else {
-                date = new Date(plan.time.seconds);
-              }
-              // let date = 'Tue Jan 20 1970 13:01:242424';
-              date = JSON.stringify(date);
-              date = date.slice(12, 17);
-              const num = date.slice(0, 2);
-              if (num === '12') {
-                date += ' PM';
-              } else if (num > 12) {
-                date = spliceSlice(date, 0, 2, num - 12);
-                date += ' PM';
-              } else {
-                date += ' AM';
-              }
+              let date = plan.time
+                .toDate()
+                .toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+              date = date.slice(10, 22);
+              date = date.split(':');
+              date = `${date[0]}:${date[1]} ${date[2].split(' ')[1]}`;
               return (
                 <View style={styles.schedules} key={plan.id}>
                   <Text style={styles.boldDesc}>{date}</Text>
