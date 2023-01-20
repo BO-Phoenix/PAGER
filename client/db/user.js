@@ -66,6 +66,7 @@ export async function getUserByEmail(email) {
   }
 }
 
+
 export async function setUserInfo(id, data, obj) {
   // console.log('the id and the data being passed', id, data, obj);
   const image = data.file;
@@ -90,6 +91,19 @@ export async function setUserInfo(id, data, obj) {
     .catch((err) => {
       console.error(err);
     });
+}
+
+export async function editUserData(id, data) {
+  // console.log(id, data);
+  const docRef = await doc(db, 'users', id);
+  const newData = {
+    description: data,
+  };
+  updateDoc(docRef, newData)
+    .then((docRef) => {
+      console.log('doc with this id was updated successfully');
+    })
+    .catch((err) => console.log(err));
 }
 
 export async function addFriend(id1, id2) {

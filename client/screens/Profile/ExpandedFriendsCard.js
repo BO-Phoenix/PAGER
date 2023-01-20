@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Card = ({ prop }) => {
+const ExpandedFriendsCard = ({ prop }) => {
   // console.log('friend: ', prop);
   const { userId } = useSelector((state) => state.pagerData);
   const [fontLoaded] = useFonts({
@@ -63,13 +63,13 @@ const Card = ({ prop }) => {
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
     Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
-  // const unfriend = async (friendId) => {
-  // console.log('ids: ', id, userId);
-  // getGroupsPerUser(id);
-  // const test = await deleteFriend(userId, friendId);
-  // console.log(test, 'test');
-  // setFriends([...friends]);
-  // };
+  const unfriend = async (friendId) => {
+    // console.log('ids: ', id, userId);
+    // getGroupsPerUser(id);
+    const test = await deleteFriend(userId, friendId);
+    // console.log(test, 'test');
+    // setFriends([...friends]);
+  };
   if (!fontLoaded) {
     return <Loading />;
   }
@@ -82,11 +82,11 @@ const Card = ({ prop }) => {
         <Text>x</Text>
       </Button> */}
       <Text style={styles.textDetail}>{prop.first_name}</Text>
-      {/* <Pressable style={styles.button} onPress={() => unfriend(prop.id)}>
+      <Pressable style={styles.button} onPress={() => unfriend(prop.id)}>
         <Text style={styles.buttonText}>UNFRIEND</Text>
-      </Pressable> */}
+      </Pressable>
     </View>
   );
 };
 
-export default Card;
+export default ExpandedFriendsCard;

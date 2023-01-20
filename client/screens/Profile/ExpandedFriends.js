@@ -17,6 +17,7 @@ import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
 import Card from './Card';
 import UserHeader from './UserHeader';
+import ExpandedFriendsCard from './ExpandedFriendsCard';
 
 const styles = StyleSheet.create({
   container: {
@@ -168,7 +169,9 @@ const ExpandedFriends = ({ route }) => {
       </View>
       <View style={styles.bodyContainerSection}>
         {friends &&
-          friends.map((item) => <Card prop={item} key={Math.random()} />)}
+          friends.map((item) => (
+            <ExpandedFriendsCard prop={item} key={Math.random()} />
+          ))}
       </View>
     </View>
   );
