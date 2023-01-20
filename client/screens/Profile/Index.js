@@ -196,7 +196,6 @@ const Profile = ({ navigation, route }) => {
   useEffect(() => {
     async function fetchData() {
       const res = await getUser(userId);
-      // console.log('USER ID IN PROFILE', userId);
       // console.log(res[0], 'res');
       setUser(res[0]);
       setMusicTastes(res[0].music_tastes);
@@ -264,17 +263,6 @@ const Profile = ({ navigation, route }) => {
           )}
         />
 
-        {/* {musicTastes &&
-          musicTastes
-            .slice(0, 3)
-            .map((taste) => {
-              return (
-                // <TasteCard prop={taste} key={taste} />
-                <View style={styles.taste} key={Math.random()}>
-                  <Text style={styles.textDetailBold}>{taste}</Text>
-                </View>
-              );
-            })} */}
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
