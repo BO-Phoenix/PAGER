@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, CheckBox } from 'react-native';
+import { StyleSheet, Text, View, CheckBox, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -10,6 +10,7 @@ import { addUser, setUserInfo } from '../../db/user.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserId } from '../../reducers/index.js';
 import * as DocumentPicker from 'expo-document-picker';
+import gif from '../../assets/raveWelcome.gif';
 
 const auth = getAuth();
 
@@ -18,7 +19,6 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   // -- redux import statements
   const { userId } = useSelector((state) => state.pagerData);
   const dispatch = useDispatch();
-
   const [isOverEighteen, setIsOverEighteen] = useState(false);
   const [likesTechno, setLikesTechno] = useState(false);
   const [likesHouse, setLikesHouse] = useState(false);
@@ -279,7 +279,6 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: '#fff',
     justifyContent: 'center',
   },
@@ -319,6 +318,11 @@ const styles = StyleSheet.create({
 
   control: {
     marginTop: 10
+  },
+
+  image: {
+    flex: 1,
+    justifyContent: 'center',
   },
 
   error: {
