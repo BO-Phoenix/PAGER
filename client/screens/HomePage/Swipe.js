@@ -148,7 +148,10 @@ const Swipe = ({ route, navigation }) => {
       //console.log('select vibe');
       setVibe(item.value);
       if (item.value === 'all') {
-        setGroups(allGroups);
+        setVibeGroups(allGroups);
+        const result = allGroups.filter((x) => sizeGroups.includes(x));
+        //console.log('vibe intersection is : ', vibe_groups, sizeGroups, result);
+        setGroups(result);
       } else {
         allGroups.forEach((group) => {
           if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
@@ -166,7 +169,10 @@ const Swipe = ({ route, navigation }) => {
       //console.log('select size');
       setSize(item.value);
       if (item.value === 'all') {
-        setGroups(allGroups);
+        setSizeGroups(allGroups);
+        const result = allGroups.filter((x) => vibeGroups.includes(x));
+        //console.log('size intersection is : ', vibeGroups, size_groups, result);
+        setGroups(result);
       } else {
         allGroups.forEach((group) => {
           if (group.size.toLowerCase() === item.value.toLowerCase()) {
@@ -192,7 +198,7 @@ const Swipe = ({ route, navigation }) => {
             id="select-size"
             placeholder="ENERGY/VIBE"
             items={[
-              // { label: 'ALL', value: 'all' },
+              { label: 'ALL', value: 'all' },
               { label: 'LOW', value: 'low' },
               { label: 'MEDIUM', value: 'medium' },
               { label: 'HIGH', value: 'high' },
@@ -205,7 +211,7 @@ const Swipe = ({ route, navigation }) => {
             id="select-size"
             placeholder="GROUP SIZE"
             items={[
-              // { label: 'ALL', value: 'all' },
+              { label: 'ALL', value: 'all' },
               { label: 'SMALL (0-5)', value: 'small' },
               { label: 'MEDIUM (6-10)', value: 'medium' },
               { label: 'LARGE (11-20)', value: 'large' },
