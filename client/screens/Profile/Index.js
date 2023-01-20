@@ -186,12 +186,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const Profile = ({ navigation }) => {
+const Profile = ({ navigation, route }) => {
   const { userId } = useSelector((state) => state.pagerData);
   const [user, setUser] = useState({});
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
-
+  const [description, setDescription] = useState('');
   useEffect(() => {
     async function fetchData() {
       const res = await getUser(userId);
@@ -199,10 +199,15 @@ const Profile = ({ navigation }) => {
       setUser(res[0]);
       setMusicTastes(res[0].music_tastes);
       setFriends(res[0].friends_list);
+      setDescription(res[0].description);
       // console.log(friends, 'friends');
     }
     fetchData();
   }, []);
+
+  const onEdit = (data) => {
+    setDescription(data);
+  };
 
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
@@ -229,12 +234,12 @@ const Profile = ({ navigation }) => {
       </View>
       <Pressable
         style={styles.button}
-        onPress={() => navigation.navigate('EditProfile', user)}
+        onPress={() => navigation.navigate('EditProfile', { user, onEdit })}
       >
         <Text style={styles.buttonText}>EDIT PROFILE</Text>
       </Pressable>
       <View style={styles.bodyContainerLeft}>
-        <Text style={styles.textDetail}>{`${user.description}`}</Text>
+        <Text style={styles.textDetail}>{description}</Text>
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>MUSIC TASTES</Text>
