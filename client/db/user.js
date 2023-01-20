@@ -68,9 +68,9 @@ export async function getUserByEmail(email) {
 
 export async function setUserInfo(id, data) {
   // console.log('the id and the data being passed', id, data);
-  const image = data;
-  const imageRef = ref(storage, `images/${image.name}`);
-  uploadBytes(imageRef, image)
+  const image = data.profile_pic;
+  const imageRef = ref(storage, `images/${image.file.name}`);
+  uploadBytes(imageRef, image.file)
     .then((result) => {
       // console.log('document has been uploaded: ');
       return getDownloadURL(result.ref);
@@ -78,7 +78,11 @@ export async function setUserInfo(id, data) {
     .then((url) => {
       // console.log('the url being passed in setUserInfo', url);
       const userInfoRef = doc(getFS, 'users', id);
-      updateDoc(userInfoRef, { profile_pic: url })
+      updateDoc(userInfoRef, {
+        profile_pic: url,
+        description: data.description,
+        music_tastes: data.music_tastes,
+      })
         .then((docRef) => {
           // console.log('document has been updated: ');
         })
