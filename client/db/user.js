@@ -28,7 +28,7 @@ export async function getUsers() {
 
     users.push(doc.data());
   });
-  console.log('data for users : ', users);
+  // console.log('data for users : ', users);
   return users;
 }
 
