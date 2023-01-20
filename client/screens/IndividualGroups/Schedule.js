@@ -35,6 +35,7 @@ import { useSelector } from 'react-redux';
 import * as firebase from 'firebase/app';
 import { Timestamp } from '@firebase/firestore';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { createElement } from 'react-native-web';
 import globalStyles from '../../globalStyles';
 import {
   getGroupPlans,
@@ -146,6 +147,9 @@ const Schedule = ({ navigation, groupData }) => {
   const [group, setGroup] = useState([]);
 
   const [time, setTime] = useState(new Date(Math.floor(new Date().getTime())));
+  const [date, setDate] = useState(new Date(Math.floor(new Date().getDate())));
+
+  const [webTime, setWebTime] = useState(new Date(Date.now()));
 
   const [value, setValue] = useState({
     time: new Date(),
@@ -207,22 +211,36 @@ const Schedule = ({ navigation, groupData }) => {
   // add schedule handler
   async function addSchedule() {
     if (value.time === '' || value.description === '') {
-      setValue({ ...value, error: 'Input time AND description' });
+      setValue({ ...value, error: 'Please input both time AND description' });
       return;
     }
 
-    try {
-      // function to add time and description to database
-      // console.log('i need this: ', value.time);
-      addPlan(groupData.id, {
-        time: value.time,
-        description: value.description,
-      });
-      fetchData();
-      setValue({ description: '', time: '' });
-      setModalVisible(!modalVisible);
-    } catch (err) {
-      setValue({ ...value, error: err.message });
+    if (Platform.OS === 'web') {
+      try {
+        // function to add time and description to database
+        addPlan(groupData.id, {
+          time: Timestamp.fromDate(webTime),
+          description: value.description,
+        });
+        fetchData();
+        setValue({ description: '' });
+        setModalVisible(!modalVisible);
+      } catch (err) {
+        setValue({ ...value, error: err.message });
+      }
+    } else {
+      try {
+        // function to add time and description to database
+        addPlan(groupData.id, {
+          time: value.time,
+          description: value.description,
+        });
+        fetchData();
+        setValue({ description: '', time: '' });
+        setModalVisible(!modalVisible);
+      } catch (err) {
+        setValue({ ...value, error: err.message });
+      }
     }
   }
 
@@ -233,15 +251,48 @@ const Schedule = ({ navigation, groupData }) => {
       fetchData();
     }
   }
+
   // check if organizer
   let organizer = false;
   if (userId === group.organizer_id) {
     organizer = true;
   }
 
-  // in the case that we can't showcase our iOS
-  const create = Timestamp.fromDate(new Date('2023-01-19T08:00:00.000Z'));
-  // console.log(create);
+  // local time ISOString
+  const isoDateTime = (currentDate) =>
+    new Date(
+      currentDate.getTime() - currentDate.getTimezoneOffset() * 60000,
+    ).toISOString();
+
+  const WebDatePicker = () => {
+    return createElement('input', {
+      type: 'time',
+      value: isoDateTime(webTime).split('T')[1].slice(0, 5),
+      onChange: (e) => {
+        const newTime = e.target.value;
+
+        // gets input of for example 12:00
+        const inputDate = new Date(`Jan 19 2023 ${newTime}`);
+
+        // Thu Jan 19 2023 12:00:00 GMT-0800 (PST)
+
+        const isoFormat = inputDate.toISOString();
+        // gets in 2023-01-19T12:00:00.000Z format
+
+        const isoDate = new Date(isoFormat);
+        // date format --> Wed Jan 18 2023 16:00:00 GMT-0800 (PST)
+
+        setWebTime(isoDate);
+        // turns webtime into Thu Jan 19 2023 04:00:00 GMT-0800 (PST)
+      },
+      style: {
+        height: 30,
+        padding: 5,
+        border: '2px solid #677788',
+        width: '80%',
+      },
+    });
+  };
 
   return (
     <ScrollView>
@@ -280,17 +331,7 @@ const Schedule = ({ navigation, groupData }) => {
                   </Text>
                 </TouchableOpacity>
                 {Platform.OS === 'web' ? (
-                  <Input
-                    placeholder="Time"
-                    type="time"
-                    containerStyle={styles.modalInput}
-                    onChangeText={(text) =>
-                      setValue({
-                        ...value,
-                        time: Timestamp.fromDate(new Date(text)),
-                      })
-                    }
-                  />
+                  <WebDatePicker />
                 ) : (
                   <DateTimePicker
                     testID="dateTimePicker"
