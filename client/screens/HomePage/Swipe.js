@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
 
 const Swipe = ({ route, navigation }) => {
   const { userId } = useSelector((state) => state.pagerData);
-  const [size, setSize] = useState('');
-  const [vibe, setVibe] = useState('');
+  const [size, setSize] = useState('medium');
+  const [vibe, setVibe] = useState('medium');
   const [allGroups, setAllGroups] = useState([]);
   const [vibeGroups, setVibeGroups] = useState([]);
   const [sizeGroups, setSizeGroups] = useState([]);
@@ -186,6 +186,48 @@ const Swipe = ({ route, navigation }) => {
     setGroups(vibe_groups);
   };
 
+  const handleSelectionVibeNew = (item) => {
+    const vibe_groups = [];
+    console.log('select vibe');
+    setVibe(item.value);
+    allGroups.forEach((group) => {
+      if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
+        console.log('group is vibe :', item.value, group.group_name);
+        vibe_groups.push(group);
+      }
+    });
+    setVibeGroups(vibe_groups);
+  };
+
+  const handleSelectionSizeNew = (item) => {
+    const size_group = [];
+    console.log('select size');
+    setSize(item.value);
+    allGroups.forEach((group) => {
+      if (group.size.toLowerCase() === item.value.toLowerCase()) {
+        console.log('group is size :', item.value, group.group_name);
+        size_group.push(group);
+      }
+    });
+    setSizeGroups(size_group);
+  };
+
+  // const handleClick = (item, criteria) => {
+  //   if (criteria === 'vibe') {
+  //   }
+  //   const final_group = [];
+  //   handleSelectionSizeNew(size);
+  //   handleSelectionVibeNew(vibe);
+  //   vibeGroups.forEach((vibe_group) => {
+  //     sizeGroups.forEach((size_group) => {
+  //       if (vibe_group.id === size_group.id) {
+  //         final_group.push(vibe_group);
+  //       }
+  //     });
+  //   });
+  //   return final_group;
+  // };
+
   const handleSelectionSize = (item) => {
     const size_groups = [];
     console.log('select size');
@@ -224,6 +266,7 @@ const Swipe = ({ route, navigation }) => {
             { label: 'HIGH', value: 'high' },
           ]}
           selectedValue={vibe}
+          // onSelection={(item) => handleClick(item, 'vibe')}
           onSelection={(item) => handleSelectionVibe(item)}
         />
         <Picker
@@ -236,6 +279,7 @@ const Swipe = ({ route, navigation }) => {
             { label: 'LARGER (11-20)', value: 'large' },
           ]}
           selectedValue={size}
+          // onSelection={(item) => handleClick(item, 'size')}
           onSelection={(item) => handleSelectionSize(item)}
         />
       </View>
