@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
 });
 
 const ExpandedTastes = ({ route }) => {
+  const { userId } = useSelector((state) => state.pagerData);
   const userData = route.params;
   // console.log('userData from tastes: ', userData);
   const [user, setUser] = useState({});
@@ -183,16 +184,15 @@ const ExpandedTastes = ({ route }) => {
   });
 
   useEffect(() => {
-    // async function fetchData() {
-    //   const res = await getUser(userId);
-    //   setUser(res[0]);
-    //   setMusicTastes([...res[0].music_tastes]);
-    //   setFriends([...res[0].friends_list]);
-    // }
-    // fetchData();
-    setUser(userData);
-    setMusicTastes(userData.music_tastes);
-    setFriends(userData.friends_list);
+    async function fetchData() {
+      const res = await getUser(userId);
+      setUser(res[0]);
+      setMusicTastes([...res[0].music_tastes]);
+    }
+    fetchData();
+    // setUser(userData);
+    // setMusicTastes(userData.music_tastes);
+    // setFriends(userData.friends_list);
   }, []);
 
   if (!fontLoaded) {
@@ -204,9 +204,7 @@ const ExpandedTastes = ({ route }) => {
       <View style={styles.bodyContainerName}>
         <Image style={styles.headerImage} source={user.profile_pic} />
         <Text style={styles.headerName}>
-          {user.first_name}
-          {' '}
-          {user.last_name}
+          {user.first_name} {user.last_name}
         </Text>
       </View>
       <View style={styles.bodyContainerSection}>

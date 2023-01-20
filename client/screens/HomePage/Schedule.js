@@ -132,7 +132,7 @@ const Schedule = ({ route }) => {
             renderItem={({ item }) => (
               <View style={styles.bodyContainerSchedule}>
                 <Text style={styles.textDetailBold}>
-                  {new Date(item.time.seconds * 1000).toDateString()}
+                  {new Date(item.time.seconds * 1000).toLocaleTimeString()}
                 </Text>
                 <Text style={styles.textDetail}>{item.description}</Text>
               </View>

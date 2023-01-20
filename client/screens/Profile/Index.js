@@ -207,6 +207,9 @@ const Profile = ({ navigation, route }) => {
   const onEdit = (data) => {
     setDescription(data);
   };
+  const onEdit1 = (data1) => {
+    setMusicTastes(data1);
+  };
 
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
@@ -233,7 +236,9 @@ const Profile = ({ navigation, route }) => {
       </View>
       <Pressable
         style={styles.button}
-        onPress={() => navigation.navigate('EditProfile', { user, onEdit })}
+        onPress={() =>
+          navigation.navigate('EditProfile', { user, onEdit, onEdit1 })
+        }
       >
         <Text style={styles.buttonText}>EDIT PROFILE</Text>
       </Pressable>
@@ -260,7 +265,6 @@ const Profile = ({ navigation, route }) => {
             </View>
           )}
         />
-
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>

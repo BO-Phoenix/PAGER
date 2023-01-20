@@ -66,7 +66,6 @@ export async function getUserByEmail(email) {
   }
 }
 
-
 export async function setUserInfo(id, data, obj) {
   // console.log('the id and the data being passed', id, data, obj);
   const image = data.file;
@@ -94,12 +93,9 @@ export async function setUserInfo(id, data, obj) {
 }
 
 export async function editUserData(id, data) {
-  // console.log(id, data);
+  // console.log('data from back end:', id, data);
   const docRef = await doc(db, 'users', id);
-  const newData = {
-    description: data,
-  };
-  updateDoc(docRef, newData)
+  updateDoc(docRef, data)
     .then((docRef) => {
       console.log('doc with this id was updated successfully');
     })

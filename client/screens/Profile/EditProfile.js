@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -13,7 +14,7 @@ import {
   Button,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { editUserData } from '../../db/user';
+import { editUserData, getUser } from '../../db/user';
 import UserHeader from './UserHeader';
 import TasteCard from './TasteCard';
 
@@ -114,14 +115,56 @@ const EditProfile = ({ route }) => {
   const userData = route.params.user;
   const { userId } = useSelector((state) => state.pagerData);
   const [description, setDescription] = useState('');
+  const [musicTastes, setMusicTastes] = useState([]);
   const [user, setUser] = useState([]);
   const [placeholdertext, setPlaceholdertext] = useState('');
   useEffect(() => {
     // const response = await getUser('QZ6KFysQsp7CG9DcicIh');
     // console.log('response: ', response);
-    setUser(userData);
+    async function fetchData() {
+      const res = await getUser(userId);
+      // console.log(res[0].music_tastes);
+      setUser(res[0]);
+      setMusicTastes(res[0].music_tastes);
+    }
+    fetchData();
+    const tastesArray = [...route.params.user.music_tastes];
+    // console.log('copy: ', tastesArray);
+    for (let i = 0; i < tastesArray.length; i += 1) {
+      console.log(tastesArray[i]);
+      if (tastesArray[i] === 'techno') {
+        setLikesTechno(true);
+      }
+      if (tastesArray[i] === 'house') {
+        setLikesHouse(true);
+      }
+      if (tastesArray[i] === 'trance') {
+        console.log('trance');
+        setLikesTrance(true);
+      }
+      if (tastesArray[i] === 'dubstep') {
+        setLikesDubstep(true);
+      }
+      if (tastesArray[i] === 'bass') {
+        setLikesBass(true);
+      }
+      if (tastesArray[i] === 'garage') {
+        setLikesGarage(true);
+      }
+      if (tastesArray[i] === 'trap') {
+        setLikesTrap(true);
+      }
+      if (tastesArray[i] === 'disco') {
+        setLikesDisco(true);
+      }
+      if (tastesArray[i] === 'other') {
+        setLikesOther(true);
+      }
+    }
+
+    // setUser(userData);
     // console.log(route.params.user.description);
-    setPlaceholdertext(route.params.user.description);
+    // setPlaceholdertext(route.params.user.description);
     // console.log('useffect');
   }, []);
 
@@ -130,18 +173,16 @@ const EditProfile = ({ route }) => {
       <View style={styles.bodyContainerName}>
         <Image style={styles.headerImage} source={user.profile_pic} />
         <Text style={styles.headerName}>
-          {user.first_name}
-          {' '}
-          {user.last_name}
+          {user.first_name} {user.last_name}
         </Text>
       </View>
       <Text style={styles.textDetailBold}>EDIT DESCRIPTION:</Text>
       <TextInput
         style={styles.input}
         onChangeText={(val) => setDescription(val)}
-        placeholder="Update description here."
+        // placeholder="Update description here."
+        placeholder={user.description}
       />
-
 
       <Text style={styles.textDetailBold}>FAVORITE GENRES:</Text>
       <View style={styles.allCheckboxContainer}>
@@ -231,8 +272,45 @@ const EditProfile = ({ route }) => {
         onPress={() => {
           // console.log(description);
           setPlaceholdertext('');
-          editUserData(userId, description);
+          const musicTastesData = [];
+          for (let i = 0; i < musicTastes.length; i += 1) {
+            // console.log(musicTastes);
+            if (likesTechno) {
+              musicTastesData.push('techno');
+            }
+            if (likesHouse) {
+              musicTastesData.push('house');
+            }
+            if (likesTrance) {
+              musicTastesData.push('trance');
+            }
+            if (likesDubstep) {
+              musicTastesData.push('dubstep');
+            }
+            if (likesBass) {
+              musicTastesData.push('bass');
+            }
+            if (likesGarage) {
+              musicTastesData.push('garage');
+            }
+            if (likesTrap) {
+              musicTastesData.push('trap');
+            }
+            if (likesDisco) {
+              musicTastesData.push('disco');
+            }
+            if (likesOther) {
+              musicTastesData.push('other');
+            }
+          }
+          const uniqueTastesData = [...new Set(musicTastesData)];
+          // console.log('array with unique data: ', uniqueTastesData);
+          const descriptionObject = { description: description };
+          editUserData(userId, { description });
+          const dataObject = { music_tastes: uniqueTastesData };
+          editUserData(userId, dataObject);
           route.params.onEdit(description);
+          route.params.onEdit1(uniqueTastesData);
         }}
       >
         <Text style={styles.buttonText}>SAVE CHANGES</Text>

@@ -144,28 +144,36 @@ const ExpandedFriends = ({ route }) => {
   const { userId } = useSelector((state) => state.pagerData);
 
   const unfriend = async (friendId) => {
-    console.log('userId: ', userId);
+    // console.log('userId: ', userId);
     const test = await deleteFriend(userId, friendId);
+    const newFriends = [...friends];
+    console.log('before filter:', newFriends);
+    const newFriendsFilter = newFriends.filter((item) => item.id !== friendId);
+    console.log('after filter: ', newFriendsFilter);
+    setFriends(newFriendsFilter);
   };
 
   useEffect(() => {
-    setUser(userData);
+    async function fetchData() {
+      const res = await getUser(userId);
+      setFriends(res[0].friends_list);
+      setUser(res[0]);
+    }
+    fetchData();
+    // setUser(userData);
     setMusicTastes(userData.music_tastes);
-    setFriends(userData.friends_list);
+    // setFriends(userData.friends_list);
   }, []);
 
   if (!fontLoaded) {
     return <Loading />;
   }
-
   return (
     <View style={styles.container}>
       <View style={styles.bodyContainerName}>
         <Image style={styles.headerImage} source={user.profile_pic} />
         <Text style={styles.headerName}>
-          {user.first_name}
-          {' '}
-          {user.last_name}
+          {user.first_name} {user.last_name}
         </Text>
       </View>
       <View style={styles.bodyContainerSection}>
@@ -176,7 +184,6 @@ const ExpandedFriends = ({ route }) => {
           <FlatList
             data={friends}
             renderItem={({ item }) => (
-
               <View style={styles.imageNameContainer} key={Math.random()}>
                 <View style={styles.imageName}>
                   <View>
@@ -185,20 +192,22 @@ const ExpandedFriends = ({ route }) => {
                       source={{ uri: item.profile_pic }}
                     />
                   </View>
-                  <View style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
                   >
                     <Text style={styles.textDetail}>
-                      {item.first_name}
-                      {' '}
-                      {item.last_name}
+                      {item.first_name} {item.last_name}
                     </Text>
                   </View>
                 </View>
                 <View>
-                  <Pressable style={styles.button} onPress={() => unfriend(item.id)}>
+                  <Pressable
+                    style={styles.button}
+                    onPress={() => unfriend(item.id)}
+                  >
                     <Text style={styles.buttonText}>UNFRIEND</Text>
                   </Pressable>
                 </View>
