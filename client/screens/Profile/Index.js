@@ -32,11 +32,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // paddingBottom: 10,
     overflowY: 'scroll',
     backgroundColor: 'white',
-    // borderWidth: 5,
-    // borderColor: 'red',
+    overflowX: 'hidden',
   },
   headerImage: {
     width: 200,
@@ -258,7 +256,7 @@ const Profile = ({ navigation, route }) => {
           numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.taste}>
-              <Text style={styles.textDetailBold}>{item}</Text>
+              <Text style={styles.textDetailBold}>{item.toUpperCase()}</Text>
             </View>
           )}
         />
