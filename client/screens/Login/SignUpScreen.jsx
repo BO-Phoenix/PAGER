@@ -94,8 +94,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         music_tastes: value.music_tastes,
         group_list: [''],
         friends_list: [''],
-        description: value.description,
-        profile_pic: 'https://firebasestorage.googleapis.com/v0/b/project-pager-ac1f6.appspot.com/o/images%2Ftest.gif?alt=media&token=7fa8b785-1559-4a07-8551-83d4ce0a4b6f',
+        description: value.description
       });
       try {
         await dispatch(updateUserId(id));
@@ -113,7 +112,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           music_tastes: value.music_tastes,
           group_list: [''],
           friends_list: [''],
-          description: value.description
+          description: value.description,
         });
       } catch (err) {
         console.log(err)

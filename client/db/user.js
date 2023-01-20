@@ -67,10 +67,10 @@ export async function getUserByEmail(email) {
 }
 
 export async function setUserInfo(id, data, obj) {
-  console.log('the id and the data being passed', id, data);
-  const image = data;
-  const imageRef = ref(storage, `image/${image.file.name}`);
-  uploadBytes(imageRef, image.file)
+  console.log('the id and the data being passed', id, data, obj);
+  const image = data.file;
+  const imageRef = ref(storage, `image/${image.name}`);
+  uploadBytes(imageRef, image)
     .then((result) => {
       console.log('document has been uploaded: ');
       return getDownloadURL(result.ref);
