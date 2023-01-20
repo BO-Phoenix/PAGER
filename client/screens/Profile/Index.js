@@ -194,8 +194,8 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getUser('I4nwq9hMAQin0BjCEe1U');
-      // console.log(res, 'res');
+      const res = await getUser(userId);
+      // console.log(res[0], 'res');
       setUser(res[0]);
       setMusicTastes(res[0].music_tastes);
       setFriends(res[0].friends_list);
@@ -229,7 +229,7 @@ const Profile = ({ navigation }) => {
       </View>
       <Pressable
         style={styles.button}
-        onPress={() => navigation.navigate('EditProfile')}
+        onPress={() => navigation.navigate('EditProfile', user)}
       >
         <Text style={styles.buttonText}>EDIT PROFILE</Text>
       </Pressable>

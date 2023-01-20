@@ -95,10 +95,10 @@ export async function addFriend(id1, id2) {
   try {
     const user1InfoRef = await doc(getFS, 'users', id1);
     const user2InfoRef = await doc(getFS, 'users', id2);
-    //
+
     const query1 = await getDoc(user1InfoRef);
     const query2 = await getDoc(user2InfoRef);
-    //
+
     const user1 = await query1.data();
     const user2 = await query2.data();
 
@@ -132,10 +132,10 @@ export async function deleteFriend(id1, id2) {
   try {
     const user1InfoRef = await doc(getFS, 'users', id1);
     const user2InfoRef = await doc(getFS, 'users', id2);
-    //
+
     const query1 = await getDoc(user1InfoRef);
     const query2 = await getDoc(user2InfoRef);
-    //
+
     const user1 = await query1.data();
     const user2 = await query2.data();
 

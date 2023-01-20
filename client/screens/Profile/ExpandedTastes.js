@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
 
 const ExpandedTastes = ({ route }) => {
   const userData = route.params;
-  console.log('userData from tastes: ', userData);
+  // console.log('userData from tastes: ', userData);
   const [user, setUser] = useState({});
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);

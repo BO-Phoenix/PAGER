@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
 
 const ExpandedFriends = ({ route }) => {
   const userData = route.params;
-  console.log('friends route: ', userData);
+  // console.log('friends route: ', userData);
   const [user, setUser] = useState({});
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
