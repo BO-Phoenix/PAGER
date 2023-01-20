@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 50,
+    backgroundColor: 'white',
   },
   image: {
     width: screenWidth,

@@ -8,10 +8,11 @@ import {
   Image,
   Pressable,
   CheckBox,
+  FlatList,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useFonts } from 'expo-font';
-import { getUser } from '../../db/user.js';
+import { getUser, deleteFriend } from '../../db/user.js';
 import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
@@ -27,8 +28,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     overflow: 'scroll',
     backgroundColor: 'white',
-    // borderWidth: 1,
-    // borderColor: 'black',
   },
   headerImage: {
     width: 75,
@@ -45,8 +44,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginVertical: 5,
     marginHorizontal: 15,
-    // borderWidth: 1,
-    // borderColor: 'black',
   },
   bodyContainerLeft: {
     width: '100%',
@@ -73,23 +70,21 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     backgroundColor: 'white',
-    // paddingVertical: 0,
-    // paddingHorizontal: 15,
   },
   bodyContainerMember: {
-    flex: 1,
-    flexDirection: 'column',
+    width: '100%',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    // backgroundColor: 'white',
-    // paddingVertical: 0,
-    // paddingHorizontal: 15,
+    justifyContent: 'flex-start',
+    backgroundColor: 'white',
+    marginBottom: 15,
+    // paddingHorizontal: 10,
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
     backgroundColor: '#F72585',
     fontFamily: 'PoppinsBold',
     color: 'white',
@@ -98,6 +93,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: 'PoppinsBold',
     color: 'white',
+    fontSize: 12,
   },
   textTitle: {
     fontSize: 20,
@@ -114,6 +110,7 @@ const styles = StyleSheet.create({
   memberImage: {
     width: 75,
     height: 75,
+    marginRight: 15,
   },
   bodyContainerName: {
     flexDirection: 'row',
@@ -121,32 +118,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     margin: 10,
-    // borderWidth: 1,
-    // borderColor: 'red',
+  },
+  imageName: {
+    flexDirection: 'row',
+  },
+  imageNameContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    margin: 5,
   },
 });
 
 const ExpandedFriends = ({ route }) => {
   const userData = route.params;
-  // console.log('friends route: ', userData);
   const [user, setUser] = useState({});
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
-  // const { userId } = useSelector((state) => state.pagerData);
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-    Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
+  const { userId } = useSelector((state) => state.pagerData);
+
+  const unfriend = async (friendId) => {
+    console.log('userId: ', userId);
+    const test = await deleteFriend(userId, friendId);
+  };
 
   useEffect(() => {
-    //   async function fetchData() {
-    //     const res = await getUser(userId);
-    //     setUser(res[0]);
-    //     setMusicTastes(res[0].music_tastes);
-    //     setFriends(res[0].friends_list);
-    //   }
-    //   fetchData();
     setUser(userData);
     setMusicTastes(userData.music_tastes);
     setFriends(userData.friends_list);
@@ -161,18 +163,57 @@ const ExpandedFriends = ({ route }) => {
       <View style={styles.bodyContainerName}>
         <Image style={styles.headerImage} source={user.profile_pic} />
         <Text style={styles.headerName}>
-          {user.first_name} {user.last_name}
+          {user.first_name}
+          {' '}
+          {user.last_name}
         </Text>
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
       </View>
-      <View style={styles.bodyContainerSection}>
+      <View style={styles.bodyContainerLeft}>
+        {!!friends && (
+          <FlatList
+            data={friends}
+            renderItem={({ item }) => (
+
+              <View style={styles.imageNameContainer} key={Math.random()}>
+                <View style={styles.imageName}>
+                  <View>
+                    <Image
+                      style={styles.memberImage}
+                      source={{ uri: item.profile_pic }}
+                    />
+                  </View>
+                  <View style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  >
+                    <Text style={styles.textDetail}>
+                      {item.first_name}
+                      {' '}
+                      {item.last_name}
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <Pressable style={styles.button} onPress={() => unfriend(item.id)}>
+                    <Text style={styles.buttonText}>UNFRIEND</Text>
+                  </Pressable>
+                </View>
+              </View>
+            )}
+          />
+        )}
+      </View>
+
+      {/* <View style={styles.bodyContainerSection}>
         {friends &&
           friends.map((item) => (
             <ExpandedFriendsCard prop={item} key={Math.random()} />
           ))}
-      </View>
+      </View> */}
     </View>
   );
 };
