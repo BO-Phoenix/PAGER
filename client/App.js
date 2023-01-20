@@ -4,6 +4,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './store/index.js';
 import './firebase-config';
 import RootNavigation from './navigation/Index.jsx';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); //Hide warnings
+LogBox.ignoreAllLogs();
 
 export default function App() {
   return (
