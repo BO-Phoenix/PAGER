@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
 
 const Swipe = ({ route, navigation }) => {
   const { userId } = useSelector((state) => state.pagerData);
-  const [size, setSize] = useState('medium');
-  const [vibe, setVibe] = useState('medium');
+  const [size, setSize] = useState('ALL');
+  const [vibe, setVibe] = useState('ALL');
   const [allGroups, setAllGroups] = useState([]);
   const [vibeGroups, setVibeGroups] = useState([]);
   const [sizeGroups, setSizeGroups] = useState([]);
@@ -146,118 +146,74 @@ const Swipe = ({ route, navigation }) => {
     if (criteria === 'vibe') {
       console.log('select vibe');
       setVibe(item.value);
-      console.log('all groups is : ', allGroups);
-      // setGroups(allGroups);
-      allGroups.forEach((group) => {
-        if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
-          console.log('group is vibe :', item.value, group.group_name);
-          vibe_groups.push(group);
-        }
-      });
-      setGroups(vibe_groups);
+      if (item.value === 'all') {
+        setGroups(allGroups);
+      } else {
+        allGroups.forEach((group) => {
+          if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
+            console.log('group is vibe :', item.value, group.group_name);
+            vibe_groups.push(group);
+          }
+        });
+        setGroups(vibe_groups);
+      }
     } else {
       console.log('select vibe');
       setSize(item.value);
-      allGroups.forEach((group) => {
-        if (group.size.toLowerCase() === item.value.toLowerCase()) {
-          console.log('group is size :', item.value, group.group_name);
-          size_groups.push(group);
-        }
-      });
-      setGroups(size_groups);
+      if (item.value === 'all') {
+        setGroups(allGroups);
+      } else {
+        allGroups.forEach((group) => {
+          if (group.size.toLowerCase() === item.value.toLowerCase()) {
+            console.log('group is size :', item.value, group.group_name);
+            size_groups.push(group);
+          }
+        });
+        setGroups(size_groups);
+      }
     }
   };
 
-  const handleSelectionVibe = (item) => {
+  const handleSelectionNew = (item, criteria) => {
     const vibe_groups = [];
-    console.log('select vibe');
-    setVibe(item.value);
-    allGroups.forEach((group) => {
-      if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
-        console.log('group is vibe :', item.value, group.group_name);
-        if (groups.length === 0) {
-          allGroups.forEach((inner_size) => {
-            if (inner_size.id === group.id) {
-              vibe_groups.push(inner_size);
-            }
-          });
-        } else {
-          groups.forEach((size_group) => {
-            if (size_group.id === group.id) {
-              vibe_groups.push(size_group);
-            }
-          });
-        }
-      }
-    });
-    setGroups(vibe_groups);
-  };
-
-  const handleSelectionVibeNew = (item) => {
-    const vibe_groups = [];
-    console.log('select vibe');
-    setVibe(item.value);
-    allGroups.forEach((group) => {
-      if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
-        console.log('group is vibe :', item.value, group.group_name);
-        vibe_groups.push(group);
-      }
-    });
-    setVibeGroups(vibe_groups);
-  };
-
-  const handleSelectionSizeNew = (item) => {
-    const size_group = [];
-    console.log('select size');
-    setSize(item.value);
-    allGroups.forEach((group) => {
-      if (group.size.toLowerCase() === item.value.toLowerCase()) {
-        console.log('group is size :', item.value, group.group_name);
-        size_group.push(group);
-      }
-    });
-    setSizeGroups(size_group);
-  };
-
-  // const handleClick = (item, criteria) => {
-  //   if (criteria === 'vibe') {
-  //   }
-  //   const final_group = [];
-  //   handleSelectionSizeNew(size);
-  //   handleSelectionVibeNew(vibe);
-  //   vibeGroups.forEach((vibe_group) => {
-  //     sizeGroups.forEach((size_group) => {
-  //       if (vibe_group.id === size_group.id) {
-  //         final_group.push(vibe_group);
-  //       }
-  //     });
-  //   });
-  //   return final_group;
-  // };
-
-  const handleSelectionSize = (item) => {
     const size_groups = [];
-    console.log('select size');
-    setSize(item.value);
-    allGroups.forEach((group) => {
-      if (group.size.toLowerCase() === item.value.toLowerCase()) {
-        console.log('group is size :', item.value, group.group_name);
-        if (groups.length === 0) {
-          allGroups.forEach((inner_vibe) => {
-            if (inner_vibe.id === group.id) {
-              size_groups.push(inner_vibe);
-            }
-          });
-        } else {
-          groups.forEach((vibe_group) => {
-            if (vibe_group.id === group.id) {
-              size_groups.push(vibe_group);
-            }
-          });
-        }
+    if (criteria === 'vibe') {
+      console.log('select vibe');
+      setVibe(item.value);
+      if (item.value === 'all') {
+        setGroups(allGroups);
+      } else {
+        allGroups.forEach((group) => {
+          if (group.vibe.toLowerCase() === item.value.toLowerCase()) {
+            console.log('group is vibe :', item.value, group.group_name);
+            vibe_groups.push(group);
+          }
+        });
+        console.log('vibe group should only have one: ', vibe_groups);
+        setVibeGroups(vibe_groups);
+        const result = vibe_groups.filter((x) => sizeGroups.includes(x));
+        console.log('vibe intersection is : ', vibe_groups, sizeGroups, result);
+        setGroups(result);
       }
-    });
-    setGroups(size_groups);
+    } else {
+      console.log('select size');
+      setSize(item.value);
+      if (item.value === 'all') {
+        setGroups(allGroups);
+      } else {
+        allGroups.forEach((group) => {
+          if (group.size.toLowerCase() === item.value.toLowerCase()) {
+            console.log('group is size :', item.value, group.group_name);
+            size_groups.push(group);
+          }
+        });
+        console.log('size group should only have one: ', size_groups);
+        setSizeGroups(size_groups);
+        const result = size_groups.filter((x) => vibeGroups.includes(x));
+        console.log('size intersection is : ', vibeGroups, size_groups, result);
+        setGroups(result);
+      }
+    }
   };
 
   return (
@@ -269,24 +225,26 @@ const Swipe = ({ route, navigation }) => {
             id="select-size"
             placeholder="ENERGY/VIBE"
             items={[
+              // { label: 'ALL', value: 'all' },
               { label: 'LOW', value: 'low' },
               { label: 'MEDIUM', value: 'medium' },
               { label: 'HIGH', value: 'high' },
             ]}
             selectedValue={vibe}
-            onSelection={(item) => handleSelectionVibe(item)}
+            onSelection={(item) => handleSelectionNew(item, 'vibe')}
           />
           <Picker
             style={{ height: 30, width: 125 }}
             id="select-size"
             placeholder="GROUP SIZE"
             items={[
+              // { label: 'ALL', value: 'all' },
               { label: 'SMALL (0-5)', value: 'small' },
               { label: 'MEDIUM (6-10)', value: 'medium' },
               { label: 'LARGE (11-20)', value: 'large' },
             ]}
             selectedValue={size}
-            onSelection={(item) => handleSelectionSize(item)}
+            onSelection={(item) => handleSelectionNew(item, 'size')}
           />
         </View>
         {!!groups &&
