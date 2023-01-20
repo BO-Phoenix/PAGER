@@ -169,11 +169,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const ExpandedFriends = () => {
-  const [user, setUser] = useState([]);
+const ExpandedTastes = ({ route }) => {
+  const userData = route.params;
+  // console.log('userData from tastes: ', userData);
+  const [user, setUser] = useState({});
   const [musicTastes, setMusicTastes] = useState([]);
   const [friends, setFriends] = useState([]);
-  const { userId } = useSelector((state) => state.pagerData);
+  // const { userId } = useSelector((state) => state.pagerData);
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
@@ -181,13 +183,16 @@ const ExpandedFriends = () => {
   });
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await getUser(userId);
-      setUser(res[0]);
-      setMusicTastes([...res[0].music_tastes]);
-      setFriends([...res[0].friends_list]);
-    }
-    fetchData();
+    // async function fetchData() {
+    //   const res = await getUser(userId);
+    //   setUser(res[0]);
+    //   setMusicTastes([...res[0].music_tastes]);
+    //   setFriends([...res[0].friends_list]);
+    // }
+    // fetchData();
+    setUser(userData);
+    setMusicTastes(userData.music_tastes);
+    setFriends(userData.friends_list);
   }, []);
 
   if (!fontLoaded) {
@@ -197,14 +202,9 @@ const ExpandedFriends = () => {
   return (
     <View style={styles.container}>
       <View style={styles.bodyContainerName}>
-        <Image
-          style={styles.headerImage}
-          source={user.profile_pic}
-        />
+        <Image style={styles.headerImage} source={user.profile_pic} />
         <Text style={styles.headerName}>
-          {user.first_name}
-          {' '}
-          {user.last_name}
+          {user.first_name} {user.last_name}
         </Text>
       </View>
       <View style={styles.bodyContainerSection}>
@@ -237,4 +237,4 @@ const ExpandedFriends = () => {
   );
 };
 
-export default ExpandedFriends;
+export default ExpandedTastes;
