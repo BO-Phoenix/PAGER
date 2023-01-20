@@ -28,7 +28,7 @@ export async function getUsers() {
 
     users.push(doc.data());
   });
-  console.log('data for users : ', users);
+  // console.log('data for users : ', users);
   return users;
 }
 
@@ -66,20 +66,23 @@ export async function getUserByEmail(email) {
   }
 }
 
-export async function setUserInfo(id, data) {
-  const image = data;
-  const imageRef = ref(storage, `images/${image.name}`);
+
+export async function setUserInfo(id, data, obj) {
+  // console.log('the id and the data being passed', id, data, obj);
+  const image = data.file;
+  const imageRef = ref(storage, `image/${image.name}`);
   uploadBytes(imageRef, image)
     .then((result) => {
-      // console.log('document has been uploaded: ');
+      console.log('document has been uploaded: ');
       return getDownloadURL(result.ref);
     })
     .then((url) => {
       // console.log('the url being passed in setUserInfo', url);
       const userInfoRef = doc(getFS, 'users', id);
-      updateDoc(userInfoRef, { profile_pic: url })
+      // console.log('this is userInfoRef ', userInfoRef);
+      updateDoc(userInfoRef, { ...obj, profile_pic: url })
         .then((docRef) => {
-          // console.log('document has been updated: ');
+          console.log('document has been updated: ');
         })
         .catch((err) => {
           console.error(err);

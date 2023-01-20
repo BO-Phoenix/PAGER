@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 /* eslint-disable react/no-children-prop */
 /* eslint-disable global-require */
 import React, { useState, useEffect } from 'react';
@@ -7,7 +8,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
 import globalStyles from '../../globalStyles';
-import { Overview, Schedule, Chat, Members } from './individualgroups';
+import { Overview, Schedule, Chat } from './individualgroups.js';
 // --added by maddie
 import Loading from '../Loading/Index.js';
 

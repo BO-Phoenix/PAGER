@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable global-require */
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable implicit-arrow-linebreak */
@@ -21,7 +22,7 @@ import {
   addGroupToEvent,
   removeGroupFromEvent,
 } from '../../db/event.js';
-import { getGroupMembers, getGroupPlans } from '../../db/group.js';
+import { getGroupMembers, getGroupPlans, getGroup } from '../../db/group.js';
 import Loading from '../Loading/Index';
 
 const Overview = ({ navigation, groupData }) => {
@@ -66,12 +67,7 @@ const Overview = ({ navigation, groupData }) => {
       alignSelf: 'start',
       fontFamily: 'Poppins',
       fontSize: 14,
-    },
-    tabs: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      // borderWidth: 1,
-      width: '100%',
+      paddingHorizontal: 15,
     },
     selected: {
       backgroundColor: '#B5179E',
@@ -99,19 +95,30 @@ const Overview = ({ navigation, groupData }) => {
       alignSelf: 'start',
       padding: 5,
       // borderWidth: 2
+      paddingHorizontal: 15,
+    },
+    tabs: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'start',
+      // borderWidth: 1,
+      width: '100%',
     },
     members: {
-      // flexDirection: 'row'
+      alignItems: 'center',
+      width: '30%',
+      margin: 5,
     },
     member: {
-      height: 50,
-      width: 50,
+      height: 75,
+      width: 75,
     },
   });
 
   // set states
   const [events, setEvents] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
+  const [group, setGroup] = useState([]);
   const [plans, setPlans] = useState([]);
 
   // get data
@@ -123,6 +130,8 @@ const Overview = ({ navigation, groupData }) => {
       setGroupMembers(resMembers);
       const resPlans = await getGroupPlans(groupData.id);
       setPlans(resPlans);
+      const resGroup = await getGroup(groupData.id);
+      setGroup(resGroup);
     }
     fetchData();
   }, []);
@@ -149,6 +158,7 @@ const Overview = ({ navigation, groupData }) => {
 
     return str.slice(0, index) + (add || '') + str.slice(index + count);
   }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -157,9 +167,8 @@ const Overview = ({ navigation, groupData }) => {
 
         <View style={styles.rowName}>
           <Text style={styles.boldDesc}>ORGANIZER</Text>
-          <Text style={styles.desc}>: Name Here</Text>
+          <Text style={styles.desc}>: {group.organizer_name}</Text>
         </View>
-        {/* include conditionally rendered add member button which goes to different screen */}
 
         <Text style={styles.groupDesc}>{groupData.group_description}</Text>
 
@@ -177,21 +186,6 @@ const Overview = ({ navigation, groupData }) => {
               SCHEDULE
             </Text>
           </Text>
-          <TouchableWithoutFeedback
-          // onPress={() =>
-          //   navigation.navigate('Schedule', { name: 'Schedule' })
-          // }
-          >
-            <Text
-              style={{
-                textDecorationLine: 'underline',
-                fontSize: 20,
-                fontFamily: 'Poppins',
-              }}
-            >
-              SEE ALL -->
-            </Text>
-          </TouchableWithoutFeedback>
         </View>
 
         <View
@@ -204,27 +198,14 @@ const Overview = ({ navigation, groupData }) => {
         >
           {plans
             .sort((a, b) => a.time.seconds - b.time.seconds)
-            .sort((a, b) => a.time - b.time)
             .slice(0, 3)
             .map((plan) => {
-              let date;
-              if (typeof plan.time !== 'object') {
-                date = new Date(plan.time);
-              } else {
-                date = new Date(plan.time.seconds);
-              }
-              // let date = 'Tue Jan 20 1970 13:01:242424';
-              date = JSON.stringify(date);
-              date = date.slice(12, 17);
-              const num = date.slice(0, 2);
-              if (num === '12') {
-                date += ' PM';
-              } else if (num > 12) {
-                date = spliceSlice(date, 0, 2, num - 12);
-                date += ' PM';
-              } else {
-                date += ' AM';
-              }
+              let date = plan.time
+                .toDate()
+                .toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+              date = date.slice(10, 22);
+              date = date.split(':');
+              date = `${date[0]}:${date[1]} ${date[2].split(' ')[1]}`;
               return (
                 <View style={styles.schedules} key={plan.id}>
                   <Text style={styles.boldDesc}>{date}</Text>
@@ -250,22 +231,15 @@ const Overview = ({ navigation, groupData }) => {
           </Text>
         </View>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            width: '100%',
-          }}
-        >
+        <View style={styles.tabs}>
           {groupMembers.map((member) => (
             <View style={styles.members} key={member.id}>
               <Image
                 style={styles.member}
                 source={{ uri: member.profile_pic }}
               />
-              <Text>
+              <Text style={{ fontSize: 15, fontFamily: 'Poppins' }}>
                 {member.first_name}
-                {member.last_name}
               </Text>
             </View>
           ))}

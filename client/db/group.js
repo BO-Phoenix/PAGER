@@ -118,7 +118,7 @@ export async function getGroupMembers(group_id) {
   for (let i = 0; i < members_list.length; i++) {
     const userRef = doc(db, 'users', members_list[i]);
     const userSnap = await getDoc(userRef);
-    console.log('get group member detailed info : ', userSnap.data());
+    //console.log('get group member detailed info : ', userSnap.data());
     members.push({ ...{ id: userSnap.id }, ...userSnap.data() });
   }
   console.log('members is : ', members);
@@ -126,7 +126,7 @@ export async function getGroupMembers(group_id) {
 }
 
 export async function getGroup(group_id) {
-  // console.log('get group info, plans and memebers');
+  console.log('get group info, plans and memebers');
   const docRef = doc(db, 'groups', group_id);
   const docSnap = await getDoc(docRef);
   const group = { ...{ id: docSnap.id }, ...docSnap.data() };
@@ -180,10 +180,10 @@ export async function getChatMsgsPerGroup(group_id) {
 export async function createGroup(form_data, organizer_id) {
   // console.log('create group');
   const image = form_data.group_image;
-  const imageRef = ref(storage, `image/${image.name}`);
-  uploadBytes(imageRef, image)
+  const imageRef = ref(storage, `image/${image.file.name}`);
+  uploadBytes(imageRef, image.file)
     .then((result) => {
-      console.log('image uploaded');
+      console.log('image uploaded with download url', result.ref);
       return getDownloadURL(result.ref);
     })
     .then((url) => {
@@ -247,11 +247,15 @@ export async function addPlan(group_id, form_data) {
 }
 
 export async function deletePlan(group_id, plan_id) {
-  await deleteDoc(doc(db, `groups/${group_id}/schedule`, plan_id)).then(() => console.log('plan deleted'));
+  await deleteDoc(doc(db, `groups/${group_id}/schedule`, plan_id)).then(() =>
+    console.log('plan deleted'),
+  );
 }
 
 export async function deleteGroup(group_id) {
-  await deleteDoc(doc(db, 'groups', group_id)).then(() => console.log('group deleted'));
+  await deleteDoc(doc(db, 'groups', group_id)).then(() =>
+    console.log('group deleted'),
+  );
 }
 
 export async function addChatMsg(form_data) {

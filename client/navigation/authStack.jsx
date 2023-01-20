@@ -20,11 +20,6 @@ export default function AuthStack() {
 
   return (
     <NavigationContainer>
-      <SafeAreaView id="header-container" style={styles.headerContainer}>
-        <Text id="app-header" style={styles.appHeader}>
-          PAGER
-        </Text>
-      </SafeAreaView>
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name="Welcome" component={Welcome} />
         <Stack.Screen name="Sign In" component={SignInScreen} />

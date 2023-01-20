@@ -90,7 +90,6 @@ const Chat = ({ navigation, groupData }) => {
       createdAt,
       text,
       user,
-      // group_id,
     });
     console.log(messages);
   }, []);
