@@ -83,16 +83,6 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, value.email, value.password);
-      navigation.navigate('Sign In');
-    } catch (error) {
-      setValue({
-        ...value,
-        error: error.message,
-      })
-    }
-
-    try {
       addMusicTaste();
       // console.log(value, 'value is', value.music_tastes, 'value.music tastes');
       const id = await addUser({
@@ -108,14 +98,37 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         profile_pic: 'https://firebasestorage.googleapis.com/v0/b/project-pager-ac1f6.appspot.com/o/images%2Ftest.gif?alt=media&token=7fa8b785-1559-4a07-8551-83d4ce0a4b6f',
       });
       try {
-        dispatch(updateUserId(id));
+        await dispatch(updateUserId(id));
       } catch (err) {
         console.log(err);
       }
-      // console.log('we are sending userId and userImg to setUserinfo', userId, userImg);
-      setUserInfo(userId, userImg);
+      console.log('we are sending userId and userImg to setUserinfo', userId, userImg);
+      try {
+        await setUserInfo(userId, userImg, {
+          email: value.email,
+          password: value.password,
+          first_name: value.firstName,
+          last_name: value.lastName,
+          birthday: '',
+          music_tastes: value.music_tastes,
+          group_list: [''],
+          friends_list: [''],
+          description: value.description
+        });
+      } catch (err) {
+        console.log(err)
+      }
     } catch (error) {
       console.log(error);
+    }
+    try {
+      await createUserWithEmailAndPassword(auth, value.email, value.password);
+      navigation.navigate('Sign In');
+    } catch (error) {
+      setValue({
+        ...value,
+        error: error.message,
+      })
     }
   }
 
