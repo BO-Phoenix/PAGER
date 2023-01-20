@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
   Image,
   Pressable,
   CheckBox,
@@ -31,11 +32,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingBottom: 10,
-    overflow: 'scroll',
+    overflowY: 'scroll',
     backgroundColor: 'white',
-    // borderWidth: 1,
-    // borderColor: 'black',
+    overflowX: 'hidden',
   },
   headerImage: {
     width: 200,
@@ -220,7 +219,7 @@ const Profile = ({ navigation, route }) => {
   }
   return (
     // onPress={() => auth.signOut()}
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.bodyContainerRight}>
         <Pressable onPress={() => auth.signOut()}>
           <Text style={styles.textDetailBold}>SIGN OUT</Text>
@@ -257,22 +256,11 @@ const Profile = ({ navigation, route }) => {
           numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.taste}>
-              <Text style={styles.textDetailBold}>{item}</Text>
+              <Text style={styles.textDetailBold}>{item.toUpperCase()}</Text>
             </View>
           )}
         />
 
-        {/* {musicTastes &&
-          musicTastes
-            .slice(0, 3)
-            .map((taste) => {
-              return (
-                // <TasteCard prop={taste} key={taste} />
-                <View style={styles.taste} key={Math.random()}>
-                  <Text style={styles.textDetailBold}>{taste}</Text>
-                </View>
-              );
-            })} */}
       </View>
       <View style={styles.bodyContainerSection}>
         <Text style={styles.textTitle}>FRIENDS</Text>
@@ -295,7 +283,7 @@ const Profile = ({ navigation, route }) => {
               />
             ))}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

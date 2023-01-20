@@ -204,7 +204,9 @@ const ExpandedTastes = ({ route }) => {
       <View style={styles.bodyContainerName}>
         <Image style={styles.headerImage} source={user.profile_pic} />
         <Text style={styles.headerName}>
-          {user.first_name} {user.last_name}
+          {user.first_name}
+          {' '}
+          {user.last_name}
         </Text>
       </View>
       <View style={styles.bodyContainerSection}>
@@ -218,7 +220,7 @@ const ExpandedTastes = ({ route }) => {
           numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.taste}>
-              <Text style={styles.textDetailBold}>{item}</Text>
+              <Text style={styles.textDetailBold}>{item.toUpperCase()}</Text>
             </View>
           )}
         />

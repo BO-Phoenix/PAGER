@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     // borderWidth: 3,
     // borderColor: 'red',
+    overflowX: 'hidden',
   },
   headerText: {
     fontSize: 25,
