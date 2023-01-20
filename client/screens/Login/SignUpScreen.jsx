@@ -101,7 +101,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       } catch (err) {
         console.log(err);
       }
-      console.log('we are sending userId and userImg to setUserinfo', userId, userImg);
+      // console.log('we are sending userId and userImg to setUserinfo', userId, userImg);
       try {
         await setUserInfo(userId, userImg, {
           email: value.email,

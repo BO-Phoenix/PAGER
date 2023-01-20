@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateUserId } from '../../reducers/index.js';
 
 import globalStyles from '../../globalStyles';
-import { getUserByEmail, getUser } from '../../db/user';
+import { getUserByEmail } from '../../db/user';
 import gif from '../../assets/raveWelcome.gif';
 
 const auth = getAuth();
@@ -36,7 +36,6 @@ const SignInScreen = () => {
       const id = await getUserByEmail(value.email);
       // console.log('the id inside signIn is: ', id);
       dispatch(updateUserId(id));
-      console.log(getUser(id));
     } catch (error) {
       setValue({
         ...value,

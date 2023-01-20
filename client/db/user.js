@@ -67,7 +67,7 @@ export async function getUserByEmail(email) {
 }
 
 export async function setUserInfo(id, data, obj) {
-  console.log('the id and the data being passed', id, data, obj);
+  // console.log('the id and the data being passed', id, data, obj);
   const image = data.file;
   const imageRef = ref(storage, `image/${image.name}`);
   uploadBytes(imageRef, image)
@@ -76,9 +76,9 @@ export async function setUserInfo(id, data, obj) {
       return getDownloadURL(result.ref);
     })
     .then((url) => {
-      console.log('the url being passed in setUserInfo', url);
+      // console.log('the url being passed in setUserInfo', url);
       const userInfoRef = doc(getFS, 'users', id);
-      console.log('this is userInfoRef ', userInfoRef);
+      // console.log('this is userInfoRef ', userInfoRef);
       updateDoc(userInfoRef, { ...obj, profile_pic: url })
         .then((docRef) => {
           console.log('document has been updated: ');
