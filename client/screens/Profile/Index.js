@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
   Image,
   Pressable,
   CheckBox,
@@ -31,11 +32,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingBottom: 10,
-    overflow: 'scroll',
+    // paddingBottom: 10,
+    overflowY: 'scroll',
     backgroundColor: 'white',
-    // borderWidth: 1,
-    // borderColor: 'black',
+    // borderWidth: 5,
+    // borderColor: 'red',
   },
   headerImage: {
     width: 200,
@@ -195,6 +196,7 @@ const Profile = ({ navigation, route }) => {
   useEffect(() => {
     async function fetchData() {
       const res = await getUser(userId);
+      // console.log('USER ID IN PROFILE', userId);
       // console.log(res[0], 'res');
       setUser(res[0]);
       setMusicTastes(res[0].music_tastes);
@@ -220,7 +222,7 @@ const Profile = ({ navigation, route }) => {
   }
   return (
     // onPress={() => auth.signOut()}
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.bodyContainerRight}>
         <Pressable onPress={() => auth.signOut()}>
           <Text style={styles.textDetailBold}>SIGN OUT</Text>
@@ -295,7 +297,7 @@ const Profile = ({ navigation, route }) => {
               />
             ))}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
