@@ -28,7 +28,7 @@ export async function getUsers() {
 
     users.push(doc.data());
   });
-  console.log('data for users : ', users);
+  // console.log('data for users : ', users);
   return users;
 }
 
@@ -69,8 +69,8 @@ export async function getUserByEmail(email) {
 export async function setUserInfo(id, data, obj) {
   console.log('the id and the data being passed', id, data);
   const image = data;
-  const imageRef = ref(storage, `image/${image.name}`);
-  uploadBytes(imageRef, image)
+  const imageRef = ref(storage, `image/${image.file.name}`);
+  uploadBytes(imageRef, image.file)
     .then((result) => {
       console.log('document has been uploaded: ');
       return getDownloadURL(result.ref);
