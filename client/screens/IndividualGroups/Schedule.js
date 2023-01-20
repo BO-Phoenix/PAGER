@@ -1,3 +1,7 @@
+/* eslint-disable indent */
+/* eslint-disable no-lone-blocks */
+/* eslint-disable operator-linebreak */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable implicit-arrow-linebreak */
@@ -16,11 +20,19 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  Platform,
+  // DatePickerIOS,
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import { useFonts } from 'expo-font';
-import DatePicker from 'react-native-datepicker';
+// import DatePicker from 'react-native-datepicker';
+// import DatePicker from 'react-native-date-picker';
+import DateTimePicker, {
+  DateTimePickerAndroid,
+} from '@react-native-community/datetimepicker';
 import { useSelector } from 'react-redux';
+import * as firebase from 'firebase/app';
+import { Timestamp } from '@firebase/firestore';
 import globalStyles from '../../globalStyles';
 import {
   getGroupPlans,
@@ -113,7 +125,7 @@ const Schedule = ({ navigation, groupData }) => {
     },
     modalInput: {
       // alignItems: 'center',
-      width: '100%',
+      width: '90%',
     },
     closeModal: {
       alignSelf: 'end',
@@ -130,12 +142,20 @@ const Schedule = ({ navigation, groupData }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [plans, setPlans] = useState([]);
   const [group, setGroup] = useState([]);
-  const [date, setDate] = useState('01:00 PM');
+
+  const [time, setTime] = useState(new Date(Math.floor(new Date().getTime())));
+
   const [value, setValue] = useState({
-    time: '1674046800000',
+    time: new Date(),
     description: '',
     error: '',
   });
+
+  const onChange = (event, selectedDate) => {
+    const current = selectedDate;
+    setTime(current);
+    setValue({ ...value, time: current });
+  };
 
   // get userId
   const { userId } = useSelector((state) => state.pagerData);
@@ -191,8 +211,9 @@ const Schedule = ({ navigation, groupData }) => {
 
     try {
       // function to add time and description to database
+      // console.log('i need this: ', value.time);
       addPlan(groupData.id, {
-        time: Number(value.time),
+        time: value.time,
         description: value.description,
       });
       fetchData();
@@ -214,6 +235,10 @@ const Schedule = ({ navigation, groupData }) => {
   if (userId === group.organizer_id) {
     organizer = true;
   }
+
+  // in the case that we can't showcase our iOS
+  const create = Timestamp.fromDate(new Date('2023-01-19T08:00:00.000Z'));
+  // console.log(create);
 
   return (
     <ScrollView>
@@ -251,68 +276,28 @@ const Schedule = ({ navigation, groupData }) => {
                     X
                   </Text>
                 </TouchableOpacity>
-                <DatePicker
-                  style={{ width: 200 }}
-                  date={date}
-                  mode="time"
-                  androidMode="spinner"
-                  placeholder="select time"
-                  format="h:mm a"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  getDateStr="true"
-                  onDateChange={(date) => {
-                    let hr = Number(date.split(':')[0]);
-                    let min = Number(date.split(':')[1].slice(0, 2));
-                    const a = date.split(' ')[1];
-                    if (a === 'am') {
-                      min *= 60;
-                      if (hr === 12) {
-                        hr = 0;
-                        hr += min;
-                        hr = JSON.stringify(hr);
-                        while (hr.length < 5) {
-                          hr = `0${hr}`;
-                        }
-                      } else {
-                        hr *= 3600;
-                        hr += min;
-                      }
-                    } else {
-                      min *= 60;
-                      if (hr === 12) {
-                        hr = 43200;
-                        hr += min;
-                      } else {
-                        hr *= 3600;
-                        hr += 43200;
-                        hr += min;
-                      }
+                {Platform.OS === 'web' ? (
+                  <Input
+                    placeholder="Time"
+                    type="time"
+                    containerStyle={styles.modalInput}
+                    onChangeText={(text) =>
+                      setValue({
+                        ...value,
+                        time: Timestamp.fromDate(new Date(text)),
+                      })
                     }
-                    const now = `16740${hr}000`;
-                    console.log('a: ', a);
-                    console.log('now: ', now);
-                    const str = '16740';
-                    console.log(date);
-                    setDate(date);
-                    setValue({ ...value, time: now });
-                  }}
-                  customStyles={{
-                    dateIcon: {
-                      position: 'absolute',
-                      left: 0,
-                      top: 4,
-                      marginLeft: 0,
-                    },
-                    dateInput: { marginLeft: 36, color: 'black' },
-                    datePicker: {
-                      backgroundColor: 'black',
-                    },
-                    datePickerCon: {
-                      backgroundColor: 'black',
-                    },
-                  }}
-                />
+                  />
+                ) : (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={time}
+                    mode="time"
+                    is24Hour={false}
+                    onChange={onChange}
+                    style={{ width: 200 }}
+                  />
+                )}
                 <Input
                   placeholder="Description"
                   containerStyle={styles.modalInput}
@@ -390,51 +375,38 @@ const Schedule = ({ navigation, groupData }) => {
           style={{
             alignSelf: 'start',
             flexDirection: 'column',
-            // borderWidth: 2,
             width: '100%',
           }}
         >
           {plans
             .sort((a, b) => a.time.seconds - b.time.seconds)
-            .sort((a, b) => a.time - b.time)
             .map((plan) => {
-              let date;
-              if (typeof plan.time !== 'object') {
-                date = new Date(plan.time);
-              } else {
-                date = new Date(plan.time.seconds);
-              }
-              // let date = 'Tue Jan 20 1970 13:01:242424';
-              date = JSON.stringify(date);
-              date = date.slice(12, 17);
-              const num = date.slice(0, 2);
-              if (num === '12') {
-                date += ' PM';
-              } else if (num > 12) {
-                date = spliceSlice(date, 0, 2, num - 12);
-                date += ' PM';
-              } else {
-                date += ' AM';
-              }
+              let date = plan.time
+                .toDate()
+                .toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+              date = date.slice(10, 22);
+              date = date.split(':');
+              date = `${date[0]}:${date[1]} ${date[2].split(' ')[1]}`;
               return (
                 <View
                   style={styles.schedules}
                   key={plan.id}
                   value={plan.id}
                   name={plan.id}
+                  testID={plan.id}
                 >
                   {organizer === true ? (
                     <TouchableOpacity
                       title="DeletePlan"
                       onPress={
                         (e) => {
-                          let close;
-                          e.target._internalFiberInstanceHandleDEV
-                            ? (close =
+                          Platform.OS === 'web'
+                            ? console.log('please use the mobile version')
+                            : deleteHandler(
+                                groupData.id,
                                 e.target._internalFiberInstanceHandleDEV
-                                  .memoizedProps.value)
-                            : undefined;
-                          deleteHandler(groupData.id, close);
+                                  .memoizedProps.value,
+                              );
 
                           fetchData();
                         }
@@ -443,6 +415,17 @@ const Schedule = ({ navigation, groupData }) => {
                         //     .value)
                       }
                     >
+                      <Text
+                        style={{
+                          position: 'absolute',
+                          right: 0,
+                          top: 0,
+                          fontSize: 10,
+                          color: 'white',
+                        }}
+                      >
+                        {plan.id}
+                      </Text>
                       <Text
                         value={plan.id}
                         name={plan.id}
