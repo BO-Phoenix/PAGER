@@ -128,7 +128,7 @@ const Schedule = ({ navigation, groupData }) => {
     },
     modalInput: {
       // alignItems: 'center',
-      width: '90%',
+      width: '100%',
     },
     closeModal: {
       alignSelf: 'end',
@@ -352,6 +352,7 @@ const Schedule = ({ navigation, groupData }) => {
               </View>
               <TouchableOpacity
                 title="AddPlan"
+                style={{ alignItems: 'center', width: '100%' }}
                 onPress={() => {
                   addSchedule();
                 }}
