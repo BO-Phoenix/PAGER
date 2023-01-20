@@ -211,7 +211,7 @@ const Schedule = ({ navigation, groupData }) => {
 
     try {
       // function to add time and description to database
-      console.log('i need this: ', value.time);
+      // console.log('i need this: ', value.time);
       addPlan(groupData.id, {
         time: value.time,
         description: value.description,
@@ -232,10 +232,11 @@ const Schedule = ({ navigation, groupData }) => {
   }
   // check if organizer
   let organizer = false;
-  if (userId !== group.organizer_id) {
+  if (userId === group.organizer_id) {
     organizer = true;
   }
 
+  // in the case that we can't showcase our iOS
   const create = Timestamp.fromDate(new Date('2023-01-19T08:00:00.000Z'));
   // console.log(create);
 
