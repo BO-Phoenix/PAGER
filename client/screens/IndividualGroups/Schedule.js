@@ -21,6 +21,7 @@ import {
   Modal,
   Pressable,
   Platform,
+  FlatList,
   // DatePickerIOS,
 } from 'react-native';
 import { Input } from 'react-native-elements';
@@ -33,6 +34,7 @@ import DateTimePicker, {
 import { useSelector } from 'react-redux';
 import * as firebase from 'firebase/app';
 import { Timestamp } from '@firebase/firestore';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import globalStyles from '../../globalStyles';
 import {
   getGroupPlans,
@@ -228,6 +230,7 @@ const Schedule = ({ navigation, groupData }) => {
   async function deleteHandler(groupId, planId) {
     if (groupId && planId) {
       deletePlan(groupId, planId);
+      fetchData();
     }
   }
   // check if organizer
@@ -388,62 +391,27 @@ const Schedule = ({ navigation, groupData }) => {
               date = date.split(':');
               date = `${date[0]}:${date[1]} ${date[2].split(' ')[1]}`;
               return (
-                <View
-                  style={styles.schedules}
-                  key={plan.id}
-                  value={plan.id}
-                  name={plan.id}
-                  testID={plan.id}
-                >
-                  {organizer === true ? (
+                <View style={styles.schedules} key={plan.id}>
+                  {!!organizer && (
                     <TouchableOpacity
-                      title="DeletePlan"
-                      onPress={
-                        (e) => {
-                          Platform.OS === 'web'
-                            ? console.log('please use the mobile version')
-                            : deleteHandler(
-                                groupData.id,
-                                e.target._internalFiberInstanceHandleDEV
-                                  .memoizedProps.value,
-                              );
-
-                          fetchData();
-                        }
-                        // console.log(
-                        //   e.target._internalFiberInstanceHandleDEV.memoizedProps
-                        //     .value)
-                      }
+                      onPress={() => deleteHandler(groupData.id, plan.id)}
                     >
-                      <Text
-                        style={{
-                          position: 'absolute',
-                          right: 0,
-                          top: 0,
-                          fontSize: 10,
-                          color: 'white',
-                        }}
-                      >
-                        {plan.id}
-                      </Text>
-                      <Text
-                        value={plan.id}
-                        name={plan.id}
+                      <MaterialCommunityIcons
+                        name="delete-forever"
+                        size={25}
                         style={{
                           position: 'absolute',
                           top: 0,
                           right: 0,
-                          fontSize: 30,
+                          fontSize: 25,
                           fontFamily: 'PoppinsBold',
                           marginRight: 5,
                         }}
-                      >
-                        X
-                      </Text>
+                      />
                     </TouchableOpacity>
-                  ) : null}
-                  <Text style={styles.boldDesc}>{date}</Text>
+                  )}
 
+                  <Text style={styles.boldDesc}>{date}</Text>
                   <Text styles={styles.desc}>{plan.description}</Text>
                 </View>
               );
