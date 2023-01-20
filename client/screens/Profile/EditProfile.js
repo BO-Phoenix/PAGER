@@ -24,15 +24,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingBottom: 10,
     overflow: 'scroll',
+    // overflow-x: 'hidden',
     backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: 'black',
+    // borderWidth: 3,
+    // borderColor: 'red',
   },
   input: {
-    borderwidth: 2,
+    borderWidth: 1,
     borderColor: '#000000',
     padding: 8,
     margin: 10,
+    width: '80%',
     // height: 40,
     // margin: 12,
     // borderWidth: 1,
@@ -54,6 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 100,
     maxHeight: '10em',
+    marginBottom: 15,
   },
 
   checkboxContainer: {
@@ -65,13 +68,35 @@ const styles = StyleSheet.create({
   checkbox: {
     alignSelf: 'center',
     marginTop: -15,
-    marginLeft: -150,
+    marginLeft: -190,
   },
   buttonText: {
     fontFamily: 'PoppinsBold',
     color: 'white',
   },
-  description: {},
+  bodyContainerName: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    margin: 10,
+    // borderWidth: 1,
+    // borderColor: 'red',
+  },
+  headerImage: {
+    width: 75,
+    height: 75,
+    marginRight: 15,
+    marginBottom: 15,
+  },
+  headerName: {
+    fontSize: 20,
+    fontFamily: 'PoppinsBold',
+  },
+  textDetailBold: {
+    fontSize: 15,
+    fontFamily: 'PoppinsBold',
+  },
 });
 
 const EditProfile = ({ route }) => {
@@ -101,22 +126,24 @@ const EditProfile = ({ route }) => {
   }, []);
 
   return (
-    <View>
-      {/* <View style={styles.bodyContainerSection}>
-        <Text>SIGN OUT</Text>
-      </View> */}
-      <UserHeader user={user} />
-      <Text>Edit Description:</Text>
+    <View style={styles.container}>
+      <View style={styles.bodyContainerName}>
+        <Image style={styles.headerImage} source={user.profile_pic} />
+        <Text style={styles.headerName}>
+          {user.first_name}
+          {' '}
+          {user.last_name}
+        </Text>
+      </View>
+      <Text style={styles.textDetailBold}>EDIT DESCRIPTION:</Text>
       <TextInput
         style={styles.input}
         onChangeText={(val) => setDescription(val)}
-        placeholder={placeholdertext}
+        placeholder="Update description here."
       />
-      {/* <View>{description}</View> */}
-      {/* <View>{userId}</View> */}
-      {/* <Input></Input> */}
 
-      <Text style={styles.label}>FAVORITE GENRES</Text>
+
+      <Text style={styles.textDetailBold}>FAVORITE GENRES:</Text>
       <View style={styles.allCheckboxContainer}>
         <View style={styles.checkboxContainer}>
           <Text>Techno</Text>
