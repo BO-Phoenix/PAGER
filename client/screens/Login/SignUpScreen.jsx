@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, CheckBox, ImageBackground } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  CheckBox,
+  ImageBackground,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -15,7 +21,6 @@ import gif from '../../assets/raveWelcome.gif';
 const auth = getAuth();
 
 const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
-
   // -- redux import statements
   const { userId } = useSelector((state) => state.pagerData);
   const dispatch = useDispatch();
@@ -39,8 +44,8 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     lastName: '',
     description: '',
     music_tastes: [],
-    error: ''
-  })
+    error: '',
+  });
 
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
@@ -65,20 +70,19 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   }
 
   async function signUp() {
-
     if (value.email === '' || value.password === '') {
       setValue({
         ...value,
-        error: 'Email and password are mandatory.'
-      })
+        error: 'Email and password are mandatory.',
+      });
       return;
     }
 
     if (!isOverEighteen) {
       setValue({
         ...value,
-        error: 'You must be 18+ to make an account.'
-      })
+        error: 'You must be 18+ to make an account.',
+      });
       return;
     }
 
@@ -94,7 +98,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         music_tastes: value.music_tastes,
         group_list: [''],
         friends_list: [''],
-        description: value.description
+        description: value.description,
       });
       try {
         await dispatch(updateUserId(id));
@@ -115,7 +119,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
           description: value.description,
         });
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     } catch (error) {
       console.log(error);
@@ -127,77 +131,79 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
       setValue({
         ...value,
         error: error.message,
-      })
+      });
     }
   }
 
   return (
     <View style={styles.container}>
-      {value.error && <View style={styles.error}><Text>{value.error}</Text></View>}
+      {value.error && (
+        <View style={styles.error}>
+          <Text>{value.error}</Text>
+        </View>
+      )}
 
       <View style={styles.controls}>
         <Input
-          placeholder='Email'
+          placeholder="Email"
           containerStyle={styles.control}
           value={value.email}
           onChangeText={(text) => setValue({ ...value, email: text })}
-          leftIcon={<Icon
-            name='envelope'
-            size={16}
-          />}
+          leftIcon={<Icon name="envelope" size={16} />}
         />
         <Input
-          placeholder='Password'
+          placeholder="Password"
           containerStyle={styles.control}
           value={value.password}
           onChangeText={(text) => setValue({ ...value, password: text })}
           secureTextEntry={true}
-          leftIcon={<Icon
-            name='key'
-            size={16}
-          />}
+          leftIcon={<Icon name="key" size={16} />}
         />
         <Input
-          placeholder='First Name'
+          placeholder="First Name"
           containerStyle={styles.control}
           value={value.firstName}
           onChangeText={(text) => setValue({ ...value, firstName: text })}
-          leftIcon={<Icon
-            name='user'
-            size={16}
-          />}
+          leftIcon={<Icon name="user" size={16} />}
         />
         <Input
-          placeholder='Last Name'
+          placeholder="Last Name"
           containerStyle={styles.control}
           value={value.lastName}
           onChangeText={(text) => setValue({ ...value, lastName: text })}
-          leftIcon={<Icon
-            name='user'
-            size={16}
-          />}
+          leftIcon={<Icon name="user" size={16} />}
         />
         <Input
-          placeholder='Description: ex (I <3 Flow Toys)'
+          placeholder="Description: ex (I <3 Flow Toys)"
           containerStyle={styles.control}
           value={value.description}
           onChangeText={(text) => setValue({ ...value, description: text })}
-          leftIcon={<Icon
-            name='newspaper-o'
-            size={16}
-          />}
+          leftIcon={<Icon name="newspaper-o" size={16} />}
         />
-        {isUploaded ? <Text style={{alignSelf: 'center'}}>Profile Image Uploaded!</Text> : null}
-        <View style={{marginBottom: -10}}>
-          <Button buttonStyle={globalStyles.button} title="Upload Profile Image" onPress={pickDocument} />
+        {isUploaded ? (
+          <Text style={{ alignSelf: 'center' }}>Profile Image Uploaded!</Text>
+        ) : null}
+        <View style={{ marginBottom: -10 }}>
+          <Button
+            buttonStyle={globalStyles.button}
+            title="Upload Profile Image"
+            onPress={pickDocument}
+          />
         </View>
-        <View style={{marginTop: 15, marginBottom: 15, justifyContent: 'center', alignSelf: 'center'}}>
-          <Text style={{marginLeft: 10}}>I confirm that I'm 18+</Text>
+        <View
+          style={{
+            marginTop: 15,
+            marginBottom: 15,
+            justifyContent: 'center',
+            alignSelf: 'center',
+          }}
+        >
+          <Text style={{ marginLeft: 10 }}>I confirm that I'm 18+</Text>
           <CheckBox
             value={isOverEighteen}
             onValueChange={setIsOverEighteen}
             style={styles.checkbox}
-            />
+          />
         </View>
         <Text style={styles.label}>FAVORITE GENRES</Text>
         <View style={styles.allCheckboxContainer}>
@@ -282,11 +288,15 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             />
           </View>
         </View>
-        <Button title="Sign up" buttonStyle={globalStyles.button} onPress={signUp} />
+        <Button
+          title="Sign up"
+          buttonStyle={globalStyles.button}
+          onPress={signUp}
+        />
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -329,7 +339,7 @@ const styles = StyleSheet.create({
   },
 
   control: {
-    marginTop: 10
+    marginTop: 10,
   },
 
   image: {
@@ -342,7 +352,7 @@ const styles = StyleSheet.create({
     padding: 10,
     color: '#fff',
     backgroundColor: '#D54826FF',
-  }
+  },
 });
 
 export default SignUpScreen;
