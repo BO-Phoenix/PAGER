@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, CheckBox } from 'react-native';
+import { StyleSheet, Text, View, CheckBox, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -10,6 +10,7 @@ import { addUser, setUserInfo } from '../../db/user.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserId } from '../../reducers/index.js';
 import * as DocumentPicker from 'expo-document-picker';
+import gif from '../../assets/raveWelcome.gif';
 
 const auth = getAuth();
 
@@ -18,7 +19,6 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   // -- redux import statements
   const { userId } = useSelector((state) => state.pagerData);
   const dispatch = useDispatch();
-
   const [isOverEighteen, setIsOverEighteen] = useState(false);
   const [likesTechno, setLikesTechno] = useState(false);
   const [likesHouse, setLikesHouse] = useState(false);
@@ -83,16 +83,6 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, value.email, value.password);
-      navigation.navigate('Sign In');
-    } catch (error) {
-      setValue({
-        ...value,
-        error: error.message,
-      })
-    }
-
-    try {
       addMusicTaste();
       // console.log(value, 'value is', value.music_tastes, 'value.music tastes');
       const id = await addUser({
@@ -104,18 +94,40 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
         music_tastes: value.music_tastes,
         group_list: [''],
         friends_list: [''],
-        description: value.description,
-        profile_pic: 'https://firebasestorage.googleapis.com/v0/b/project-pager-ac1f6.appspot.com/o/images%2Ftest.gif?alt=media&token=7fa8b785-1559-4a07-8551-83d4ce0a4b6f',
+        description: value.description
       });
       try {
-        dispatch(updateUserId(id));
+        await dispatch(updateUserId(id));
       } catch (err) {
         console.log(err);
       }
       // console.log('we are sending userId and userImg to setUserinfo', userId, userImg);
-      setUserInfo(userId, userImg);
+      try {
+        await setUserInfo(userId, userImg, {
+          email: value.email,
+          password: value.password,
+          first_name: value.firstName,
+          last_name: value.lastName,
+          birthday: '',
+          music_tastes: value.music_tastes,
+          group_list: [''],
+          friends_list: [''],
+          description: value.description,
+        });
+      } catch (err) {
+        console.log(err)
+      }
     } catch (error) {
       console.log(error);
+    }
+    try {
+      await createUserWithEmailAndPassword(auth, value.email, value.password);
+      navigation.navigate('Sign In');
+    } catch (error) {
+      setValue({
+        ...value,
+        error: error.message,
+      })
     }
   }
 
@@ -279,7 +291,6 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: '#fff',
     justifyContent: 'center',
   },
@@ -319,6 +330,11 @@ const styles = StyleSheet.create({
 
   control: {
     marginTop: 10
+  },
+
+  image: {
+    flex: 1,
+    justifyContent: 'center',
   },
 
   error: {

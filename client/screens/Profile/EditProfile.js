@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const EditProfile = () => {
+const EditProfile = ({ route }) => {
+  const userData = route.params;
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -34,14 +35,10 @@ const EditProfile = () => {
   const [user, setUser] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      const response = await getUser('QZ6KFysQsp7CG9DcicIh');
-      console.log('response: ', response);
-      setFirstName(response[0].first_name);
-      setLastName(response[0].last_name);
-      setEmail(response[0].email);
-      setPassword(response[0].password);
-      setDescription(response[0].description);
-      setUser(response[0]);
+      // const response = await getUser('QZ6KFysQsp7CG9DcicIh');
+      // console.log('response: ', response);
+      setUser(userData);
+      setDescription(userData.description);
     }
     fetchData();
   }, []);
@@ -58,14 +55,6 @@ const EditProfile = () => {
           style={styles.description}
           onChangeText={description}
           placeholder={description}
-        />
-      </View>
-      <View>
-        <Text>Last name</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={lastName}
-          placeholder={lastName}
         />
       </View>
       <Button>

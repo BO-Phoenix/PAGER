@@ -106,17 +106,33 @@ const Attended = ({ navigation }) => {
         <FlatList
           data={attendedUserGroups}
           keyExtractor={(groups) => groups.id.toString()}
-          contentContainerStyle={{ width: 350, display: 'flex', flexDirection: 'column', alignItems: 'center'/* , border: '2px solid blue' */ }}
+          contentContainerStyle={{
+            width: 350,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center' /* , border: '2px solid blue' */,
+          }}
           // numColumns={2}
           renderItem={({ item }) => (
             // console.log('group ID :', item.id)
             <View key={item.id} style={{ width: 350 }}>
               <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('IndividualGroupsIndex', item)}
+                onPress={() =>
+                  navigation.navigate('IndividualGroupsIndex', item)
+                }
               >
                 <View style={styles.groupContainer}>
-                  <Image style={styles.groupImg} source={{ uri: item.group_image }} />
-                  <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <Image
+                    style={styles.groupImg}
+                    source={{ uri: item.group_image }}
+                  />
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
                     <Text style={styles.groupName}>{item.group_name}</Text>
                     <Text style={styles.groupName}>{item.event_name}</Text>
                   </View>

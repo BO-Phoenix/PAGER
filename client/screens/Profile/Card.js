@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -11,6 +12,8 @@ import {
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import { getUser, deleteFriend } from '../../db/user.js';
+import { getGroupsPerUser } from '../../db/group.js';
+
 import Loading from '../Loading/Index.js';
 import globalStyles from '../../globalStyles';
 import emptyBox from '../../assets/box.png';
@@ -52,16 +55,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const Card = ({ prop, friends, setFriends }) => {
-  console.log(prop);
+const Card = ({ prop }) => {
+  // console.log('friend: ', prop);
+  const { userId } = useSelector((state) => state.pagerData);
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
     Bebas: require('../../assets/fonts/BebasNeue-Regular.ttf'),
   });
-  const unfriend = (id) => {
-    console.log('id: ', id);
-    deleteFriend('YJwAPkfKXNzRwlUhPvE0', 'UiuV0oABZfvPjWgy5QNj');
+  const unfriend = async (friendId) => {
+    // console.log('ids: ', id, userId);
+    // getGroupsPerUser(id);
+    const test = await deleteFriend(userId, friendId);
+    // console.log(test, 'test');
     // setFriends([...friends]);
   };
   if (!fontLoaded) {
@@ -76,7 +82,7 @@ const Card = ({ prop, friends, setFriends }) => {
         <Text>x</Text>
       </Button> */}
       <Text style={styles.textDetail}>{prop.first_name}</Text>
-      <Pressable style={styles.button} onPress={() => unfriend(prop.last_name)}>
+      <Pressable style={styles.button} onPress={() => unfriend(prop.id)}>
         <Text style={styles.buttonText}>UNFRIEND</Text>
       </Pressable>
     </View>
