@@ -20,8 +20,14 @@ import {
 import { Input } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import DatePicker from 'react-native-datepicker';
+import { useSelector } from 'react-redux';
 import globalStyles from '../../globalStyles';
-import { getGroupPlans, addPlan, deletePlan } from '../../db/group.js';
+import {
+  getGroupPlans,
+  addPlan,
+  deletePlan,
+  getGroup,
+} from '../../db/group.js';
 import Loading from '../Loading/Index';
 
 const Schedule = ({ navigation, groupData }) => {
@@ -67,7 +73,7 @@ const Schedule = ({ navigation, groupData }) => {
       alignSelf: 'start',
       padding: 5,
       width: '100%',
-      // borderWidth: 2},
+      paddingHorizontal: 15,
     },
     boldDesc: {
       alignSelf: 'start',
@@ -76,7 +82,6 @@ const Schedule = ({ navigation, groupData }) => {
     },
     desc: {
       alignSelf: 'start',
-      // borderWidth: 1,
       fontFamily: 'Poppins',
       fontSize: 14,
     },
@@ -124,18 +129,24 @@ const Schedule = ({ navigation, groupData }) => {
   // use states
   const [modalVisible, setModalVisible] = useState(false);
   const [plans, setPlans] = useState([]);
-  const [date, setDate] = useState('12:00 AM');
+  const [group, setGroup] = useState([]);
+  const [date, setDate] = useState('01:00 PM');
   const [value, setValue] = useState({
-    time: Math.floor(new Date().getTime() / 1000.0),
+    time: '1674046800000',
     description: '',
     error: '',
   });
+
+  // get userId
+  const { userId } = useSelector((state) => state.pagerData);
 
   // get data on load
   useEffect(() => {
     async function fetchData() {
       const resPlans = await getGroupPlans(groupData.id);
       setPlans(resPlans);
+      const resGroup = await getGroup(groupData.id);
+      setGroup(resGroup);
     }
     fetchData();
   }, []);
@@ -144,6 +155,8 @@ const Schedule = ({ navigation, groupData }) => {
   async function fetchData() {
     const resPlans = await getGroupPlans(groupData.id);
     setPlans(resPlans);
+    const resGroup = await getGroup(groupData.id);
+    setGroup(resGroup);
   }
 
   // load font
@@ -188,6 +201,18 @@ const Schedule = ({ navigation, groupData }) => {
     } catch (err) {
       setValue({ ...value, error: err.message });
     }
+  }
+
+  // delete plan handler
+  async function deleteHandler(groupId, planId) {
+    if (groupId && planId) {
+      deletePlan(groupId, planId);
+    }
+  }
+  // check if organizer
+  let organizer = false;
+  if (userId === group.organizer_id) {
+    organizer = true;
   }
 
   return (
@@ -337,25 +362,29 @@ const Schedule = ({ navigation, groupData }) => {
               fontSize: 20,
               fontFamily: 'PoppinsBold',
               height: 20,
+              marginTop: 5,
             }}
           >
             SCHEDULE
           </Text>
-          <TouchableOpacity
-            title="AddPlan"
-            onPress={() => setModalVisible(!modalVisible)}
-          >
-            <Text
-              style={{
-                fontSize: 30,
-                fontFamily: 'PoppinsBold',
-                marginTop: 0,
-                marginRight: 5,
-              }}
+
+          {organizer === true ? (
+            <TouchableOpacity
+              title="AddPlan"
+              onPress={() => setModalVisible(!modalVisible)}
             >
-              +
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontFamily: 'PoppinsBold',
+                  marginTop: 0,
+                  marginRight: 5,
+                }}
+              >
+                +
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
         <View
           style={{
@@ -394,39 +423,44 @@ const Schedule = ({ navigation, groupData }) => {
                   value={plan.id}
                   name={plan.id}
                 >
-                  <Text style={styles.boldDesc}>{date}</Text>
-                  <TouchableOpacity
-                    title="DeletePlan"
-                    onPress={
-                      (e) => {
-                        deletePlan(
-                          groupData.id,
-                          e.target._internalFiberInstanceHandleDEV.memoizedProps
-                            .value,
-                        );
+                  {organizer === true ? (
+                    <TouchableOpacity
+                      title="DeletePlan"
+                      onPress={
+                        (e) => {
+                          let close;
+                          e.target._internalFiberInstanceHandleDEV
+                            ? (close =
+                                e.target._internalFiberInstanceHandleDEV
+                                  .memoizedProps.value)
+                            : undefined;
+                          deleteHandler(groupData.id, close);
 
-                        fetchData();
+                          fetchData();
+                        }
+                        // console.log(
+                        //   e.target._internalFiberInstanceHandleDEV.memoizedProps
+                        //     .value)
                       }
-                      // console.log(
-                      //   e.target._internalFiberInstanceHandleDEV.memoizedProps
-                      //     .value)
-                    }
-                  >
-                    <Text
-                      value={plan.id}
-                      name={plan.id}
-                      style={{
-                        position: 'absolute',
-                        right: 0,
-                        fontSize: 30,
-                        fontFamily: 'PoppinsBold',
-                        marginTop: 0,
-                        marginRight: 5,
-                      }}
                     >
-                      X
-                    </Text>
-                  </TouchableOpacity>
+                      <Text
+                        value={plan.id}
+                        name={plan.id}
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          right: 0,
+                          fontSize: 30,
+                          fontFamily: 'PoppinsBold',
+                          marginRight: 5,
+                        }}
+                      >
+                        X
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null}
+                  <Text style={styles.boldDesc}>{date}</Text>
+
                   <Text styles={styles.desc}>{plan.description}</Text>
                 </View>
               );

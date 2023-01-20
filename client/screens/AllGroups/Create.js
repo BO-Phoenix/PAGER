@@ -6,9 +6,10 @@ import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet, Text, View, SafeAreaView, ScrollView,
 } from 'react-native';
-import { Form, FormItem, Picker } from 'react-native-form-component';
+import { Form, FormItem, Picker, Modal, Label } from 'react-native-form-component';
 import { useFonts } from 'expo-font';
 import { useSelector } from 'react-redux';
+import * as DocumentPicker from 'expo-document-picker';
 import Loading from '../Loading/Index.js';
 import {
   getGroupsPerUser,
@@ -17,13 +18,14 @@ import {
   createGroup,
 } from '../../db/group';
 import { getAllEvents } from '../../db/event';
+import { getUser } from '../../db/user';
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 0,
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     overflowY: 'scroll',
   },
   textHeader: {
@@ -42,12 +44,20 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     fontFamily: 'PoppinsBold',
   },
-  formStyle: {
+  formStyle1: {
     display: 'flex',
-    borderTopColor: 'blue',
-    borderTopWidth: 2,
-    borderBottomColor: 'blue',
-    borderBottomWidth: 2,
+    // borderWidth: 2,
+    // borderColor: 'blue',
+    margin: 0,
+  },
+  formStyle2: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // borderWidth: 2,
+    // borderColor: 'red',
+    margin: 0,
   },
   formInput: {
     // flex: 1,
@@ -57,26 +67,46 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontFamily: 'Poppins',
   },
-  btnStyle: {
-    // flex: 1,
-    backgroundColor: '#F72585',
+  btnStyleSubmit: {
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'Poppins',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    backgroundColor: '#F72585',
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+    borderRadius: 0,
   },
-  btnTextStyle: {
-    fontFamily: 'Poppins',
-    fontSize: 18,
+  btnTextStyleSubmit: {
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+  },
+  btnStyleUpload: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    backgroundColor: '#4895EF',
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+    borderRadius: 0,
+  },
+  btnTextStyleUpload: {
+    fontFamily: 'PoppinsBold',
+    color: 'white',
+    fontSize: 14,
   },
 });
 
 const Create = () => {
+  const [userData, setUserData] = useState('');
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
   const [groupImg, setGroupImg] = useState('');
   const [size, setSize] = useState('');
   const [vibe, setVibe] = useState('');
   const [event, setEvent] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const [allEvents, setAllEvents] = useState([]);
   const { userId } = useSelector((state) => state.pagerData);
@@ -88,6 +118,7 @@ const Create = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await getAllEvents();
+      const userData = await getUser(userId);
       // setAllEvents(response);
       const reformatEvents = await response.reduce((acc, eventObj) => {
         const newEvent = {
@@ -98,6 +129,7 @@ const Create = () => {
         return acc;
       }, []);
       setAllEvents(reformatEvents);
+      setUserData(userData);
     }
     fetchData();
   }, []);
@@ -112,50 +144,27 @@ const Create = () => {
     return <Loading />;
   }
 
-  // console.log('this is all events', allEvents);
+  const pickDocument = async () => {
+    const result = await DocumentPicker.getDocumentAsync({});
+    // console.log('image upload : ', result);
+    setGroupImg(result);
+  };
 
-  // event_date -- DONE
-  // event_id -- DONE
-  // group_image --
-  // group_name -- DONE
-  // group_description -- DONE
-  // member_list : user's user_id -- DONE
-  // organizer_name : user's user_name --get request for user info using ID
-  // size: string -- DONE
-  // vibe: string -- DONE
-
-  // ** object with key/value pairs -- named the same
-  // react FILE compoenent -- click a button for you to select your image
-
-  // 1/18 AGENDA:
-  // NEXT -- post form data
-  // NEXT -- form upload
-
+  // -- 1/19 fix group image upload, opens docs on ios
   const submitFormData = () => {
-    console.log(
-      'user_id::',
-      userId,
-      'name:: ',
-      groupName,
-      'description:: ',
-      groupDescription,
-      'size:: ',
+    const newGroupFormData = {
+      event_date: event.event_date,
+      event_id: event.id,
+      group_description: groupDescription,
+      group_image: groupImg,
+      group_name: groupName,
+      member_list: [userId],
+      organizer_id: userId,
+      organizer_name: userData[0].first_name,
       size,
-      'vibe:: ',
       vibe,
-      'img:: ',
-      groupImg,
-      'event:: ',
-      event,
-    );
-    // async function fetchData() {
-    //   // console.log('here in the effect');
-
-    //   const response = await createGroup();
-    //   // await addPlan(); -- POST, PUT, DELETE
-    //   // setItems(response); -- GET
-    // }
-    // fetchData();
+    };
+    createGroup(newGroupFormData, userId);
   };
 
   return (
@@ -169,9 +178,9 @@ const Create = () => {
         <Form
           onButtonPress={() => { submitFormData(); }}
           buttonText="CREATE GROUP"
-          buttonStyle={styles.btnStyle}
-          buttonTextStyle={styles.btnTextStyle}
-          style={styles.formStyle}
+          buttonStyle={styles.btnStyleSubmit}
+          buttonTextStyle={styles.btnTextStyleSubmit}
+          style={styles.formStyle1}
         >
           <FormItem
             style={styles.formInput}
@@ -223,14 +232,12 @@ const Create = () => {
             selectedValue={event}
             onSelection={(item) => setEvent(item.value)}
           />
-          <FormItem
-            style={styles.formInput}
-            id="upload-img"
-            placeholder="UPLOAD IMAGE"
-            isRequired
-            value={groupImg}
-            onChangeText={(groupImg) => setGroupImg(groupImg)}
-            ref={groupImgInput}
+          <Form
+            onButtonPress={() => { pickDocument(); }}
+            buttonText="UPLOAD IMAGE"
+            buttonStyle={styles.btnStyleUpload}
+            buttonTextStyle={styles.btnTextStyleUpload}
+            style={styles.formStyle2}
           />
         </Form>
       </View>
@@ -242,25 +249,16 @@ const Create = () => {
 
 export default Create;
 
-// ADD -- SELECT EVENT
-// createGroup(formdata)
-// Create a new group with all the infos
-
-// addChatMsg(formdata) - JEFF
-// Add chat message for a specific group
-
-// addPlan(group_id, form_data) -- JEFF
-// Add a new plan to the schedule for a specific group
-
 // event_date -- DONE
 // event_id -- DONE
 // group_image -- DONE
 // group_name -- DONE
 // group_description -- DONE
-// member_list : user's user_id
-// organizer_name : user's full name
+// member_list : user's user_id -- DONE ARRAY
+// organizer_id : user's user_id -- DONE
+// organizer_name : user's user_name --get request for user info using ID -- DONE
 // size: string -- DONE
 // vibe: string -- DONE
 
-// top priority: andrew's user id setup
-// need to be able to grab user_id and name
+// ** object with key/value pairs -- named the same
+// react FILE compoenent -- click a button for you to select your image

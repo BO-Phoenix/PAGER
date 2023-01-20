@@ -31,6 +31,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
   const [likesDisco, setLikesDisco] = useState(false);
   const [likesOther, setLikesOther] = useState(false);
   const [userImg, setUserImg] = useState({});
+  const [isUploaded, setIsUploaded] = useState(false);
   const [value, setValue] = React.useState({
     email: '',
     password: '',
@@ -45,6 +46,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
     let result = await DocumentPicker.getDocumentAsync({});
     // console.log(result);
     setUserImg(result);
+    setIsUploaded(true);
     // alert(result.uri);
     // console.log(userImg);
   };
@@ -173,6 +175,7 @@ const SignUpScreen: React.FC<StackScreenProps<any>> = ({ navigation }) => {
             size={16}
           />}
         />
+        {isUploaded ? <Text style={{alignSelf: 'center'}}>Profile Image Uploaded!</Text> : null}
         <View style={{marginBottom: -10}}>
           <Button buttonStyle={globalStyles.button} title="Upload Profile Image" onPress={pickDocument} />
         </View>
