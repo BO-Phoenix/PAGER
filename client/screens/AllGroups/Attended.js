@@ -84,7 +84,6 @@ const Attended = ({ navigation }) => {
     }
     fetchData();
   }, []);
-  // console.log('does this work?', attendedUserGroups);
 
   const [fontLoaded] = useFonts({
     Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
@@ -104,20 +103,6 @@ const Attended = ({ navigation }) => {
         <Text style={styles.featureHeader}>ATTENDED</Text>
       </View>
       <View style={styles.renderGroupContainer}>
-        {/* {attendedUserGroups.map(group => { //  pass 'group' as a navigate -- 2nd param ITEM
-          return (
-            <View style={styles.groupContainer}>
-              <Image
-                style={styles.groupImg}
-                source={{ uri: group.group_image }}
-              />
-              <Text style={styles.groupName} key={group.id}>
-                {group.group_name}
-              </Text>
-              <Icon name="arrow-dropright" size={30} />
-            </View>
-          );
-        })} */}
         <FlatList
           data={attendedUserGroups}
           keyExtractor={(groups) => groups.id.toString()}
@@ -143,28 +128,29 @@ const Attended = ({ navigation }) => {
           )}
         />
       </View>
-      {/* <TouchableOpacity
-        title="Upcoming"
-        onPress={() => navigation.navigate('Upcoming', { name: 'Upcoming' })}
-      >
-        <Text>Upcoming</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        title="Create"
-        onPress={() => navigation.navigate('Create', { name: 'Create' })}
-      >
-        <Text>Create</Text>
-      </TouchableOpacity> */}
-
-      {/* <Button
-      title="Upcoming"
-      onPress={() =>
-        navigation.navigate('Upcoming', {name: 'Upcoming'})
-      } /> */}
       <StatusBar style="auto" />
     </ScrollView>
   );
 };
 
 export default Attended;
+
+// {/* <TouchableOpacity
+//   title="Upcoming"
+//   onPress={() => navigation.navigate('Upcoming', { name: 'Upcoming' })}
+// >
+//   <Text>Upcoming</Text>
+// </TouchableOpacity>
+
+// <TouchableOpacity
+//   title="Create"
+//   onPress={() => navigation.navigate('Create', { name: 'Create' })}
+// >
+//   <Text>Create</Text>
+// </TouchableOpacity> */}
+
+// {/* <Button
+// title="Upcoming"
+// onPress={() =>
+//   navigation.navigate('Upcoming', {name: 'Upcoming'})
+// } /> */}
