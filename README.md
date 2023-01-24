@@ -57,9 +57,7 @@ Backend
 - Utilized Firebase Authentication for user sign in and sign up pages
 - Managed authentication screen stack flow for global state for authenticated users
 - Sign up creates user and corresponding data points in Firebase Firestore with information and profile image.
-    
-    ![ezgif.com-gif-maker.gif](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/192b630f-c963-42c4-a5bf-274fe593c36d/ezgif.com-gif-maker.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230122%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230122T015656Z&X-Amz-Expires=86400&X-Amz-Signature=30eb385de147b78a793c9af92170d6c1e7e73a5f2f3c771d9e3278c946e0bec0&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22ezgif.com-gif-maker.gif%22&x-id=GetObject)
-    
+    ![ezgif com-gif-maker](https://user-images.githubusercontent.com/59150695/214371736-04101068-2797-4f48-893c-112f8b311588.gif)
 
 ### User Profile
 
