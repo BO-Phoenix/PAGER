@@ -21,6 +21,8 @@ Backend
 
 ## Technologies
 
+
+
 ![https://img.shields.io/badge/React%20Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB](https://img.shields.io/badge/React%20Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white) ![https://img.shields.io/badge/Express.js-404D59?style=for-the-badge](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge) ![https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)
 
 ## Contributors
@@ -74,7 +76,7 @@ Backend
 
 ### Homepage
 
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/c4c63c0f-081a-4d3e-ab1f-19fbffbdf70d/Screen_Shot_2023-01-21_at_4.26.46_PM.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230122%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230122T015842Z&X-Amz-Expires=86400&X-Amz-Signature=2ce82dc8774f517fbeb4efff78e807ba3162382f4b5f395487a777da868392db&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Screen%2520Shot%25202023-01-21%2520at%25204.26.46%2520PM.png%22&x-id=GetObject" width="157" height="340" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://user-images.githubusercontent.com/3084586/214103264-6895f564-0c7c-4467-8360-2d09d77bc950.png" width="157" height="340" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://user-images.githubusercontent.com/3084586/214104970-d2d0f62a-8f3c-4490-b05f-18951094615d.png" width="157" height="340" />
+<img src="https://user-images.githubusercontent.com/112330601/215922513-145c0c86-cc62-4352-a341-44ac16473c3b.gif" width="157" height="340" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://user-images.githubusercontent.com/3084586/214103264-6895f564-0c7c-4467-8360-2d09d77bc950.png" width="157" height="340" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://user-images.githubusercontent.com/3084586/214104970-d2d0f62a-8f3c-4490-b05f-18951094615d.png" width="157" height="340" />
 
 - Swipe cards displaying groups attending events. Swipe right to join or left to pass.
 - Card expanded view, showing additional information about the group.
